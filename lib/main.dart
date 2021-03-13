@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:helpout/appstate.dart';
+import 'package:helpout/greeting.dart';
 import 'package:helpout/peopleinneed.dart';
+import 'package:helpout/prelogin.dart';
 import 'package:helpout/searchhelpers.dart';
 import 'package:helpout/signup.dart';
-
-import 'greeting.dart';
+import 'package:helpout/welcome.dart';
 
 void main() {
   runApp(MainApp());
@@ -12,41 +14,33 @@ void main() {
 enum AppPart { GREETING, LOGIN, FIND, HELP }
 
 class MainApp extends StatefulWidget {
+  static AppState state = AppState();
+
   @override
   _MainAppState createState() => _MainAppState();
 }
 
 class _MainAppState extends State<MainApp> {
-  AppPart _shownPart = AppPart.GREETING;
-
-  void setPartToShow(AppPart part) {
-    _shownPart = part;
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Help out',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          primaryColor: Colors.blue,
-          accentColor: Colors.yellow,
-        ),
-        home: getWidgetToShow());
-  }
-
-  Widget getWidgetToShow() {
-    switch (_shownPart) {
-      case AppPart.GREETING:
-        return GreetingPage(title: 'Help out', callback: setPartToShow);
-      case AppPart.LOGIN:
-        return SignUpApp();
-      case AppPart.FIND:
-        return SearchHelpersPage(title: 'Finding helpers in your vicinity');
-      case AppPart.HELP:
-        return PeopleInNeedPage(title: 'Help out people in need');
-      default:
-        return null;
-    }
+      title: 'Help out',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        primaryColor: Colors.blue,
+        accentColor: Colors.pinkAccent,
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => GreetingPage(),
+        '/prelogin': (context) => PreLoginPage(),
+        '/findhelpers': (context) => SearchHelpersPage(),
+        '/helpout': (context) => PeopleInNeedPage(),
+        '/signup': (context) => SignUpScreen(),
+        '/login': (context) => SignUpScreen(),
+        '/signup/welcome': (context) => WelcomeScreen("Welcome!"),
+        '/login/welcome': (context) => WelcomeScreen('Sucessfully logged in!'),
+      },
+    );
   }
 }

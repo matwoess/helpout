@@ -1,24 +1,13 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(SignUpApp());
-
-class SignUpApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: {
-        '/': (context) => SignUpScreen(),
-        '/welcome': (context) => WelcomeScreen(),
-      },
-    );
-  }
-}
-
 class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        title: Text('Sign up'),
+      ),
       body: Center(
         child: SizedBox(
           width: 400,
@@ -26,17 +15,6 @@ class SignUpScreen extends StatelessWidget {
             child: SignUpForm(),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class WelcomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('Welcome!', style: Theme.of(context).textTheme.headline2),
       ),
     );
   }
@@ -51,6 +29,9 @@ class _SignUpFormState extends State<SignUpForm> {
   final _firstNameTextController = TextEditingController();
   final _lastNameTextController = TextEditingController();
   final _usernameTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
+  final _repeatpwTextController = TextEditingController();
+  bool _passwordDoesNotMatch = false;
 
   double _formProgress = 0;
 
@@ -59,11 +40,22 @@ class _SignUpFormState extends State<SignUpForm> {
     var controllers = [
       _firstNameTextController,
       _lastNameTextController,
-      _usernameTextController
+      _usernameTextController,
+      _passwordTextController,
+      _repeatpwTextController,
     ];
 
     for (var controller in controllers) {
       if (controller.value.text.isNotEmpty) {
+        if (controller == _passwordTextController ||
+            controller == _repeatpwTextController) {
+          if (_passwordTextController.text != _repeatpwTextController.text) {
+            _passwordDoesNotMatch = true;
+            continue;
+          } else {
+            _passwordDoesNotMatch = false;
+          }
+        }
         progress += 1 / controllers.length;
       }
     }
@@ -74,7 +66,7 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   void _showWelcomeScreen() {
-    Navigator.of(context).pushNamed('/welcome');
+    Navigator.popAndPushNamed(context, '/signup/welcome');
   }
 
   @override
@@ -107,13 +99,44 @@ class _SignUpFormState extends State<SignUpForm> {
               decoration: InputDecoration(hintText: 'Username'),
             ),
           ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: TextFormField(
+              controller: _passwordTextController,
+              decoration: InputDecoration(hintText: 'Password'),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: TextFormField(
+              controller: _repeatpwTextController,
+              decoration: InputDecoration(hintText: 'Repeat password'),
+            ),
+          ),
+          Visibility(
+            visible: _passwordDoesNotMatch,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Passwords to not match!',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ),
+          
           TextButton(
             style: ButtonStyle(
-              foregroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
-                return states.contains(MaterialState.disabled) ? null : Colors.white;
+              foregroundColor:
+                  MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                return states.contains(MaterialState.disabled)
+                    ? null
+                    : Colors.white;
               }),
-              backgroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
-                return states.contains(MaterialState.disabled) ? null : Colors.blue;
+              backgroundColor:
+                  MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                return states.contains(MaterialState.disabled)
+                    ? null
+                    : Colors.blue;
               }),
             ),
             onPressed: _formProgress == 1 ? _showWelcomeScreen : null,

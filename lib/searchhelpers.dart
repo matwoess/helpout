@@ -5,8 +5,6 @@ import 'package:helpout/personcard.dart';
 import 'demodata.dart';
 
 class SearchHelpersPage extends StatefulWidget {
-  SearchHelpersPage({Key key, this.title}) : super(key: key);
-  final String title;
 
   @override
   _SearchHelpersState createState() => _SearchHelpersState();
@@ -19,7 +17,7 @@ class _SearchHelpersState extends State<SearchHelpersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Finding helpers in your vicinity"),
       ),
       body: ListView.builder(
           itemBuilder: (context, position) {
