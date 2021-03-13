@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:helpout/appstate.dart';
 import 'package:helpout/greeting.dart';
+import 'package:helpout/login.dart';
 import 'package:helpout/peopleinneed.dart';
 import 'package:helpout/prelogin.dart';
 import 'package:helpout/searchhelpers.dart';
@@ -37,9 +38,9 @@ class _MainAppState extends State<MainApp> {
         '/findhelpers': (context) => SearchHelpersPage(),
         '/helpout': (context) => PeopleInNeedPage(),
         '/signup': (context) => SignUpScreen(),
-        '/login': (context) => SignUpScreen(),
+        '/login': (context) => LogInScreen(),
         '/signup/welcome': (context) => WelcomeScreen("Welcome!"),
-        '/login/welcome': (context) => WelcomeScreen('Sucessfully logged in!'),
+        '/login/welcome': (context) => WelcomeScreen('Login successful!'),
       },
     );
   }
