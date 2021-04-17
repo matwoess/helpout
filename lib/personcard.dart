@@ -4,8 +4,9 @@ import 'package:helpout/person.dart';
 
 class PersonCard extends Card {
   Person _person;
+  Function detailsCallback = () {};
 
-  PersonCard(this._person);
+  PersonCard(this._person, this.detailsCallback);
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +42,7 @@ class PersonCard extends Card {
             alignment: MainAxisAlignment.start,
             children: [
               TextButton(
-                onPressed: () {
-                  // Perform some action
-                },
+                onPressed: () => detailsCallback(),
                 child: const Text('DETAILS'),
               ),
             ],

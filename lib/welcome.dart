@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:helpout/appstate.dart';
 
 class WelcomePage extends StatelessWidget {
   final _text;
@@ -21,11 +22,12 @@ class WelcomePage extends StatelessWidget {
               margin: EdgeInsets.only(left: 16.0, right: 16.0),
               width: double.infinity,
               child: ElevatedButton(
-                child: Text('Back to home'),
+                child: Text('Go back'),
                 onPressed: () {
-                  while (Navigator.canPop(context)) {
-                    Navigator.pop(context);
-                  }
+                  if (AppState.searchType == SearchType.ASSIST)
+                    Navigator.popUntil(context, ModalRoute.withName('/assist'));
+                  else
+                    Navigator.popUntil(context, ModalRoute.withName('/'));
                 },
               ),
             ),

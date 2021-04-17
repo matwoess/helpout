@@ -21,9 +21,12 @@ class _RequestHelpState extends State<RequestHelpPage> {
       ),
       body: ListView.builder(
           itemBuilder: (context, position) {
-            return PersonCard(persons[position]);
+            return PersonCard(persons[position], showDetails);
           },
           itemCount: persons.length),
     );
+  }
+
+  showDetails() {
   }
 }

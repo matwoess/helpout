@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:helpout/appstate.dart';
 import 'package:helpout/person.dart';
 import 'package:helpout/personcard.dart';
 
@@ -20,9 +21,14 @@ class _AssistPeopleState extends State<AssistPeoplePage> {
       ),
       body: ListView.builder(
           itemBuilder: (context, position) {
-            return PersonCard(persons[position]);
+            return PersonCard(persons[position], showDetails);
           },
           itemCount: persons.length),
     );
+  }
+
+  showDetails() {
+    if (!AppState.loggedIn)
+      Navigator.pushNamed(context, '/prelogin');
   }
 }

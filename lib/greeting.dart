@@ -78,14 +78,14 @@ class _GreetingPageState extends State<GreetingPage> {
                 child: Text('Search'),
                 onPressed: () => {
                   if (AppState.searchType == SearchType.ASSIST)
-                    Navigator.pushNamed(context, '/assist')
+                    Navigator.pushNamed(context, '/assist').then(onReturn)
                   else if (AppState.searchType == SearchType.REQUEST)
                     if (AppState.loggedIn)
                       Navigator.pushNamed(context, '/request').then(onReturn)
                     else
                       Navigator.pushNamed(context, '/prelogin').then(onReturn)
                   else
-                    {print('no/unknown search type selected')}
+                    print('no/unknown search type selected')
                 },
               ),
             )
@@ -124,7 +124,7 @@ class _AssistHelpRadioCardState extends State<AssistHelpRadioCard> {
               ),
             ),
             ListTile(
-              title: const Text('Find people to assist me'),
+              title: const Text('Request help'),
               leading: Radio(
                 value: SearchType.REQUEST,
                 groupValue: AppState.searchType,
@@ -136,7 +136,7 @@ class _AssistHelpRadioCardState extends State<AssistHelpRadioCard> {
               ),
             ),
             ListTile(
-              title: const Text('Help out people in need'),
+              title: const Text('Assist people'),
               leading: Radio(
                 value: SearchType.ASSIST,
                 groupValue: AppState.searchType,

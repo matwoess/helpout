@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
 class PreLoginPage extends StatelessWidget {
-  final Function callback;
-
-  PreLoginPage({Key key, this.callback}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
