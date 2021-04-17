@@ -25,7 +25,8 @@ class WelcomePage extends StatelessWidget {
                 child: Text('Go back'),
                 onPressed: () {
                   if (AppState.searchType == SearchType.ASSIST)
-                    Navigator.popUntil(context, ModalRoute.withName('/assist'));
+                     Navigator.popUntil(
+                        context, ModalRoute.withName('/detailview'));
                   else
                     Navigator.popUntil(context, ModalRoute.withName('/'));
                 },

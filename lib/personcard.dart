@@ -4,9 +4,9 @@ import 'package:helpout/person.dart';
 
 class PersonCard extends Card {
   Person _person;
-  Function detailsCallback = () {};
+  Function _detailsCallback = () {};
 
-  PersonCard(this._person, this.detailsCallback);
+  PersonCard(this._person, this._detailsCallback);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class PersonCard extends Card {
         children: [
           ListTile(
             title: Text('${_person.name}'),
-            leading: Image(image: AssetImage("assets/images/empty.png")),
+            leading: Image(image: AssetImage(_person.assetURI)),
             subtitle: Text(
               '${_person.region}',
               style: TextStyle(color: Colors.black.withOpacity(0.6)),
@@ -42,8 +42,8 @@ class PersonCard extends Card {
             alignment: MainAxisAlignment.start,
             children: [
               TextButton(
-                onPressed: () => detailsCallback(),
-                child: const Text('DETAILS'),
+                onPressed: () => _detailsCallback(_person),
+                child: const Text('Details'),
               ),
             ],
           ),

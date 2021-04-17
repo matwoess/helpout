@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:helpout/person.dart';
 import 'package:helpout/personcard.dart';
 
+import 'appstate.dart';
 import 'demodata.dart';
+import 'detailsdialog.dart';
 
 class RequestHelpPage extends StatefulWidget {
 
@@ -27,6 +29,20 @@ class _RequestHelpState extends State<RequestHelpPage> {
     );
   }
 
-  showDetails() {
+  showDetails(Person person) {
+    if (!AppState.loggedIn)
+      Navigator.pushNamed(context, '/prelogin');
+    else
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return DetailsDialog(person, startChat);
+        },
+      );
+  }
+
+  void startChat(Person person) {
+    Navigator.of(context).pop();
+    print('starting chat with ${person.name}');
   }
 }

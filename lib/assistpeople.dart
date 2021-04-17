@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helpout/appstate.dart';
+import 'package:helpout/detailsdialog.dart';
 import 'package:helpout/person.dart';
 import 'package:helpout/personcard.dart';
 
@@ -27,8 +28,21 @@ class _AssistPeopleState extends State<AssistPeoplePage> {
     );
   }
 
-  showDetails() {
+  showDetails(Person person) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return DetailsDialog(person, startChat);
+        },
+        routeSettings: RouteSettings(name: '/detailview'));
+  }
+
+  void startChat(Person person) {
     if (!AppState.loggedIn)
       Navigator.pushNamed(context, '/prelogin');
+    else {
+      Navigator.of(context).pop();
+      print('starting chat with ${person.name}');
+    }
   }
 }
