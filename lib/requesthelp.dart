@@ -4,19 +4,20 @@ import 'package:helpout/personcard.dart';
 
 import 'demodata.dart';
 
-class PeopleInNeedPage extends StatefulWidget {
+class RequestHelpPage extends StatefulWidget {
+
   @override
-  _PeopleInNeedState createState() => _PeopleInNeedState();
+  _RequestHelpState createState() => _RequestHelpState();
 }
 
-class _PeopleInNeedState extends State<PeopleInNeedPage> {
+class _RequestHelpState extends State<RequestHelpPage> {
   List<Person> persons = DemoData().getDemoPersons();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Help out people in need"),
+        title: Text("Request help"),
       ),
       body: ListView.builder(
           itemBuilder: (context, position) {

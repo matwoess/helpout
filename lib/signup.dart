@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:helpout/main.dart';
 
-class SignUpScreen extends StatelessWidget {
+import 'appstate.dart';
+
+class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +68,7 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   void _showWelcomeScreen() {
-    MainApp.state.loggedIn = true;
+    AppState.loggedIn = true;
     Navigator.popAndPushNamed(context, '/signup/welcome');
   }
 
@@ -120,7 +121,7 @@ class _SignUpFormState extends State<SignUpForm> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Passwords to not match!',
+                'Passwords do not match!',
                 style: TextStyle(color: Colors.red),
               ),
             ),

@@ -1,38 +1,102 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'appstate.dart';
-import 'main.dart';
 
-class GreetingPage extends StatelessWidget {
+class GreetingPage extends StatefulWidget {
+  @override
+  _GreetingPageState createState() => _GreetingPageState();
+}
+
+class _GreetingPageState extends State<GreetingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Help out'),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Text('Welcome to "Help out"!',
-                  style: Theme.of(context).textTheme.headline4),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                    'The site to help out people in need and maybe earn some money in the process, or find help from people in your neighborhood.',
-                    style: Theme.of(context).textTheme.headline6),
+      appBar: AppBar(
+        title: Text('Help out'),
+        actions: <Widget>[
+          Visibility(
+            visible: AppState.loggedIn,
+            child: Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: Center(
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      AppState.loggedIn = false;
+                    });
+                  },
+                  child: Text('Log out'),
+                ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: AssistHelpRadioCard(),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: RegionCard(),
-              ),
-            ],
+            ),
           ),
-        ));
+          Visibility(
+            visible: !AppState.loggedIn,
+            child: Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: Center(
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      AppState.loggedIn = true;
+                    });
+                  },
+                  child: Text(
+                    'Log in',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            Text('Welcome to "Help out"!',
+                style: Theme.of(context).textTheme.headline4),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                  'The site to help out people in need and maybe earn some money in the process, or find help from people in your neighborhood.',
+                  style: Theme.of(context).textTheme.headline6),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: AssistHelpRadioCard(),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RegionCard(),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: ElevatedButton(
+                child: Text('Search'),
+                onPressed: () => {
+                  if (AppState.searchType == SearchType.ASSIST)
+                    Navigator.pushNamed(context, '/assist')
+                  else if (AppState.searchType == SearchType.REQUEST)
+                    if (AppState.loggedIn)
+                      Navigator.pushNamed(context, '/request').then(onReturn)
+                    else
+                      Navigator.pushNamed(context, '/prelogin').then(onReturn)
+                  else
+                    {print('no/unknown search type selected')}
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  FutureOr onReturn(dynamic value) {
+    setState(() {});
   }
 }
 
@@ -63,10 +127,10 @@ class _AssistHelpRadioCardState extends State<AssistHelpRadioCard> {
               title: const Text('Find people to assist me'),
               leading: Radio(
                 value: SearchType.REQUEST,
-                groupValue: MainApp.state.searchType,
+                groupValue: AppState.searchType,
                 onChanged: (SearchType value) {
                   setState(() {
-                    MainApp.state.searchType = value;
+                    AppState.searchType = value;
                   });
                 },
               ),
@@ -74,11 +138,11 @@ class _AssistHelpRadioCardState extends State<AssistHelpRadioCard> {
             ListTile(
               title: const Text('Help out people in need'),
               leading: Radio(
-                value: SearchType.HELP,
-                groupValue: MainApp.state.searchType,
+                value: SearchType.ASSIST,
+                groupValue: AppState.searchType,
                 onChanged: (SearchType value) {
                   setState(() {
-                    MainApp.state.searchType = value;
+                    AppState.searchType = value;
                   });
                 },
               ),
@@ -112,25 +176,6 @@ class _RegionCardState extends State<RegionCard> {
                 decoration: InputDecoration(hintText: 'My region'),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: ElevatedButton(
-                child: Text('Search'),
-                onPressed: () => {
-                  if (MainApp.state.loggedIn)
-                    {
-                      if (MainApp.state.searchType == SearchType.HELP)
-                        Navigator.pushNamed(context, '/helpout')
-                      else if (MainApp.state.searchType == SearchType.REQUEST)
-                        Navigator.pushNamed(context, '/findhelpers')
-                      else
-                        print('no/unknown search type selected')
-                    }
-                  else
-                    Navigator.pushNamed(context, '/prelogin')
-                },
-              ),
-            )
           ],
         ),
       ),

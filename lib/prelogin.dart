@@ -36,14 +36,14 @@ class PreLoginPage extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                           onPressed: () =>
-                              Navigator.popAndPushNamed(context, '/login'),
+                              Navigator.pushNamed(context, '/login'),
                           child: Text('Login')),
                     ),
                     Container(
                       width: double.infinity,
                       child: ElevatedButton(
                           onPressed: () =>
-                              Navigator.popAndPushNamed(context, '/signup'),
+                              Navigator.pushNamed(context, '/signup'),
                           child: Text('Sign up')),
                     ),
                   ],

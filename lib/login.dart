@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:helpout/main.dart';
 
-class LogInScreen extends StatelessWidget {
+import 'appstate.dart';
+
+class LogInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +66,7 @@ class _LogInFormState extends State<LogInForm> {
       });
       return;
     }
-    MainApp.state.loggedIn = true;
+    AppState.loggedIn = true;
     Navigator.popAndPushNamed(context, '/login/welcome');
   }
 

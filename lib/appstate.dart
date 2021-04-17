@@ -1,6 +1,6 @@
-enum SearchType { REQUEST, HELP }
+enum SearchType { REQUEST, ASSIST }
 
 class AppState {
-  bool loggedIn = false;
-  SearchType searchType = SearchType.HELP;
+  static bool loggedIn = false;
+  static SearchType searchType = SearchType.ASSIST;
 }

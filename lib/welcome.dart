@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomePage extends StatelessWidget {
   final _text;
 
-  WelcomeScreen(this._text);
+  WelcomePage(this._text);
 
   @override
   Widget build(BuildContext context) {

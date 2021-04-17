@@ -4,20 +4,19 @@ import 'package:helpout/personcard.dart';
 
 import 'demodata.dart';
 
-class SearchHelpersPage extends StatefulWidget {
-
+class AssistPeoplePage extends StatefulWidget {
   @override
-  _SearchHelpersState createState() => _SearchHelpersState();
+  _AssistPeopleState createState() => _AssistPeopleState();
 }
 
-class _SearchHelpersState extends State<SearchHelpersPage> {
+class _AssistPeopleState extends State<AssistPeoplePage> {
   List<Person> persons = DemoData().getDemoPersons();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Finding helpers in your vicinity"),
+        title: Text("Assist people in need"),
       ),
       body: ListView.builder(
           itemBuilder: (context, position) {
