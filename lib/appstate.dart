@@ -5,7 +5,6 @@ class AppState {
   SearchType searchType;
   String region;
   bool darkTheme;
-  bool ads;
 
   AppState({
     this.loggedIn,
