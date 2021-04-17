@@ -11,7 +11,7 @@ class RequestHelpPage extends StatefulWidget {
 }
 
 class _RequestHelpState extends State<RequestHelpPage> {
-  List<Person> persons = DemoData().getDemoPersons();
+  List<Person> persons = DemoData.getDemoPersons();
 
   @override
   Widget build(BuildContext context) {

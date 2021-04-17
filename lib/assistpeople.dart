@@ -11,7 +11,7 @@ class AssistPeoplePage extends StatefulWidget {
 }
 
 class _AssistPeopleState extends State<AssistPeoplePage> {
-  List<Person> persons = DemoData().getDemoPersons();
+  List<Person> persons = DemoData.getDemoPersons();
 
   @override
   Widget build(BuildContext context) {

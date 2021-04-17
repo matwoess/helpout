@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:helpout/demodata.dart';
 
 import 'appstate.dart';
 
@@ -56,8 +58,11 @@ class _GreetingPageState extends State<GreetingPage> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            Text('Welcome to "Help out"!',
-                style: Theme.of(context).textTheme.headline4),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text('Welcome to "Help out"!',
+                  style: Theme.of(context).textTheme.headline4),
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
@@ -73,7 +78,7 @@ class _GreetingPageState extends State<GreetingPage> {
               child: RegionCard(),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 8.0),
+              padding: const EdgeInsets.all(12.0),
               child: ElevatedButton(
                 child: Text('Search'),
                 onPressed: () => {
@@ -160,6 +165,7 @@ class RegionCard extends StatefulWidget {
 }
 
 class _RegionCardState extends State<RegionCard> {
+  final _availableRegions = DemoData.getAvailableRegions();
   final _regionTextController = TextEditingController();
 
   @override
@@ -168,12 +174,34 @@ class _RegionCardState extends State<RegionCard> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              'In Region:',
+              style: Theme.of(context).textTheme.headline6,
+            ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: _regionTextController,
-                decoration: InputDecoration(hintText: 'My region'),
+              padding: const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 8.0),
+              child: DropdownButton<String>(
+                isExpanded: true,
+                value: AppState.region,
+                //decoration: InputDecoration(hintText: 'My region'),
+                onChanged: (String newValue) {
+                  setState(() {
+                    AppState.region = newValue;
+                  });
+                },
+                underline: Container(
+                  height: 2,
+                  color: Theme.of(context).accentColor,
+                ),
+                items: _availableRegions
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
               ),
             ),
           ],

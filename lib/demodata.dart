@@ -2,7 +2,7 @@ import 'package:helpout/person.dart';
 import 'package:helpout/region.dart';
 
 class DemoData {
-  final _people = [
+  static final _people = [
     {
       "name": "Johannes Hinterberger",
       "description": "I am a helpful person.",
@@ -37,7 +37,7 @@ class DemoData {
       "name": "Thomas Braunberger",
       "description":
           "Male, 35 years old, education from FH Hagenberg, like to read, have 3 sisters and 1 brother. More information about me can be found on my website at http://person.me.com",
-      "region": "4050, Train",
+      "region": "4050, Traun",
       "price": 10,
     },
     {
@@ -48,7 +48,7 @@ class DemoData {
     },
   ];
 
-  List<Person> getDemoPersons() {
+  static List<Person> getDemoPersons() {
     return _people
         .map((person) => Person(
             person['name'],
@@ -56,5 +56,16 @@ class DemoData {
             person['price'],
             person['description']))
         .toList();
+  }
+
+  static List<String> getAvailableRegions() {
+    return [
+      '4020, Linz',
+      '4030, Linz',
+      '4040, Linz',
+      '4050, Traun',
+      '4221, Steyregg',
+      '4600, Wels',
+    ];
   }
 }
