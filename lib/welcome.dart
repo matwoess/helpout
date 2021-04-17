@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:helpout/appstate.dart';
 
 class WelcomePage extends StatelessWidget {
+  final AppState _appState;
   final _text;
 
-  WelcomePage(this._text);
+  WelcomePage(this._appState, this._text);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class WelcomePage extends StatelessWidget {
               child: ElevatedButton(
                 child: Text('Go back'),
                 onPressed: () {
-                  if (AppState.searchType == SearchType.ASSIST)
+                  if (_appState.searchType == SearchType.ASSIST)
                      Navigator.popUntil(
                         context, ModalRoute.withName('/detailview'));
                   else

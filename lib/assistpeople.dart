@@ -4,9 +4,12 @@ import 'package:helpout/detailsdialog.dart';
 import 'package:helpout/person.dart';
 import 'package:helpout/personcard.dart';
 
+import 'appstate.dart';
 import 'demodata.dart';
 
 class AssistPeoplePage extends StatefulWidget {
+  final AppState _appState;
+  AssistPeoplePage(this._appState);
   @override
   _AssistPeopleState createState() => _AssistPeopleState();
 }
@@ -38,7 +41,7 @@ class _AssistPeopleState extends State<AssistPeoplePage> {
   }
 
   void startChat(Person person) {
-    if (!AppState.loggedIn)
+    if (!widget._appState.loggedIn)
       Navigator.pushNamed(context, '/prelogin');
     else {
       Navigator.of(context).pop();

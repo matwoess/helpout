@@ -1,7 +1,15 @@
 enum SearchType { REQUEST, ASSIST }
 
 class AppState {
-  static bool loggedIn = false;
-  static SearchType searchType = SearchType.ASSIST;
-  static String region;
+  bool loggedIn;
+  SearchType searchType;
+  String region;
+  bool darkTheme;
+
+  AppState({
+    this.loggedIn,
+    this.searchType,
+    this.region,
+    this.darkTheme,
+  });
 }

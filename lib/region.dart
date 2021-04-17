@@ -6,11 +6,7 @@ class Region {
 
   Region.withoutLocation(String name)
       : this.name = name,
-        this.location = Region.unknown();
-
-  static Location unknown() {
-    return Location.unknown();
-  }
+        this.location = Location.unknown();
 
   @override
   String toString() {

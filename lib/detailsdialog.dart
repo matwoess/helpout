@@ -34,7 +34,7 @@ class DetailsDialog extends StatelessWidget {
           margin: EdgeInsets.only(top: Constants.detailDialogAvatarRadius),
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
-            color: Colors.white,
+            color: Theme.of(context).dialogBackgroundColor,
             borderRadius: BorderRadius.circular(Constants.detailDialogPadding),
           ),
           child: Column(
@@ -46,7 +46,7 @@ class DetailsDialog extends StatelessWidget {
               ),
               Text(
                 '${_person.region}',
-                style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                style: Theme.of(context).textTheme.bodyText2,
               ),
               SizedBox(
                 height: 15,

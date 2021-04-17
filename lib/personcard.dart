@@ -21,7 +21,7 @@ class PersonCard extends Card {
             leading: Image(image: AssetImage(_person.assetURI)),
             subtitle: Text(
               '${_person.region}',
-              style: TextStyle(color: Colors.black.withOpacity(0.6)),
+              style: Theme.of(context).textTheme.bodyText2,
             ),
           ),
           Container(

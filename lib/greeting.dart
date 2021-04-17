@@ -7,6 +7,11 @@ import 'package:helpout/demodata.dart';
 import 'appstate.dart';
 
 class GreetingPage extends StatefulWidget {
+  final AppState _appState;
+  final Function _stateUpdater;
+
+  GreetingPage(this._appState, this._stateUpdater);
+
   @override
   _GreetingPageState createState() => _GreetingPageState();
 }
@@ -18,15 +23,33 @@ class _GreetingPageState extends State<GreetingPage> {
       appBar: AppBar(
         title: Text('Help out'),
         actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: Center(
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    if (widget._appState.darkTheme)
+                      widget._appState.darkTheme = false;
+                    else
+                      widget._appState.darkTheme = true;
+                    widget._stateUpdater(widget._appState);
+                  });
+                },
+                child: Text('Toggle Theme'),
+              ),
+            ),
+          ),
           Visibility(
-            visible: AppState.loggedIn,
+            visible: widget._appState.loggedIn,
             child: Padding(
               padding: EdgeInsets.only(right: 20.0),
               child: Center(
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      AppState.loggedIn = false;
+                      widget._appState.loggedIn = false;
+                      widget._stateUpdater(widget._appState);
                     });
                   },
                   child: Text('Log out'),
@@ -35,14 +58,15 @@ class _GreetingPageState extends State<GreetingPage> {
             ),
           ),
           Visibility(
-            visible: !AppState.loggedIn,
+            visible: !widget._appState.loggedIn,
             child: Padding(
               padding: EdgeInsets.only(right: 20.0),
               child: Center(
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      AppState.loggedIn = true;
+                      widget._appState.loggedIn = true;
+                      widget._stateUpdater(widget._appState);
                     });
                   },
                   child: Text(
@@ -71,21 +95,22 @@ class _GreetingPageState extends State<GreetingPage> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: AssistHelpRadioCard(),
+              child:
+                  AssistHelpRadioCard(widget._appState, widget._stateUpdater),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: RegionCard(),
+              child: RegionCard(widget._appState),
             ),
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: ElevatedButton(
                 child: Text('Search'),
                 onPressed: () => {
-                  if (AppState.searchType == SearchType.ASSIST)
+                  if (widget._appState.searchType == SearchType.ASSIST)
                     Navigator.pushNamed(context, '/assist').then(onReturn)
-                  else if (AppState.searchType == SearchType.REQUEST)
-                    if (AppState.loggedIn)
+                  else if (widget._appState.searchType == SearchType.REQUEST)
+                    if (widget._appState.loggedIn)
                       Navigator.pushNamed(context, '/request').then(onReturn)
                     else
                       Navigator.pushNamed(context, '/prelogin').then(onReturn)
@@ -106,6 +131,11 @@ class _GreetingPageState extends State<GreetingPage> {
 }
 
 class AssistHelpRadioCard extends StatefulWidget {
+  AppState _appState;
+  Function _stateUpdater;
+
+  AssistHelpRadioCard(this._appState, this._stateUpdater);
+
   @override
   _AssistHelpRadioCardState createState() => _AssistHelpRadioCardState();
 }
@@ -132,10 +162,11 @@ class _AssistHelpRadioCardState extends State<AssistHelpRadioCard> {
               title: const Text('Request help'),
               leading: Radio(
                 value: SearchType.REQUEST,
-                groupValue: AppState.searchType,
+                groupValue: widget._appState.searchType,
                 onChanged: (SearchType value) {
                   setState(() {
-                    AppState.searchType = value;
+                    widget._appState.searchType = value;
+                    widget._stateUpdater(widget._appState);
                   });
                 },
               ),
@@ -144,10 +175,11 @@ class _AssistHelpRadioCardState extends State<AssistHelpRadioCard> {
               title: const Text('Assist people'),
               leading: Radio(
                 value: SearchType.ASSIST,
-                groupValue: AppState.searchType,
+                groupValue: widget._appState.searchType,
                 onChanged: (SearchType value) {
                   setState(() {
-                    AppState.searchType = value;
+                    widget._appState.searchType = value;
+                    widget._stateUpdater(widget._appState);
                   });
                 },
               ),
@@ -160,6 +192,10 @@ class _AssistHelpRadioCardState extends State<AssistHelpRadioCard> {
 }
 
 class RegionCard extends StatefulWidget {
+  AppState _appState;
+
+  RegionCard(this._appState);
+
   @override
   _RegionCardState createState() => _RegionCardState();
 }
@@ -184,11 +220,11 @@ class _RegionCardState extends State<RegionCard> {
               padding: const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 8.0),
               child: DropdownButton<String>(
                 isExpanded: true,
-                value: AppState.region,
+                value: widget._appState.region,
                 //decoration: InputDecoration(hintText: 'My region'),
                 onChanged: (String newValue) {
                   setState(() {
-                    AppState.region = newValue;
+                    widget._appState.region = newValue;
                   });
                 },
                 underline: Container(
