@@ -131,8 +131,8 @@ class _GreetingPageState extends State<GreetingPage> {
 }
 
 class AssistHelpRadioCard extends StatefulWidget {
-  AppState _appState;
-  Function _stateUpdater;
+  final AppState _appState;
+  final Function _stateUpdater;
 
   AssistHelpRadioCard(this._appState, this._stateUpdater);
 
@@ -192,7 +192,7 @@ class _AssistHelpRadioCardState extends State<AssistHelpRadioCard> {
 }
 
 class RegionCard extends StatefulWidget {
-  AppState _appState;
+  final AppState _appState;
 
   RegionCard(this._appState);
 
@@ -202,7 +202,6 @@ class RegionCard extends StatefulWidget {
 
 class _RegionCardState extends State<RegionCard> {
   final _availableRegions = DemoData.getAvailableRegions();
-  final _regionTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

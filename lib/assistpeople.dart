@@ -9,7 +9,9 @@ import 'demodata.dart';
 
 class AssistPeoplePage extends StatefulWidget {
   final AppState _appState;
+
   AssistPeoplePage(this._appState);
+
   @override
   _AssistPeopleState createState() => _AssistPeopleState();
 }
@@ -33,11 +35,12 @@ class _AssistPeopleState extends State<AssistPeoplePage> {
 
   showDetails(Person person) {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return DetailsDialog(person, startChat);
-        },
-        routeSettings: RouteSettings(name: '/detailview'));
+      context: context,
+      builder: (BuildContext context) {
+        return DetailsDialog(person, startChat);
+      },
+      routeSettings: RouteSettings(name: '/detailview'),
+    );
   }
 
   void startChat(Person person) {

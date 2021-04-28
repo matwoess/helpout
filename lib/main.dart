@@ -19,7 +19,7 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   AppState _appState = AppState(
-    loggedIn: true,
+    loggedIn: true, //TODO: set to false
     searchType: SearchType.ASSIST,
     region: null,
     darkTheme: false,
@@ -65,7 +65,8 @@ class _MainAppState extends State<MainApp> {
         '/signup': (context) => SignUpPage(_appState, _stateUpdater),
         '/login': (context) => LogInPage(_appState, _stateUpdater),
         '/signup/welcome': (context) => WelcomePage(_appState, "Welcome!"),
-        '/login/welcome': (context) => WelcomePage(_appState, 'Login successful!'),
+        '/login/welcome': (context) =>
+            WelcomePage(_appState, 'Login successful!'),
       },
     );
   }

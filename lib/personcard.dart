@@ -3,8 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:helpout/person.dart';
 
 class PersonCard extends Card {
-  Person _person;
-  Function _detailsCallback = () {};
+  final Person _person;
+  final Function _detailsCallback;
 
   PersonCard(this._person, this._detailsCallback);
 

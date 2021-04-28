@@ -41,6 +41,7 @@ class _RequestHelpState extends State<RequestHelpPage> {
         builder: (BuildContext context) {
           return DetailsDialog(person, startChat);
         },
+        routeSettings: RouteSettings(name: '/detailview'),
       );
   }
 
