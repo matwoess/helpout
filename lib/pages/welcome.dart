@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helpout/appstate.dart';
+import 'package:helpout/misc/appstate.dart';
 
 class WelcomePage extends StatelessWidget {
   final AppState _appState;

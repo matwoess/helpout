@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'constants.dart';
-import 'person.dart';
+import '../misc/constants.dart';
+import '../model/person.dart';
 
 class DetailsDialog extends StatelessWidget {
   final Person _person;

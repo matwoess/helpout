@@ -1,5 +1,5 @@
-import 'package:helpout/person.dart';
-import 'package:helpout/region.dart';
+import 'package:helpout/model/person.dart';
+import 'package:helpout/model/region.dart';
 
 class DemoData {
   static final _people = [

@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:helpout/demodata.dart';
+import 'package:helpout/misc/demodata.dart';
 
-import 'appstate.dart';
+import '../misc/appstate.dart';
 
 class GreetingPage extends StatefulWidget {
   final AppState _appState;

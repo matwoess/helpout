@@ -1,4 +1,4 @@
-import 'package:helpout/region.dart';
+import 'package:helpout/model/region.dart';
 
 enum Gender { FEMALE, MALE, UNKNOWN }
 

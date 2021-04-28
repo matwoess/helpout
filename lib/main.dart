@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:helpout/appstate.dart';
-import 'package:helpout/assistpeople.dart';
-import 'package:helpout/greeting.dart';
-import 'package:helpout/login.dart';
-import 'package:helpout/prelogin.dart';
-import 'package:helpout/requesthelp.dart';
-import 'package:helpout/signup.dart';
-import 'package:helpout/welcome.dart';
+import 'package:helpout/misc/appstate.dart';
+import 'package:helpout/pages/assistpeople.dart';
+import 'package:helpout/pages/greeting.dart';
+import 'package:helpout/pages/login.dart';
+import 'package:helpout/pages/prelogin.dart';
+import 'package:helpout/pages/requesthelp.dart';
+import 'package:helpout/pages/signup.dart';
+import 'package:helpout/pages/welcome.dart';
 
 void main() {
   runApp(MainApp());

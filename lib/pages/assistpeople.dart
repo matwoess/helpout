@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:helpout/appstate.dart';
-import 'package:helpout/detailsdialog.dart';
-import 'package:helpout/person.dart';
-import 'package:helpout/personcard.dart';
+import 'package:helpout/misc/appstate.dart';
+import 'package:helpout/pages/detailsdialog.dart';
+import 'package:helpout/model/person.dart';
+import 'package:helpout/pages/personcard.dart';
 
-import 'appstate.dart';
-import 'demodata.dart';
+import '../misc/appstate.dart';
+import '../misc/demodata.dart';
 
 class AssistPeoplePage extends StatefulWidget {
   final AppState _appState;

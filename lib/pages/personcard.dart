@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:helpout/person.dart';
+import 'package:helpout/model/person.dart';
 
 class PersonCard extends Card {
   final Person _person;
