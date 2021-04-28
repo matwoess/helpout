@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:helpout/misc/demodata.dart';
 
-import '../misc/appstate.dart';
+import '../model/appstate.dart';
 
 class GreetingPage extends StatefulWidget {
   final AppState _appState;

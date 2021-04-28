@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helpout/misc/appstate.dart';
+import 'package:helpout/model/appstate.dart';
 import 'package:helpout/pages/assistpeople.dart';
 import 'package:helpout/pages/greeting.dart';
 import 'package:helpout/pages/login.dart';

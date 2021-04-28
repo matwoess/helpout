@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:helpout/model/person.dart';
 import 'package:helpout/pages/personcard.dart';
 
-import '../misc/appstate.dart';
+import '../model/appstate.dart';
 import '../misc/demodata.dart';
 import 'detailsdialog.dart';
 

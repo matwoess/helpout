@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../misc/appstate.dart';
+import '../model/appstate.dart';
 
 class LogInPage extends StatelessWidget {
   final AppState _appState;
