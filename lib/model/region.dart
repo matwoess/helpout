@@ -1,24 +1,23 @@
 class Region {
-  String name;
-  final Location location;
+  static Region unknown = Region('0000', 'unknown');
+  String postcode;
+  String city;
 
-  Region(this.name, this.location);
-
-  Region.withoutLocation(String name)
-      : this.name = name,
-        this.location = Location.unknown();
+  Region(this.postcode, this.city);
 
   @override
   String toString() {
-    return name;
+    return postcode + ', ' + city;
   }
-}
 
-class Location {
-  double lat;
-  double long;
-
-  Location(this.lat, this.long);
-
-  Location.unknown() : this(0.0, 0.0);
+  static Region fromJson(Map<String, dynamic> json, List<Region> regions) {
+    String postcode = json['results'][0]['components']['postcode'];
+    String city = json['results'][0]['components']['city'];
+    for (Region r in regions) {
+      if (r.postcode == postcode && r.city == city) {
+        return r;
+      }
+    }
+    return Region(postcode, city);
+  }
 }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:helpout/model/person.dart';
 import 'package:helpout/pages/personcard.dart';
 
-import '../model/appstate.dart';
 import '../misc/demodata.dart';
+import '../model/appstate.dart';
 import 'detailsdialog.dart';
 
 class RequestHelpPage extends StatefulWidget {
@@ -16,7 +16,13 @@ class RequestHelpPage extends StatefulWidget {
 }
 
 class _RequestHelpState extends State<RequestHelpPage> {
-  List<Person> persons = DemoData.getDemoPersons();
+  List<Person> persons;
+
+  @override
+  void initState() {
+    super.initState();
+    persons = DemoData.getDemoPersonsByRegion(widget._appState.region);
+  }
 
   @override
   Widget build(BuildContext context) {

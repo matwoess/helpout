@@ -29,6 +29,13 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
+  # geolocator is use get the current latLng location of the device
+  geolocator: ^6.2.0
+  # http is used to make requests to OpenCage reverse geocoding
+  http: ^0.13.3
+  # TODO: move API key to dotenv
+  flutter_dotenv:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

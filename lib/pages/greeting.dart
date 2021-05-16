@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:helpout/misc/demodata.dart';
+import 'package:helpout/model/region.dart';
+import 'package:helpout/util/locator.dart';
 
 import '../model/appstate.dart';
 
@@ -100,7 +102,7 @@ class _GreetingPageState extends State<GreetingPage> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: RegionCard(widget._appState),
+              child: RegionCard(widget._appState, widget._stateUpdater),
             ),
             Padding(
               padding: const EdgeInsets.all(12.0),
@@ -193,15 +195,16 @@ class _AssistHelpRadioCardState extends State<AssistHelpRadioCard> {
 
 class RegionCard extends StatefulWidget {
   final AppState _appState;
+  final Function _stateUpdater;
 
-  RegionCard(this._appState);
+  RegionCard(this._appState, this._stateUpdater);
 
   @override
   _RegionCardState createState() => _RegionCardState();
 }
 
 class _RegionCardState extends State<RegionCard> {
-  final _availableRegions = DemoData.getAvailableRegions();
+  var _availableRegions = DemoData.getAvailableRegions();
 
   @override
   Widget build(BuildContext context) {
@@ -216,32 +219,62 @@ class _RegionCardState extends State<RegionCard> {
               style: Theme.of(context).textTheme.headline6,
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 8.0),
-              child: DropdownButton<String>(
-                isExpanded: true,
-                value: widget._appState.region,
-                //decoration: InputDecoration(hintText: 'My region'),
-                onChanged: (String newValue) {
-                  setState(() {
-                    widget._appState.region = newValue;
-                  });
-                },
-                underline: Container(
-                  height: 2,
-                  color: Theme.of(context).accentColor,
-                ),
-                items: _availableRegions
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+              padding: const EdgeInsets.fromLTRB(32.0, 8.0, 16.0, 8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: DropdownButton<Region>(
+                      isExpanded: true,
+                      value: widget._appState.region,
+                      //decoration: InputDecoration(hintText: 'My region'),
+                      onChanged: (Region newValue) {
+                        setState(() {
+                          widget._appState.region = newValue;
+                        });
+                      },
+                      underline: Container(
+                        height: 2,
+                        color: Theme.of(context).accentColor,
+                      ),
+                      items: _availableRegions
+                          .map<DropdownMenuItem<Region>>((Region value) {
+                        return DropdownMenuItem<Region>(
+                          value: value,
+                          child: Text(value.toString()),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: ElevatedButton(
+                      onPressed: getWhereabouts,
+                      child: Icon(Icons.my_location),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<Region> getWhereabouts() async {
+    try {
+      var pos = await Locator.getCurrentPosition();
+      print('position: ' + pos.toString());
+      Region region =
+          await Locator.getRegionFromPosition(pos, _availableRegions);
+      print('region: ' + region.toString());
+      widget._appState.currentPosition = pos;
+      widget._appState.region = region;
+      widget._stateUpdater(widget._appState);
+      return region;
+    } catch (ex) {
+      print(ex);
+      return null;
+    }
   }
 }

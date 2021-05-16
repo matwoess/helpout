@@ -20,7 +20,7 @@ class Person {
   );
 
   Person.loading()
-      : this('...', Gender.UNKNOWN, Region.withoutLocation('unknown'), 0, '...',
+      : this('...', Gender.UNKNOWN, Region.unknown, 0, '...',
             'assets/images/empty.png');
 
   bool get isLoading => name == '...';
