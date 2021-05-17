@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:helpout/home.dart';
 import 'package:helpout/model/appstate.dart';
 import 'package:helpout/pages/assistpeople.dart';
-import 'package:helpout/pages/greeting.dart';
 import 'package:helpout/pages/login.dart';
 import 'package:helpout/pages/prelogin.dart';
 import 'package:helpout/pages/requesthelp.dart';
@@ -18,21 +18,18 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  AppState _appState = AppState(
-    loggedIn: true, //TODO: set to false
-    searchType: SearchType.ASSIST,
-    region: null,
-    darkTheme: false,
-  );
+  void refreshUI() {
+    setState(() {});
+  }
 
-  void _stateUpdater(AppState value) {
-    setState(() {
-      _appState = value;
-    });
+  @override
+  void initState() {
+    super.initState();
+    AppState.getInstance().addCallback(refreshUI);
   }
 
   ThemeData get theme {
-    switch (_appState.darkTheme) {
+    switch (AppState.getInstance().darkTheme) {
       case true:
         return ThemeData(
           brightness: Brightness.dark,
@@ -58,15 +55,14 @@ class _MainAppState extends State<MainApp> {
       theme: theme,
       initialRoute: '/',
       routes: {
-        '/': (context) => GreetingPage(_appState, _stateUpdater),
-        '/request': (context) => RequestHelpPage(_appState),
-        '/assist': (context) => AssistPeoplePage(_appState),
+        '/': (context) => HomeScreen(),
+        '/request': (context) => RequestHelpPage(),
+        '/assist': (context) => AssistPeoplePage(),
         '/prelogin': (context) => PreLoginPage(),
-        '/signup': (context) => SignUpPage(_appState, _stateUpdater),
-        '/login': (context) => LogInPage(_appState, _stateUpdater),
-        '/signup/welcome': (context) => WelcomePage(_appState, "Welcome!"),
-        '/login/welcome': (context) =>
-            WelcomePage(_appState, 'Login successful!'),
+        '/signup': (context) => SignUpPage(),
+        '/login': (context) => LogInPage(),
+        '/signup/welcome': (context) => WelcomePage('Welcome!'),
+        '/login/welcome': (context) => WelcomePage('Login successful!'),
       },
     );
   }

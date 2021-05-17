@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import '../model/appstate.dart';
 
 class LogInPage extends StatelessWidget {
-  final AppState _appState;
-  final Function _stateUpdater;
-
-  LogInPage(this._appState, this._stateUpdater);
+  LogInPage();
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +16,7 @@ class LogInPage extends StatelessWidget {
         child: SizedBox(
           width: 400,
           child: Card(
-            child: LogInForm(_appState, _stateUpdater),
+            child: LogInForm(),
           ),
         ),
       ),
@@ -28,10 +25,7 @@ class LogInPage extends StatelessWidget {
 }
 
 class LogInForm extends StatefulWidget {
-  final AppState _appState;
-  final Function _stateUpdater;
-
-  LogInForm(this._appState, this._stateUpdater);
+  LogInForm();
 
   @override
   _LogInFormState createState() => _LogInFormState();
@@ -76,8 +70,7 @@ class _LogInFormState extends State<LogInForm> {
       });
       return;
     }
-    widget._appState.loggedIn = true;
-    widget._stateUpdater(widget._appState);
+    AppState.getInstance().loggedIn = true;
     Navigator.popAndPushNamed(context, '/login/welcome');
   }
 

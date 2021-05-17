@@ -7,9 +7,7 @@ import '../model/appstate.dart';
 import 'detailsdialog.dart';
 
 class RequestHelpPage extends StatefulWidget {
-  final AppState _appState;
-
-  RequestHelpPage(this._appState);
+  RequestHelpPage();
 
   @override
   _RequestHelpState createState() => _RequestHelpState();
@@ -21,7 +19,7 @@ class _RequestHelpState extends State<RequestHelpPage> {
   @override
   void initState() {
     super.initState();
-    persons = DemoData.getDemoPersonsByRegion(widget._appState.region);
+    persons = DemoData.getDemoPersonsByRegion(AppState.getInstance().region);
   }
 
   @override
@@ -39,7 +37,7 @@ class _RequestHelpState extends State<RequestHelpPage> {
   }
 
   showDetails(Person person) {
-    if (!widget._appState.loggedIn)
+    if (!AppState.getInstance().loggedIn)
       Navigator.pushNamed(context, '/prelogin');
     else
       showDialog(

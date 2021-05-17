@@ -8,9 +8,7 @@ import '../misc/demodata.dart';
 import '../model/appstate.dart';
 
 class AssistPeoplePage extends StatefulWidget {
-  final AppState _appState;
-
-  AssistPeoplePage(this._appState);
+  AssistPeoplePage();
 
   @override
   _AssistPeopleState createState() => _AssistPeopleState();
@@ -22,7 +20,7 @@ class _AssistPeopleState extends State<AssistPeoplePage> {
   @override
   void initState() {
     super.initState();
-    persons = DemoData.getDemoPersonsByRegion(widget._appState.region);
+    persons = DemoData.getDemoPersonsByRegion(AppState.getInstance().region);
   }
 
   @override
@@ -50,11 +48,15 @@ class _AssistPeopleState extends State<AssistPeoplePage> {
   }
 
   void startChat(Person person) {
-    if (!widget._appState.loggedIn)
+    if (!AppState.getInstance().loggedIn)
       Navigator.pushNamed(context, '/prelogin');
     else {
-      Navigator.of(context).pop();
       print('starting chat with ${person.name}');
+      AppState.getInstance().chatPerson = person;
+      while(Navigator.canPop(context)) {
+        Navigator.of(context).pop();
+      }
+      //Navigator.pushNamed(context, '/');
     }
   }
 }

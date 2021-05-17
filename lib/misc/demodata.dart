@@ -65,7 +65,7 @@ class DemoData {
       "name": "Anonymous",
       "gender": Gender.UNKNOWN,
       "description": "(no description)",
-      "region": _availableRegions[2],
+      "region": _availableRegions[4],
       "price": 9,
       "asset": "assets/images/empty.png",
     },
@@ -119,5 +119,13 @@ class DemoData {
 
   static List<Region> getAvailableRegions() {
     return _availableRegions;
+  }
+
+  static List<String> getChatHistory(Person person) {
+    return [
+      'Hello ${person.name}!',
+      'I require assistance with something.\nCould you help?',
+
+    ];
   }
 }

@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import '../model/appstate.dart';
 
 class SignUpPage extends StatelessWidget {
-  final AppState _appState;
-  final Function _stateUpdater;
-
-  SignUpPage(this._appState, this._stateUpdater);
+  SignUpPage();
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +16,7 @@ class SignUpPage extends StatelessWidget {
         child: SizedBox(
           width: 400,
           child: Card(
-            child: SignUpForm(_appState, _stateUpdater),
+            child: SignUpForm(),
           ),
         ),
       ),
@@ -28,10 +25,7 @@ class SignUpPage extends StatelessWidget {
 }
 
 class SignUpForm extends StatefulWidget {
-  final AppState _appState;
-  final Function _stateUpdater;
-
-  SignUpForm(this._appState, this._stateUpdater);
+  SignUpForm();
 
   @override
   _SignUpFormState createState() => _SignUpFormState();
@@ -78,8 +72,7 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   void _showWelcomeScreen() {
-    widget._appState.loggedIn = true;
-    widget._stateUpdater(widget._appState);
+    AppState.getInstance().loggedIn = true;
     Navigator.popAndPushNamed(context, '/signup/welcome');
   }
 
