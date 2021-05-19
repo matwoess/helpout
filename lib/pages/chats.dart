@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helpout/misc/demodata.dart';
+import 'package:helpout/model/appstate.dart';
 import 'package:helpout/model/chat.dart';
 import 'package:helpout/model/user.dart';
 import 'package:intl/intl.dart';
@@ -20,6 +21,24 @@ class _ChatsPageState extends State<ChatsPage> {
   void initState() {
     super.initState();
     _userChats = DemoData.getUserChats();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => startChatWithPreDefinedUser());
+  }
+
+  void startChatWithPreDefinedUser() {
+    User chatUser = AppState.getInstance().chatUser;
+    if (chatUser == null) {
+      return;
+    }
+    Chat chat =
+        _userChats.where((c) => c.otherUsername == chatUser.username).first;
+    if (chat == null) {
+      return;
+    }
+    User other = DemoData.userByUsername(chat.otherUsername);
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return MessagesPage(chat, other);
+    }));
   }
 
   @override
@@ -57,7 +76,7 @@ class _ChatItemState extends State<ChatItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context){
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
           return MessagesPage(widget.chat, withUser);
         }));
       },
