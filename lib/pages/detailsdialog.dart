@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../misc/constants.dart';
-import '../model/person.dart';
+import '../model/user.dart';
 
 class DetailsDialog extends StatelessWidget {
-  final Person _person;
+  final User _person;
   final Function _chatCallback;
 
   DetailsDialog(this._person, this._chatCallback);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helpout/model/appstate.dart';
-import 'package:helpout/model/person.dart';
+import 'package:helpout/model/user.dart';
 import 'package:helpout/pages/detailsdialog.dart';
 import 'package:helpout/pages/personcard.dart';
 
@@ -15,12 +15,12 @@ class AssistPeoplePage extends StatefulWidget {
 }
 
 class _AssistPeopleState extends State<AssistPeoplePage> {
-  List<Person> persons;
+  List<User> users;
 
   @override
   void initState() {
     super.initState();
-    persons = DemoData.getDemoPersonsByRegion(AppState.getInstance().region);
+    users = DemoData.getDemoUsersByRegion(AppState.getInstance().region);
   }
 
   @override
@@ -31,28 +31,28 @@ class _AssistPeopleState extends State<AssistPeoplePage> {
       ),
       body: ListView.builder(
           itemBuilder: (context, position) {
-            return PersonCard(persons[position], showDetails);
+            return UserCard(users[position], showDetails);
           },
-          itemCount: persons.length),
+          itemCount: users.length),
     );
   }
 
-  showDetails(Person person) {
+  showDetails(User user) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return DetailsDialog(person, startChat);
+        return DetailsDialog(user, startChat);
       },
       routeSettings: RouteSettings(name: '/detailview'),
     );
   }
 
-  void startChat(Person person) {
+  void startChat(User user) {
     if (!AppState.getInstance().loggedIn)
       Navigator.pushNamed(context, '/prelogin');
     else {
-      print('starting chat with ${person.name}');
-      AppState.getInstance().chatPerson = person;
+      print('starting chat with ${user.name}');
+      AppState.getInstance().chatUser = user;
       while(Navigator.canPop(context)) {
         Navigator.of(context).pop();
       }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:helpout/model/person.dart';
+import 'package:helpout/model/user.dart';
 
-class PersonCard extends Card {
-  final Person _person;
+class UserCard extends Card {
+  final User _user;
   final Function _detailsCallback;
 
-  PersonCard(this._person, this._detailsCallback);
+  UserCard(this._user, this._detailsCallback);
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +17,10 @@ class PersonCard extends Card {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           ListTile(
-            title: Text('${_person.name}'),
-            leading: Image(image: AssetImage(_person.assetURI)),
+            title: Text('${_user.name}'),
+            leading: Image(image: AssetImage(_user.assetURI)),
             subtitle: Text(
-              '${_person.region}',
+              '${_user.region}',
               style: Theme.of(context).textTheme.bodyText2,
             ),
           ),
@@ -30,7 +30,7 @@ class PersonCard extends Card {
               children: [
                 Flexible(
                   child: Text(
-                    "${_person.description}",
+                    "${_user.description}",
                     overflow: TextOverflow.ellipsis,
                     maxLines: 10,
                   ),
@@ -42,7 +42,7 @@ class PersonCard extends Card {
             alignment: MainAxisAlignment.start,
             children: [
               TextButton(
-                onPressed: () => _detailsCallback(_person),
+                onPressed: () => _detailsCallback(_user),
                 child: const Text('Details'),
               ),
             ],

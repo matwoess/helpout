@@ -1,13 +1,13 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:helpout/model/person.dart';
+import 'package:helpout/misc/demodata.dart';
+import 'package:helpout/model/user.dart';
 import 'package:helpout/model/region.dart';
 
 enum SearchType { REQUEST, ASSIST }
 
 class AppState {
   static final AppState _instance = AppState(
-    true,
-    //TODO: set to false
+    DemoData.getMyAccount(), // (auto-login) TODO: set to null
     SearchType.ASSIST,
     null,
     false,
@@ -19,22 +19,25 @@ class AppState {
   }
 
   List<Function> _callbacks = <Function>[];
-  bool _loggedIn;
+  User _accountData;
   SearchType _searchType;
   Region _region;
   bool _darkTheme;
   Position _currentPosition;
-  Person _chatPerson;
+  User _chatUser;
 
-  AppState(this._loggedIn, this._searchType, this._region, this._darkTheme,
-      this._chatPerson);
+  AppState(this._accountData, this._searchType, this._region, this._darkTheme,
+      this._chatUser);
 
-  bool get loggedIn => _loggedIn;
 
-  set loggedIn(bool loggedIn) {
-    _loggedIn = loggedIn;
+  User get accountData => _accountData;
+
+  set accountData(User accountData) {
+    _accountData = accountData;
     triggerCallbacks();
   }
+
+  bool get loggedIn => _accountData != null;
 
   SearchType get searchType => _searchType;
 
@@ -64,10 +67,10 @@ class AppState {
     triggerCallbacks();
   }
 
-  Person get chatPerson => _chatPerson;
+  User get chatUser => _chatUser;
 
-  set chatPerson(Person chatPerson) {
-    _chatPerson = chatPerson;
+  set chatUser(User chatUser) {
+    _chatUser = chatUser;
     triggerCallbacks();
   }
 

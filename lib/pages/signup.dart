@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:helpout/misc/demodata.dart';
 
 import '../model/appstate.dart';
 
@@ -72,7 +73,7 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   void _showWelcomeScreen() {
-    AppState.getInstance().loggedIn = true;
+    AppState.getInstance().accountData = DemoData.getMyAccount();
     Navigator.popAndPushNamed(context, '/signup/welcome');
   }
 

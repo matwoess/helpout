@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:helpout/pages/browse.dart';
-import 'package:helpout/pages/messages.dart';
+import 'package:helpout/pages/chats.dart';
 import 'package:helpout/pages/profile.dart';
 
+import 'misc/demodata.dart';
 import 'model/appstate.dart';
 
 enum NAV_PAGE {
@@ -22,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void refreshUI() {
     setState(() {
-      if (AppState.getInstance().chatPerson != null) {
+      if (AppState.getInstance().chatUser != null) {
         setState(() {
           _selectedIndex = NAV_PAGE.CHATS;
         });
@@ -78,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      AppState.getInstance().loggedIn = false;
+                      AppState.getInstance().accountData = null;
                     });
                   },
                   child: Text('Log out'),
@@ -94,7 +95,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      AppState.getInstance().loggedIn = true;
+                      AppState.getInstance().accountData =
+                          DemoData.getMyAccount();
                     });
                   },
                   child: Text(
@@ -109,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _selectedIndex == NAV_PAGE.BROWSE
           ? BrowsePage()
           : _selectedIndex == NAV_PAGE.CHATS
-              ? MessagesPage()
+              ? ChatsPage()
               : ProfilePage(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -120,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.message),
-            label: 'Messages',
+            label: 'Chats',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_box),

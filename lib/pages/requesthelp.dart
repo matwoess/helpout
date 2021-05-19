@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helpout/model/person.dart';
+import 'package:helpout/model/user.dart';
 import 'package:helpout/pages/personcard.dart';
 
 import '../misc/demodata.dart';
@@ -14,12 +14,12 @@ class RequestHelpPage extends StatefulWidget {
 }
 
 class _RequestHelpState extends State<RequestHelpPage> {
-  List<Person> persons;
+  List<User> persons;
 
   @override
   void initState() {
     super.initState();
-    persons = DemoData.getDemoPersonsByRegion(AppState.getInstance().region);
+    persons = DemoData.getDemoUsersByRegion(AppState.getInstance().region);
   }
 
   @override
@@ -30,27 +30,27 @@ class _RequestHelpState extends State<RequestHelpPage> {
       ),
       body: ListView.builder(
           itemBuilder: (context, position) {
-            return PersonCard(persons[position], showDetails);
+            return UserCard(persons[position], showDetails);
           },
           itemCount: persons.length),
     );
   }
 
-  showDetails(Person person) {
+  showDetails(User user) {
     if (!AppState.getInstance().loggedIn)
       Navigator.pushNamed(context, '/prelogin');
     else
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return DetailsDialog(person, startChat);
+          return DetailsDialog(user, startChat);
         },
         routeSettings: RouteSettings(name: '/detailview'),
       );
   }
 
-  void startChat(Person person) {
+  void startChat(User user) {
     Navigator.of(context).pop();
-    print('starting chat with ${person.name}');
+    print('starting chat with ${user.name}');
   }
 }

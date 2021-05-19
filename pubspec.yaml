@@ -36,6 +36,8 @@ dependencies:
   # TODO: move API key to dotenv
   flutter_dotenv:
 
+  intl:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

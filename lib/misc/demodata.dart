@@ -1,5 +1,8 @@
-import 'package:helpout/model/person.dart';
+import 'package:helpout/model/appstate.dart';
+import 'package:helpout/model/chat.dart';
+import 'package:helpout/model/message.dart';
 import 'package:helpout/model/region.dart';
+import 'package:helpout/model/user.dart';
 
 class DemoData {
   static final _availableRegions = [
@@ -11,8 +14,9 @@ class DemoData {
     Region('4600', 'Wels'),
   ];
 
-  static final _people = [
+  static final _users = [
     {
+      "username": "joe.hinter",
       "name": "Johannes Hinterberger",
       "gender": Gender.MALE,
       "description": "I am a helpful person.",
@@ -21,6 +25,7 @@ class DemoData {
       "asset": "assets/avatars/male1.png",
     },
     {
+      "username": "briggite.s",
       "name": "Brigitte Seitenschläger",
       "gender": Gender.FEMALE,
       "description": "I love animals.",
@@ -29,6 +34,7 @@ class DemoData {
       "asset": "assets/avatars/female1.png",
     },
     {
+      "username": "eddom",
       "name": "Eduardo Domingo",
       "gender": Gender.MALE,
       "description": "Several years of experience as a pet-sitter.",
@@ -37,6 +43,7 @@ class DemoData {
       "asset": "assets/avatars/male2.png",
     },
     {
+      "username": "m.hauer",
       "name": "Manuel Hauer",
       "gender": Gender.MALE,
       "description": "I have a lot of free time.",
@@ -45,6 +52,7 @@ class DemoData {
       "asset": "assets/avatars/male3.png",
     },
     {
+      "username": "tanja.gruber",
       "name": "Tanja Gruber",
       "gender": Gender.FEMALE,
       "description": "I love animals.",
@@ -53,6 +61,7 @@ class DemoData {
       "asset": "assets/avatars/female2.png",
     },
     {
+      "username": "tbb",
       "name": "Thomas Braunberger",
       "gender": Gender.MALE,
       "description":
@@ -62,6 +71,7 @@ class DemoData {
       "asset": "assets/avatars/male3.png",
     },
     {
+      "username": "usr123",
       "name": "Anonymous",
       "gender": Gender.UNKNOWN,
       "description": "(no description)",
@@ -70,6 +80,7 @@ class DemoData {
       "asset": "assets/images/empty.png",
     },
     {
+      "username": "augernst",
       "name": "Augustine Ernst",
       "gender": Gender.FEMALE,
       "description": "I can help out anytime.",
@@ -78,6 +89,7 @@ class DemoData {
       "asset": "assets/avatars/female3.png",
     },
     {
+      "username": "anna96",
       "name": "Anna Steiner",
       "gender": Gender.FEMALE,
       "description": "Recommend me to your friends!",
@@ -87,9 +99,37 @@ class DemoData {
     },
   ];
 
-  static List<Person> getDemoPersons() {
-    return _people
-        .map((person) => Person(
+  static User getMyAccount() {
+    return User(
+      'my_username',
+      'My Name',
+      Gender.UNKNOWN,
+      _availableRegions[0],
+      5,
+      'This is my profile',
+      'assets/images/empty.png',
+    );
+  }
+
+  static User userByUsername(String username) {
+    return _users
+        .where((u) => u['username'] == username)
+        .map((person) => User(
+              person['username'],
+              person['name'],
+              person['gender'],
+              person['region'],
+              person['price'],
+              person['description'],
+              person['asset'],
+            ))
+        .first;
+  }
+
+  static List<User> getDemoUsers() {
+    return _users
+        .map((person) => User(
+              person['username'],
               person['name'],
               person['gender'],
               person['region'],
@@ -100,13 +140,14 @@ class DemoData {
         .toList();
   }
 
-  static List<Person> getDemoPersonsByRegion(Region region) {
+  static List<User> getDemoUsersByRegion(Region region) {
     if (region == null) {
-      return getDemoPersons();
+      return getDemoUsers();
     }
-    return _people
+    return _users
         .where((person) => person['region'] == region)
-        .map((person) => Person(
+        .map((person) => User(
+              person['username'],
               person['name'],
               person['gender'],
               person['region'],
@@ -121,11 +162,42 @@ class DemoData {
     return _availableRegions;
   }
 
-  static List<String> getChatHistory(Person person) {
+  static List<Chat> getUserChats() {
     return [
-      'Hello ${person.name}!',
-      'I require assistance with something.\nCould you help?',
+      Chat(0, 'joe.hinter', 'my_username'),
+      Chat(1, 'my_username', 'briggite.s'),
+      Chat(2, 'eddom', 'my_username'),
+      Chat(3, 'my_username', 'm.hauer'),
+      Chat(4, 'tanja.gruber', 'my_username'),
+      Chat(5, 'my_username', 'tbb'),
+      Chat(6, 'usr123', 'my_username'),
+      Chat(7, 'my_username', 'augernst'),
+      Chat(443, 'anna96', 'my_username'),
+    ];
+  }
 
+  static List<Message> getChatHistory(Chat chat) {
+    User me = AppState.getInstance().accountData;
+    User other = userByUsername(chat.otherUsername);
+    return [
+      Message(0, other.username, chat.chatId, 'Hello ${other.name}!',
+          DateTime.now().millisecondsSinceEpoch),
+      Message(
+          1,
+          other.username,
+          chat.chatId,
+          'I require assistance with something.\nCould you help?',
+          DateTime.now().millisecondsSinceEpoch),
+      Message(2, me.username, chat.chatId, 'Yes, sure! :)',
+          DateTime.now().millisecondsSinceEpoch),
+      Message(2, me.username, chat.chatId, 'What seems to be the problem?',
+          DateTime.now().millisecondsSinceEpoch),
+      Message(
+          2,
+          other.username,
+          chat.chatId,
+          'I need help with <thing>?\nWhen do you have time?',
+          DateTime.now().millisecondsSinceEpoch),
     ];
   }
 }
