@@ -1,3 +1,4 @@
+import 'package:helpout/misc/demodata.dart';
 import 'package:helpout/model/appstate.dart';
 import 'package:helpout/model/message.dart';
 
@@ -6,10 +7,11 @@ class Chat {
   final String username1;
   final String username2;
   bool isRead;
-  Message lastMessage;
+  Message get lastMessage {
+    return DemoData.getChatHistory(this).last;
+  }
 
-  Chat(this.chatId, this.username1, this.username2, this.isRead,
-      this.lastMessage);
+  Chat(this.chatId, this.username1, this.username2, this.isRead);
 
   String get otherUsername {
     String myUsername = AppState.getInstance().accountData.username;

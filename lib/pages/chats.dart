@@ -36,6 +36,12 @@ class _ChatsPageState extends State<ChatsPage> {
       return;
     }
     User other = DemoData.userByUsername(chat.otherUsername);
+    if (other == null) {
+      return;
+    }
+    AppState.getInstance().chatUser = null;
+    chat.isRead = true;
+    setState(() {});
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return MessagesPage(chat, other);
     }));
@@ -76,6 +82,8 @@ class _ChatItemState extends State<ChatItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        widget.chat.isRead = true;
+        setState(() {});
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return MessagesPage(widget.chat, withUser);
         }));

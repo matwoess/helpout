@@ -20,12 +20,4 @@ class Message {
     this.content = content;
     this.timeStamp = DateTime.now().millisecondsSinceEpoch;
   }
-
-  Message.empty() {
-    this.msgId = 0;
-    this.username = '';
-    this.chatId = 0;
-    this.content = 'demo content';
-    this.timeStamp = DateTime.now().millisecondsSinceEpoch;
-  }
 }
