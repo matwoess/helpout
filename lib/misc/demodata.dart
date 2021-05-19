@@ -164,15 +164,15 @@ class DemoData {
 
   static List<Chat> getUserChats() {
     return [
-      Chat(0, 'joe.hinter', 'my_username'),
-      Chat(1, 'my_username', 'briggite.s'),
-      Chat(2, 'eddom', 'my_username'),
-      Chat(3, 'my_username', 'm.hauer'),
-      Chat(4, 'tanja.gruber', 'my_username'),
-      Chat(5, 'my_username', 'tbb'),
-      Chat(6, 'usr123', 'my_username'),
-      Chat(7, 'my_username', 'augernst'),
-      Chat(443, 'anna96', 'my_username'),
+      Chat(0, 'joe.hinter', 'my_username', false, Message.empty()),
+      Chat(1, 'my_username', 'briggite.s', true, Message.empty()),
+      Chat(2, 'eddom', 'my_username', true, Message.empty()),
+      Chat(3, 'my_username', 'm.hauer', false, Message.empty()),
+      Chat(4, 'tanja.gruber', 'my_username', true, Message.empty()),
+      Chat(5, 'my_username', 'tbb', true, Message.empty()),
+      Chat(6, 'usr123', 'my_username', true, Message.empty()),
+      Chat(7, 'my_username', 'augernst', true, Message.empty()),
+      Chat(443, 'anna96', 'my_username', true, Message.empty()),
     ];
   }
 

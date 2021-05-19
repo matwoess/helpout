@@ -111,10 +111,9 @@ class _ChatItemState extends State<ChatItem> {
                             widget.chat.lastMessage.content,
                             style: TextStyle(
                                 fontSize: 13,
-                                color: Colors.grey.shade600,
                                 fontWeight: widget.chat.isRead
-                                    ? FontWeight.bold
-                                    : FontWeight.normal),
+                                    ? FontWeight.normal
+                                    : FontWeight.bold),
                           ),
                         ],
                       ),
@@ -129,7 +128,7 @@ class _ChatItemState extends State<ChatItem> {
               style: TextStyle(
                   fontSize: 12,
                   fontWeight:
-                      widget.chat.isRead ? FontWeight.bold : FontWeight.normal),
+                      widget.chat.isRead ? FontWeight.normal : FontWeight.bold),
             ),
           ],
         ),

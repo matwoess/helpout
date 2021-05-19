@@ -5,10 +5,11 @@ class Chat {
   final int chatId;
   final String username1;
   final String username2;
-  bool isRead = true;
-  Message lastMessage = Message.empty();
+  bool isRead;
+  Message lastMessage;
 
-  Chat(this.chatId, this.username1, this.username2);
+  Chat(this.chatId, this.username1, this.username2, this.isRead,
+      this.lastMessage);
 
   String get otherUsername {
     String myUsername = AppState.getInstance().accountData.username;
