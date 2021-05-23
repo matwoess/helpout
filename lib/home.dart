@@ -113,24 +113,28 @@ class _HomeScreenState extends State<HomeScreen> {
           : _selectedIndex == NAV_PAGE.CHATS
               ? ChatsPage()
               : ProfilePage(),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Browse',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            label: 'Chats',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_box),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex.index,
-        onTap: _onItemTapped,
+      bottomNavigationBar: Visibility(
+        visible: AppState.getInstance().loggedIn,
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Browse',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.message),
+              label: 'Chats',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_box),
+              label: 'Profile',
+            ),
+          ],
+          currentIndex: _selectedIndex.index,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }
