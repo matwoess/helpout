@@ -106,8 +106,10 @@ class DemoData {
       Gender.UNKNOWN,
       _availableRegions[0],
       5,
-      'This is my profile',
-      'assets/images/empty.png',
+      'This is my profile! Here I will tell about myself and give you a good impression.\n' +
+          'For more information please contact me.',
+      'assets/avatars/female4.png',
+      DateTime.now().millisecondsSinceEpoch,
     );
   }
 
@@ -122,6 +124,7 @@ class DemoData {
               person['price'],
               person['description'],
               person['asset'],
+              DateTime.now().millisecondsSinceEpoch,
             ))
         .first;
   }
@@ -136,6 +139,7 @@ class DemoData {
               person['price'],
               person['description'],
               person['asset'],
+              DateTime.now().millisecondsSinceEpoch,
             ))
         .toList();
   }
@@ -154,6 +158,7 @@ class DemoData {
               person['price'],
               person['description'],
               person['asset'],
+              DateTime.now().millisecondsSinceEpoch,
             ))
         .toList();
   }

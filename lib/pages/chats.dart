@@ -110,7 +110,7 @@ class _ChatItemState extends State<ChatItem> {
                         children: <Widget>[
                           Text(
                             withUser.name,
-                            style: TextStyle(fontSize: 16),
+                            style: Theme.of(context).textTheme.headline6,
                           ),
                           SizedBox(
                             height: 6,
@@ -118,7 +118,7 @@ class _ChatItemState extends State<ChatItem> {
                           Text(
                             widget.chat.lastMessage.content,
                             style: TextStyle(
-                                fontSize: 13,
+                                fontSize: 16,
                                 fontWeight: widget.chat.isRead
                                     ? FontWeight.normal
                                     : FontWeight.bold),
@@ -134,7 +134,7 @@ class _ChatItemState extends State<ChatItem> {
               DateFormat('MMMM d').format(DateTime.fromMillisecondsSinceEpoch(
                   widget.chat.lastMessage.timeStamp)),
               style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 16,
                   fontWeight:
                       widget.chat.isRead ? FontWeight.normal : FontWeight.bold),
             ),
