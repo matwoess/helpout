@@ -14,15 +14,11 @@ class _ProfilePageState extends State<ProfilePage> {
   final _nameTextController = TextEditingController();
   final _descriptionTextController = TextEditingController();
 
-  void apply() {
-    accountData.name = _nameTextController.text;
-    accountData.description = _descriptionTextController.text;
-  }
-
   void toggleEdit() {
     setState(() {
       if (edit) {
-        apply();
+        accountData.name = _nameTextController.text;
+        accountData.description = _descriptionTextController.text;
       } else {
         _nameTextController.text = accountData.name;
         _descriptionTextController.text = accountData.description;
@@ -39,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Theme.of(context).backgroundColor,
             child: Container(
               width: double.infinity,
-              height: 350.0,
+              height: 400.0,
               child: Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,6 +73,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Text(
                       '@' + accountData.username,
+                      style: TextStyle(fontSize: 16.0, color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Text(
+                      accountData.gender.toShortString(),
                       style: TextStyle(fontSize: 16.0, color: Colors.white),
                     ),
                     SizedBox(
@@ -193,7 +196,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ],
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

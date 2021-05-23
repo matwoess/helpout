@@ -2,6 +2,15 @@ import 'package:helpout/model/region.dart';
 
 enum Gender { FEMALE, MALE, UNKNOWN }
 
+extension ParseToString on Gender {
+  String toShortString() {
+    if (this == Gender.UNKNOWN) {
+      return 'unknown gender';
+    }
+    return this.toString().split('.').last.toLowerCase();
+  }
+}
+
 class User {
   final String username;
   String name;

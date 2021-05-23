@@ -103,7 +103,7 @@ class DemoData {
     return User(
       'my_username',
       'My Name',
-      Gender.UNKNOWN,
+      Gender.FEMALE,
       _availableRegions[0],
       5,
       'This is my profile! Here I will tell about myself and give you a good impression.\n' +

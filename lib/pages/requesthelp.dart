@@ -52,5 +52,9 @@ class _RequestHelpState extends State<RequestHelpPage> {
   void startChat(User user) {
     Navigator.of(context).pop();
     print('starting chat with ${user.name}');
+    AppState.getInstance().chatUser = user;
+    while(Navigator.canPop(context)) {
+      Navigator.of(context).pop();
+    }
   }
 }
