@@ -29,7 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: <Widget>[
         Container(
             color: Theme.of(context).backgroundColor,
@@ -241,8 +241,8 @@ class _ProfilePageState extends State<ProfilePage> {
         SizedBox(
           height: 20.0,
         ),
-        Container(
-          width: 300.00,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 0),
           child: ElevatedButton(
             onPressed: toggleEdit,
             child: Container(

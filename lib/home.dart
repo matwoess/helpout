@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  NAV_PAGE _selectedIndex = NAV_PAGE.PROFILE; //TODO
+  NAV_PAGE _selectedIndex = NAV_PAGE.BROWSE;
 
   void refreshUI() {
     setState(() {
