@@ -185,21 +185,21 @@ class DemoData {
     User me = AppState.getInstance().accountData;
     User other = userByUsername(chat.otherUsername);
     return [
-      Message(0, other.username, chat.chatId, 'Hello ${other.name}!',
+      Message(0, me.username, chat.chatId, 'Hello ${other.name}!',
           DateTime.now().millisecondsSinceEpoch),
       Message(
           1,
-          other.username,
+          me.username,
           chat.chatId,
           'I require assistance with something.\nCould you help?',
           DateTime.now().millisecondsSinceEpoch),
-      Message(2, me.username, chat.chatId, 'Yes, sure! :)',
+      Message(2, other.username, chat.chatId, 'Yes, sure! :)',
           DateTime.now().millisecondsSinceEpoch),
-      Message(2, me.username, chat.chatId, 'What seems to be the problem?',
+      Message(2, other.username, chat.chatId, 'What seems to be the problem?',
           DateTime.now().millisecondsSinceEpoch),
       Message(
           2,
-          other.username,
+          me.username,
           chat.chatId,
           'I need help with <thing>?\nWhen do you have time?',
           DateTime.now().millisecondsSinceEpoch),

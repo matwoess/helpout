@@ -17,11 +17,25 @@ class MessagesPage extends StatefulWidget {
 
 class _MessagesState extends State<MessagesPage> {
   List<Message> _chatHistory;
+  User _accountData = AppState.getInstance().accountData;
+  final _messageController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _chatHistory = DemoData.getChatHistory(widget.chat);
+  }
+
+  void sendMessage() {
+    setState(() {
+      _chatHistory.add(Message(
+          10,
+          _accountData.username,
+          widget.chat.chatId,
+          _messageController.text,
+          DateTime.now().millisecondsSinceEpoch));
+      _messageController.text = '';
+    });
   }
 
   @override
@@ -81,16 +95,19 @@ class _MessagesState extends State<MessagesPage> {
                 padding:
                     EdgeInsets.only(left: 14, right: 14, top: 5, bottom: 5),
                 child: Align(
-                  alignment: (_chatHistory[index].username ==
-                          AppState.getInstance().accountData.username
-                      ? Alignment.topLeft
-                      : Alignment.topRight),
+                  alignment:
+                      (_chatHistory[index].username == _accountData.username
+                          ? Alignment.topRight
+                          : Alignment.topLeft),
                   child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
-                   // TODO: replace with better colors
-                   color: _chatHistory[index].username == widget.withUser.username ? Theme.of(context).focusColor : Theme.of(context).secondaryHeaderColor,
+                    // TODO: replace with better colors
+                    color:
+                        _chatHistory[index].username == _accountData.username
+                            ? Theme.of(context).backgroundColor
+                            : Theme.of(context).secondaryHeaderColor,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
@@ -133,6 +150,7 @@ class _MessagesState extends State<MessagesPage> {
                   ),
                   Expanded(
                     child: TextField(
+                      controller: _messageController,
                       decoration: InputDecoration(
                         hintText: "Write message...",
                         //border: InputBorder.none
@@ -144,7 +162,9 @@ class _MessagesState extends State<MessagesPage> {
                   ),
                   FloatingActionButton(
                     heroTag: 'send',
-                    onPressed: () {},
+                    onPressed: () {
+                      sendMessage();
+                    },
                     child: Icon(Icons.send),
                     backgroundColor: Theme.of(context).accentColor,
                     elevation: 0,
