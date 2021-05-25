@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:helpout/pages/achievement.dart';
 import 'package:helpout/pages/browse.dart';
 import 'package:helpout/pages/chats.dart';
 import 'package:helpout/pages/profile.dart';
@@ -11,6 +12,7 @@ enum NAV_PAGE {
   BROWSE,
   CHATS,
   PROFILE,
+  ACHIEVEMENT
 }
 
 class HomeScreen extends StatefulWidget {
@@ -111,8 +113,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _selectedIndex == NAV_PAGE.BROWSE
           ? BrowsePage()
           : _selectedIndex == NAV_PAGE.CHATS
-              ? ChatsPage()
-              : ProfilePage(),
+          ? ChatsPage()
+          : _selectedIndex == NAV_PAGE.ACHIEVEMENT
+          ? AchievementPage()
+          : ProfilePage(),
       bottomNavigationBar: Visibility(
         visible: AppState.getInstance().loggedIn,
         child: BottomNavigationBar(
@@ -130,6 +134,10 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.account_box),
               label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.wb_sunny),
+              label: 'Achievement',
             ),
           ],
           currentIndex: _selectedIndex.index,
