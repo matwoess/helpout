@@ -37,6 +37,7 @@ dependencies:
   flutter_dotenv:
 
   intl:
+  postgres: ^2.3.2
 
 dev_dependencies:
   flutter_test:
