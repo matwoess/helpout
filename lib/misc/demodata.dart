@@ -3,6 +3,10 @@ import 'package:helpout/model/chat.dart';
 import 'package:helpout/model/message.dart';
 import 'package:helpout/model/region.dart';
 import 'package:helpout/model/user.dart';
+import 'package:postgres/postgres.dart';
+import 'package:helpout/misc/constants.dart';
+import 'package:helpout/util/converter.dart';
+import 'package:postgrest/postgrest.dart';
 
 class DemoData {
   static final _availableRegions = [
@@ -99,8 +103,22 @@ class DemoData {
     },
   ];
 
-  static User getMyAccount() {
-    return User(
+  static Future<User> getMyAccount() async{
+    PostgrestResponse result =  await AppState.getInstance().connection.from('user')
+                  .select('username, firstname, lastname, gender:gid(name), zipcode, region:zipcode(name),price, description, asset')
+                  .filter('username', 'eq', 'my_username')
+                  .execute();
+    var ret;
+    var user = result.toJson()['data'][0];
+    return User(user['username'],
+      user['firstname'],
+      Converter.convertToGender(user['gender']['name']),
+      Region(user['zipcode'].toString(), user['region']['name']),
+      user['price'],
+      user['description'],
+      user['asset'],
+      DateTime.now().millisecondsSinceEpoch);
+    /*return User(
       'my_username',
       'My Name',
       Gender.FEMALE,
@@ -110,7 +128,7 @@ class DemoData {
           'For more information please contact me.',
       'assets/avatars/female4.png',
       DateTime.now().millisecondsSinceEpoch,
-    );
+    );*/
   }
 
   static User userByUsername(String username) {

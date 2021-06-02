@@ -1,14 +1,14 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:helpout/misc/demodata.dart';
-import 'package:postgres/postgres.dart';
 import 'package:helpout/model/user.dart';
 import 'package:helpout/model/region.dart';
+import 'package:postgrest/postgrest.dart';
 
 enum SearchType { REQUEST, ASSIST }
 
 class AppState {
   static final AppState _instance = AppState(
-    DemoData.getMyAccount(), // (auto-login) TODO: set to null
+    null,
+    //DemoData.getMyAccount(), // (auto-login) TODO: set to null
     SearchType.ASSIST,
     null,
     false,
@@ -26,7 +26,7 @@ class AppState {
   bool _darkTheme;
   Position _currentPosition;
   User _chatUser;
-  PostgreSQLConnection _connection = PostgreSQLConnection("localhost", 5432, "help_out", username: "postgres", password: "postgres");
+  PostgrestClient _connection = PostgrestClient("http://localhost:3000");
 
   AppState(this._accountData, this._searchType, this._region, this._darkTheme,
       this._chatUser);
@@ -92,7 +92,5 @@ class AppState {
     }
   }
 
-  void openConnection() {
-    _connection.open();
-  }
+  PostgrestClient get connection => _connection;
 }

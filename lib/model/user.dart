@@ -34,6 +34,8 @@ class User {
     this.since,
   );
 
+
+
   User.loading()
       : this('', '...', Gender.UNKNOWN, Region.unknown, 0, '...',
             'assets/images/empty.png', DateTime.now().millisecondsSinceEpoch);

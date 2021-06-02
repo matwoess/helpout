@@ -72,8 +72,8 @@ class _SignUpFormState extends State<SignUpForm> {
     });
   }
 
-  void _showWelcomeScreen() {
-    AppState.getInstance().accountData = DemoData.getMyAccount();
+  void _showWelcomeScreen() async {
+    AppState.getInstance().accountData = await DemoData.getMyAccount();
     Navigator.popAndPushNamed(context, '/signup/welcome');
   }
 

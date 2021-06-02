@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:helpout/model/user.dart';
 import 'package:helpout/pages/achievement.dart';
 import 'package:helpout/pages/browse.dart';
 import 'package:helpout/pages/chats.dart';
@@ -96,9 +97,9 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Center(
                 child: GestureDetector(
                   onTap: () {
-                    setState(() {
-                      AppState.getInstance().accountData =
-                          DemoData.getMyAccount();
+                    setState (() {
+                      Future<User> user = DemoData.getMyAccount();
+                      user.then((user) => AppState.getInstance().accountData = user);
                     });
                   },
                   child: Text(
