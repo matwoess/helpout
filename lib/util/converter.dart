@@ -2,10 +2,6 @@ import 'package:postgres/postgres.dart';
 import 'package:helpout/model/user.dart';
 
 class Converter {
-  static dynamic convertResult(PostgreSQLResult row, int rowno, int colno) {
-    return row.elementAt(rowno).elementAt(colno);
-  }
-
   static Gender convertToGender(dynamic value) {
     switch (value) {
       case 'FEMALE':
@@ -17,5 +13,9 @@ class Converter {
       default:
         return Gender.UNKNOWN;
     }
+  }
+
+  static String convertToChatText(String dbString){
+    return dbString.replaceAll("\\n", "\n");
   }
 }
