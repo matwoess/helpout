@@ -23,19 +23,12 @@ class _MessagesState extends State<MessagesPage> {
   @override
   void initState() {
     super.initState();
-    print(widget.chat.chatId);
     _chatHistory = getHistory(widget.chat);
   }
 
   void sendMessage() async {
-    await AppState.getInstance().connection.from('message')
-            .insert([
-              {'chatid': widget.chat.chatId,
-               'username': _accountData.username,
-               'content': _messageController.text,
-               'timestamp': DateTime.now().millisecondsSinceEpoch}
-            ]);
-    setState(() {
+    DemoData.insertMessage(widget.chat.chatId, _accountData.username, _messageController.text);
+    await setState(() {
       _chatHistory = getHistory(widget.chat);
       _messageController.text = '';
     });
@@ -190,7 +183,6 @@ class _MessagesState extends State<MessagesPage> {
 
   static Future<List<Message>> getHistory(Chat chat) async {
     List<Message> mgs = await DemoData.getChatHistory(chat);
-    print(mgs);
     return mgs;
   }
 }

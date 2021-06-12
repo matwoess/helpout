@@ -203,4 +203,39 @@ class DemoData {
     }
     return messages;
   }
+
+  static Future<int> getCurrMsgId(int chatId) async {
+    PostgrestResponse result = await AppState.getInstance().connection.from('message')
+                    .select('msgid')
+                    .filter('chatid', 'eq', chatId)
+                    .execute();
+    if (result.toJson()['data'].isEmpty) return 0;
+    return result.toJson()['data'].last['msgid'] + 1;
+  }
+
+  // inserts
+
+  static void insertMessage(int chatId, String username, String text) async {
+        await AppState.getInstance().connection.from('message')
+            .insert(
+              [{'chatid': chatId,
+               'username': username,
+               'content': text,
+               'timestamp': Converter.convertToTimeStamp(DateTime.now().millisecondsSinceEpoch),
+               'msgid' : await DemoData.getCurrMsgId(chatId)}]
+            ).execute();
+  }
+
+  static void updateUser(String username, String name, String desc) async {
+    String firstname = name.split(" ")[0];
+    String lastname = name.split(" ").length == 2 ? name.split(" ")[1] : "";
+    await AppState.getInstance().connection.from('user')
+                                .update({
+                                  "firstname" : firstname,
+                                  "lastname" : lastname,
+                                  "description" : desc
+                                })
+                                .eq("username", username)
+                                .execute();
+  }
 }

@@ -1,5 +1,5 @@
-import 'package:postgres/postgres.dart';
 import 'package:helpout/model/user.dart';
+import 'package:intl/intl.dart';
 
 class Converter {
   static Gender convertToGender(dynamic value) {
@@ -17,5 +17,11 @@ class Converter {
 
   static String convertToChatText(String dbString){
     return dbString.replaceAll("\\n", "\n");
+  }
+
+  static String convertToTimeStamp(int millisecsSinceEpoch){
+    var format = new DateFormat('yyyy-MM-dd hh:mm:ss');
+    var date = new DateTime.fromMicrosecondsSinceEpoch(1000 * millisecsSinceEpoch);
+    return format.format(date);
   }
 }
