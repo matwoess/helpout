@@ -7,22 +7,6 @@ class Scorer extends StatelessWidget {
 
   Scorer(this.score, this.type, this.userId);
 
- // TODO
-  int getScore(String userId) {
-    // SELECT user's score from database
-    return score;
-  }
-
-  // TODO
-  updateScore(String userId) {
-    // UPDATE user's score in database
-  }
-
-  // TODO
-  updateLevel(String userId) {
-    // UPDATE user's level in database
-  }
-
   double get calculateResult {
     double result = -1;
 

@@ -5,10 +5,11 @@ import 'package:helpout/model/region.dart';
 import 'package:helpout/model/user.dart';
 import 'package:helpout/misc/constants.dart';
 import 'package:helpout/util/converter.dart';
+import 'package:helpout/util/scorer.dart';
 import 'package:postgrest/postgrest.dart';
 
 class DemoData {
-  static final _availableRegions = [
+  /*static final _availableRegions = [
     Region('4020', 'Linz'),
     Region('4030', 'Linz'),
     Region('4040', 'Linz'),
@@ -100,7 +101,7 @@ class DemoData {
       "price": 6,
       "asset": "assets/avatars/female4.png",
     },
-  ];
+  ]; */
 
   static Future<User> getMyAccount() async{
     return DemoData.userByUsername('my_username');
@@ -236,6 +237,40 @@ class DemoData {
                                   "description" : desc
                                 })
                                 .eq("username", username)
+                                .execute();
+  }
+
+  static Future<int> getScore(String userId) async {
+    PostgrestResponse result = await AppState.getInstance().connection.from('user')
+                    .select('score')
+                    .filter('userid', 'eq', userId)
+                    .execute();
+    return result.toJson()['data'].first['score'];
+  }
+
+  static Future<int> getLevel(String userId) async {
+    PostgrestResponse result = await AppState.getInstance().connection.from('user')
+                    .select('level')
+                    .filter('userid', 'eq', userId)
+                    .execute();
+    return result.toJson()['data'].first['level'];
+  }
+
+  void updateScore(String userId, Scorer scorer) async {
+    await AppState.getInstance().connection.from('user')
+                                .update({
+                                  "score" : scorer.calculateResult.toInt()
+                                })
+                                .eq("username", userId)
+                                .execute();
+  }
+
+  void updateLevel(String userId, Scorer scorer) async {
+    await AppState.getInstance().connection.from('user')
+                                .update({
+                                  "level" : scorer.calculateResult.toInt()
+                                })
+                                .eq("username", userId)
                                 .execute();
   }
 }
