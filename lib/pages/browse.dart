@@ -130,61 +130,69 @@ class RegionCard extends StatefulWidget {
 }
 
 class _RegionCardState extends State<RegionCard> {
-  var _availableRegions = DemoData.getAvailableRegions();
+  Future<List<Region>> regions;
+
+  @override
+  void initState() {
+    regions = getRegions();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'In Region:',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(32.0, 8.0, 16.0, 8.0),
-              child: Row(
+    return FutureBuilder<List<Region>>(future: regions,
+      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text('Loading data...');
+          } else {
+            return Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: DropdownButton<Region>(
-                      isExpanded: true,
-                      value: AppState.getInstance().region,
-                      //decoration: InputDecoration(hintText: 'My region'),
-                      onChanged: (Region newValue) {
-                        setState(() {
-                          AppState.getInstance().region = newValue;
-                        });
-                      },
-                      underline: Container(
-                        height: 2,
-                        color: Theme.of(context).accentColor,
-                      ),
-                      items: _availableRegions
-                          .map<DropdownMenuItem<Region>>((Region value) {
-                        return DropdownMenuItem<Region>(
-                          value: value,
-                          child: Text(value.toString()),
-                        );
-                      }).toList(),
-                    ),
+                  Text(
+                    'In Region:',
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: ElevatedButton(
-                      onPressed: getWhereabouts,
-                      child: Icon(Icons.my_location),
+                    padding: const EdgeInsets.fromLTRB(32.0, 8.0, 16.0, 8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: DropdownButton<Region>(
+                            isExpanded: true,
+                            value: AppState.getInstance().region,
+                            //decoration: InputDecoration(hintText: 'My region'),
+                            onChanged: (Region newValue) {
+                              setState(() {
+                                AppState.getInstance().region = newValue;
+                              });
+                            },
+                            underline: Container(
+                              height: 2,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            items: snapshot.data.map((e) => DropdownMenuItem<Region>(child: Text(e.toString()), value: e,)).toList()
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: ElevatedButton(
+                            onPressed: getWhereabouts,
+                            child: Icon(Icons.my_location),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
+          }
+          }
+        );
   }
 
   Future<Region> getWhereabouts() async {
@@ -192,7 +200,7 @@ class _RegionCardState extends State<RegionCard> {
       var pos = await Locator.getCurrentPosition();
       print('position: ' + pos.toString());
       Region region =
-      await Locator.getRegionFromPosition(pos, _availableRegions);
+      await Locator.getRegionFromPosition(pos, await DemoData.getAvailableRegions());
       print('region: ' + region.toString());
       AppState.getInstance().currentPosition = pos;
       AppState.getInstance().region = region;
@@ -201,6 +209,11 @@ class _RegionCardState extends State<RegionCard> {
       print(ex);
       return null;
     }
+  }
+
+  static Future<List<Region>> getRegions() async {
+    List<Region> regions = await DemoData.getAvailableRegions(); 
+    return regions;
   }
 }
 

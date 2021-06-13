@@ -40,6 +40,7 @@ dependencies:
 
   intl:
   postgres: ^2.3.2
+  postgrest: ^0.1.1
 
 dev_dependencies:
   flutter_test:

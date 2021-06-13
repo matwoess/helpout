@@ -19,7 +19,8 @@ class _RequestHelpState extends State<RequestHelpPage> {
   @override
   void initState() {
     super.initState();
-    persons = DemoData.getDemoUsersByRegion(AppState.getInstance().region);
+    Future<List<User>> users = DemoData.getDemoUsersByRegion(AppState.getInstance().region);
+    users.then((value) => persons = value);
   }
 
   @override

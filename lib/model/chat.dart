@@ -7,8 +7,11 @@ class Chat {
   final String username1;
   final String username2;
   bool isRead;
-  Message get lastMessage {
-    return DemoData.getChatHistory(this).last;
+
+  Future<Message> lastMessage() async {
+    List<Message> msgs = await DemoData.getChatHistory(this);
+    if (msgs.isEmpty) return Message.now(otherUsername, chatId, 'Write the first Message!');
+    else return msgs.last;
   }
 
   Chat(this.chatId, this.username1, this.username2, this.isRead);

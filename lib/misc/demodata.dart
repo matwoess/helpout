@@ -3,6 +3,9 @@ import 'package:helpout/model/chat.dart';
 import 'package:helpout/model/message.dart';
 import 'package:helpout/model/region.dart';
 import 'package:helpout/model/user.dart';
+import 'package:helpout/misc/constants.dart';
+import 'package:helpout/util/converter.dart';
+import 'package:postgrest/postgrest.dart';
 
 class DemoData {
   static final _availableRegions = [
@@ -99,110 +102,140 @@ class DemoData {
     },
   ];
 
-  static User getMyAccount() {
-    return User(
-      'my_username',
-      'My Name',
-      Gender.FEMALE,
-      _availableRegions[0],
-      5,
-      'This is my profile! Here I will tell about myself and give you a good impression.\n' +
-          'For more information please contact me.',
-      'assets/avatars/female4.png',
-      DateTime.now().millisecondsSinceEpoch,
-    );
+  static Future<User> getMyAccount() async{
+    return DemoData.userByUsername('my_username');
   }
 
-  static User userByUsername(String username) {
-    return _users
-        .where((u) => u['username'] == username)
-        .map((person) => User(
-              person['username'],
-              person['name'],
-              person['gender'],
-              person['region'],
-              person['price'],
-              person['description'],
-              person['asset'],
-              DateTime.now().millisecondsSinceEpoch,
-            ))
-        .first;
+  static Future<User> userByUsername(String username) async{
+        PostgrestResponse result =  await AppState.getInstance().connection.from('user')
+                  .select(Constants.userTableData)
+                  .filter('username', 'eq', username)
+                  .execute();
+    var user = result.toJson()['data'][0];
+    return User(user['username'],
+      user['firstname'],
+      Converter.convertToGender(user['gender']['name']),
+      Region(user['zipcode'].toString(), user['region']['name']),
+      user['price'],
+      user['description'],
+      user['asset'],
+      DateTime.now().millisecondsSinceEpoch);
   }
 
-  static List<User> getDemoUsers() {
-    return _users
-        .map((person) => User(
-              person['username'],
-              person['name'],
-              person['gender'],
-              person['region'],
-              person['price'],
-              person['description'],
-              person['asset'],
-              DateTime.now().millisecondsSinceEpoch,
-            ))
-        .toList();
+  static Future<List<User>> getDemoUsers() async{
+    PostgrestResponse result = await AppState.getInstance().connection.from('user')
+                    .select(Constants.userTableData)
+                    .filter('username', 'neq', 'my_username')
+                    .execute();
+    List<User> users = [];
+    for (final user in result.toJson()['data']){
+      users.add(User(user['username'],
+      user['firstname'],
+      Converter.convertToGender(user['gender']['name']),
+      Region(user['zipcode'].toString(), user['region']['name']),
+      user['price'],
+      user['description'],
+      user['asset'],
+      DateTime.now().millisecondsSinceEpoch));
+    }
+    return users;
   }
 
-  static List<User> getDemoUsersByRegion(Region region) {
+  static Future<List<User>> getDemoUsersByRegion(Region region) async{
     if (region == null) {
       return getDemoUsers();
     }
-    return _users
-        .where((person) => person['region'] == region)
-        .map((person) => User(
-              person['username'],
-              person['name'],
-              person['gender'],
-              person['region'],
-              person['price'],
-              person['description'],
-              person['asset'],
-              DateTime.now().millisecondsSinceEpoch,
-            ))
-        .toList();
+    PostgrestResponse result = await AppState.getInstance().connection.from('user')
+                    .select(Constants.userTableData)
+                    .filter('zipcode', 'eq', region.postcode)
+                    .execute();
+    List<User> users = [];
+    for (final user in result.toJson()['data']){
+      users.add(User(user['username'],
+      user['firstname'],
+      Converter.convertToGender(user['gender']['name']),
+      region,
+      user['price'],
+      user['description'],
+      user['asset'],
+      DateTime.now().millisecondsSinceEpoch));
+    }
+    return users;
   }
 
-  static List<Region> getAvailableRegions() {
-    return _availableRegions;
+  static Future<List<Region>> getAvailableRegions() async{
+    PostgrestResponse result = await AppState.getInstance().connection.from('city')
+                    .select()
+                    .execute();
+    List<Region> regions = [];
+    for (final region in result.toJson()['data']){
+      regions.add(Region(region['zipcode'].toString(), region['name']));
+    }
+    return regions;
   }
 
-  static List<Chat> getUserChats() {
-    return [
-      Chat(0, 'joe.hinter', 'my_username', false),
-      Chat(1, 'my_username', 'briggite.s', true),
-      Chat(2, 'eddom', 'my_username', true),
-      Chat(3, 'my_username', 'm.hauer', false),
-      Chat(4, 'tanja.gruber', 'my_username', true),
-      Chat(5, 'my_username', 'tbb', true),
-      Chat(6, 'usr123', 'my_username', true),
-      Chat(7, 'my_username', 'augernst', true),
-      Chat(443, 'anna96', 'my_username', true),
-    ];
+  static Future<List<Chat>> getUserChats(String username) async {
+    PostgrestResponse result = await AppState.getInstance().connection.from('chat')
+                    .select()
+                    .or('username1.eq.'+ username +',username2.eq.'+ username)
+                    .execute();
+    List<Chat> chats = [];
+    for (final chat in result.toJson()['data']){
+      chats.add(Chat(chat['chatid'], chat['username1'], chat['username2'], chat['isread']));
+    }
+    return chats;
   }
 
-  static List<Message> getChatHistory(Chat chat) {
-    User me = AppState.getInstance().accountData;
-    User other = userByUsername(chat.otherUsername);
-    return [
-      Message(0, me.username, chat.chatId, 'Hello ${other.name}!',
-          DateTime.now().millisecondsSinceEpoch),
-      Message(
-          1,
-          me.username,
-          chat.chatId,
-          'I require assistance with something.\nCould you help?',
-          DateTime.now().millisecondsSinceEpoch),
-      Message(2, other.username, chat.chatId, 'Yes, sure! :)',
-          DateTime.now().millisecondsSinceEpoch),
-      Message(2, other.username, chat.chatId, 'What seems to be the problem?',
-          DateTime.now().millisecondsSinceEpoch),
-      Message(
-          2,
-          me.username,
-          chat.chatId,
-          'I need help with <thing>?\nWhen do you have time?',
-          DateTime.now().millisecondsSinceEpoch),
-    ];
+  static Future<List<Message>> getChatHistory(Chat chat) async{
+    PostgrestResponse result = await AppState.getInstance().connection.from('message')
+                    .select()
+                    .filter('chatid', 'eq', chat.chatId)
+                    .execute();
+    List<Message> messages = [];
+    if (result.toJson()['data'] != null) {
+          for (final message in result.toJson()['data']){
+            messages.add(Message(message['msgid'],
+                message['username'],
+                message['chatid'],
+                Converter.convertToChatText(message['content']),
+                DateTime.now().millisecondsSinceEpoch));
+          }
+    }
+    return messages;
+  }
+
+  static Future<int> getCurrMsgId(int chatId) async {
+    PostgrestResponse result = await AppState.getInstance().connection.from('message')
+                    .select('msgid')
+                    .filter('chatid', 'eq', chatId)
+                    .execute();
+    if (result.toJson()['data'].isEmpty) return 0;
+    return result.toJson()['data'].last['msgid'] + 1;
+  }
+
+  // inserts
+
+  static void insertMessage(int chatId, String username, String text) async {
+        await AppState.getInstance().connection.from('message')
+            .insert(
+              [{'chatid': chatId,
+               'username': username,
+               'content': text,
+               'timestamp': Converter.convertToTimeStamp(DateTime.now().millisecondsSinceEpoch),
+               'msgid' : await DemoData.getCurrMsgId(chatId)}]
+            ).execute();
+  }
+
+  static void updateUser(String username, String name, String desc) async {
+    String firstname = name.split(" ")[0];
+    String lastname = name.split(" ").length == 2 ? name.split(" ")[1] : "";
+    await AppState.getInstance().connection.from('user')
+                                .update({
+                                  "firstname" : firstname,
+                                  "lastname" : lastname,
+                                  "description" : desc
+                                })
+                                .eq("username", username)
+                                .execute();
   }
 }

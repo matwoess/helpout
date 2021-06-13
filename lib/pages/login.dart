@@ -63,7 +63,7 @@ class _LogInFormState extends State<LogInForm> {
     });
   }
 
-  void _showWelcomeScreen() {
+  void _showWelcomeScreen() async {
     if (_passwordTextController.text != _pw) {
       _passwordDoesNotMatch = true;
       setState(() {
@@ -71,7 +71,7 @@ class _LogInFormState extends State<LogInForm> {
       });
       return;
     }
-    AppState.getInstance().accountData = DemoData.getMyAccount();
+    AppState.getInstance().accountData = await DemoData.getMyAccount();
     Navigator.popAndPushNamed(context, '/login/welcome');
   }
 

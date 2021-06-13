@@ -15,26 +15,33 @@ class AssistPeoplePage extends StatefulWidget {
 }
 
 class _AssistPeopleState extends State<AssistPeoplePage> {
-  List<User> users;
+  Future<List<User>> users;
 
   @override
   void initState() {
     super.initState();
-    users = DemoData.getDemoUsersByRegion(AppState.getInstance().region);
+    users = getUsers();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Assist people in need"),
-      ),
-      body: ListView.builder(
-          itemBuilder: (context, position) {
-            return UserCard(users[position], showDetails);
-          },
-          itemCount: users.length),
-    );
+    return FutureBuilder<List<User>>(future: users,
+      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text('Loading data...');
+          } else {
+                  return Scaffold(
+                    appBar: AppBar(
+                      title: Text("Assist people in need"),
+                    ),
+                    body: ListView.builder(
+                        itemBuilder: (context, position) {
+                          return UserCard(snapshot.data[position], showDetails);
+                        },
+                        itemCount: snapshot.data.length),
+                  );
+          }
+      });
   }
 
   showDetails(User user) {
@@ -58,5 +65,10 @@ class _AssistPeopleState extends State<AssistPeoplePage> {
       }
       //Navigator.pushNamed(context, '/');
     }
+  }
+
+  static Future<List<User>> getUsers() async{
+    List<User> users = await DemoData.getDemoUsersByRegion(AppState.getInstance().region);
+    return users;
   }
 }
