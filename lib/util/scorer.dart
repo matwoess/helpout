@@ -3,8 +3,25 @@ import 'package:flutter/material.dart';
 class Scorer extends StatelessWidget {
   final int score;
   final String type;
+  final String userId;
 
-  Scorer(this.score, this.type);
+  Scorer(this.score, this.type, this.userId);
+
+ // TODO
+  int getScore(String userId) {
+    // SELECT user's score from database
+    return score;
+  }
+
+  // TODO
+  updateScore(String userId) {
+    // UPDATE user's score in database
+  }
+
+  // TODO
+  updateLevel(String userId) {
+    // UPDATE user's level in database
+  }
 
   double get calculateResult {
     double result = -1;
@@ -20,6 +37,8 @@ class Scorer extends StatelessWidget {
         result = score / 400;
       } else if (400 < score && score <= 500) {
         result = score / 500;
+      } else if (score > 500) {
+        result = 1.00;
       }
     } else if (type == "level") {
       if (0 <= score && score <= 100) {
@@ -32,6 +51,8 @@ class Scorer extends StatelessWidget {
         result = 4;
       } else if (400 < score && score <= 500) {
         result = 5;
+      } else if (score > 500) {
+        result = 6;
       }
     }
 
@@ -40,8 +61,10 @@ class Scorer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (type == "virtue")? Text(calculateResult.toStringAsFixed(2))
-    : (type == "level")? Text(calculateResult.toStringAsFixed(0))
-    : const Text("Invalid result");
+    return (type == "virtue")
+        ? Text(calculateResult.toStringAsFixed(2))
+        : (type == "level")
+            ? Text(calculateResult.toStringAsFixed(0))
+            : const Text("Invalid result");
   }
 }
