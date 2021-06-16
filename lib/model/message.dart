@@ -20,4 +20,6 @@ class Message {
     this.content = content;
     this.timeStamp = DateTime.now().millisecondsSinceEpoch;
   }
+
+  //TODO: extend all classes with equals methods!
 }
