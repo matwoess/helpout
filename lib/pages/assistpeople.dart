@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:helpout/model/appstate.dart';
 import 'package:helpout/model/user.dart';
 import 'package:helpout/pages/detailsdialog.dart';
-import 'package:helpout/pages/personcard.dart';
+import 'package:helpout/pages/usercard.dart';
 
 import '../misc/dbmanager.dart';
 import '../model/appstate.dart';
