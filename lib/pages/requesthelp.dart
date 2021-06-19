@@ -14,13 +14,12 @@ class RequestHelpPage extends StatefulWidget {
 }
 
 class _RequestHelpState extends State<RequestHelpPage> {
-  List<User> persons;
+  Future<List<User>> users;
 
   @override
   void initState() {
     super.initState();
-    Future<List<User>> users = DBManager.getDemoUsersByRegion(AppState.getInstance().region);
-    users.then((value) => persons = value);
+    users = getUsers();
   }
 
   @override
@@ -29,11 +28,24 @@ class _RequestHelpState extends State<RequestHelpPage> {
       appBar: AppBar(
         title: Text("Request help"),
       ),
-      body: ListView.builder(
-          itemBuilder: (context, position) {
-            return UserCard(persons[position], showDetails);
-          },
-          itemCount: persons.length),
+      body: FutureBuilder<List<User>>(
+        future: users,
+        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return ListView.builder(
+                itemBuilder: (context, position) {
+                  return UserCard(User.loading(), null);
+                },
+                itemCount: 4);
+          } else {
+            return ListView.builder(
+                itemBuilder: (context, position) {
+                  return UserCard(snapshot.data[position], showDetails);
+                },
+                itemCount: snapshot.data.length);
+          }
+        },
+      ),
     );
   }
 
@@ -57,5 +69,10 @@ class _RequestHelpState extends State<RequestHelpPage> {
     while(Navigator.canPop(context)) {
       Navigator.of(context).pop();
     }
+  }
+
+  static Future<List<User>> getUsers() async {
+    List<User> users = await DBManager.getDemoUsersByRegion(AppState.getInstance().region);
+    return users;
   }
 }

@@ -25,23 +25,29 @@ class _AssistPeopleState extends State<AssistPeoplePage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<User>>(future: users,
-      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text('Loading data...');
-          } else {
-                  return Scaffold(
-                    appBar: AppBar(
-                      title: Text("Assist people in need"),
-                    ),
-                    body: ListView.builder(
-                        itemBuilder: (context, position) {
-                          return UserCard(snapshot.data[position], showDetails);
-                        },
-                        itemCount: snapshot.data.length),
-                  );
-          }
-      });
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Assist people in need"),
+      ),
+      body: FutureBuilder<List<User>>(
+          future: users,
+          builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return ListView.builder(
+                  itemBuilder: (context, position) {
+                    return UserCard(User.loading(), null);
+                  },
+                  itemCount: 4);
+            } else {
+              return ListView.builder(
+                  itemBuilder: (context, position) {
+                    return UserCard(snapshot.data[position], showDetails);
+                  },
+                  itemCount: snapshot.data.length);
+            }
+          },
+      ),
+    );
   }
 
   showDetails(User user) {
@@ -60,14 +66,14 @@ class _AssistPeopleState extends State<AssistPeoplePage> {
     else {
       print('starting chat with ${user.name}');
       AppState.getInstance().chatUser = user;
-      while(Navigator.canPop(context)) {
+      while (Navigator.canPop(context)) {
         Navigator.of(context).pop();
       }
       //Navigator.pushNamed(context, '/');
     }
   }
 
-  static Future<List<User>> getUsers() async{
+  static Future<List<User>> getUsers() async {
     List<User> users = await DBManager.getDemoUsersByRegion(AppState.getInstance().region);
     return users;
   }

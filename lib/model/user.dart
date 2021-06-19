@@ -37,8 +37,18 @@ class User {
 
 
   User.loading()
-      : this('', '...', Gender.UNKNOWN, Region.unknown, 0, '...',
+      : this('', 'Loading...', Gender.UNKNOWN, Region.unknown, 0, 'Loading...',
             'assets/images/empty.png', DateTime.now().millisecondsSinceEpoch);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is User &&
+          runtimeType == other.runtimeType &&
+          username == other.username;
+
+  @override
+  int get hashCode => username.hashCode;
 
   bool get isLoading => name == '...';
 }

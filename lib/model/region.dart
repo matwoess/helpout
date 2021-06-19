@@ -1,5 +1,5 @@
 class Region {
-  static Region unknown = Region('0000', 'unknown');
+  static Region unknown = Region('....', 'unknown');
   String postcode;
   String city;
 
