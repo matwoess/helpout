@@ -4,7 +4,7 @@ import 'package:helpout/model/user.dart';
 import 'package:helpout/pages/detailsdialog.dart';
 import 'package:helpout/pages/personcard.dart';
 
-import '../misc/demodata.dart';
+import '../misc/dbmanager.dart';
 import '../model/appstate.dart';
 
 class AssistPeoplePage extends StatefulWidget {
@@ -68,7 +68,7 @@ class _AssistPeopleState extends State<AssistPeoplePage> {
   }
 
   static Future<List<User>> getUsers() async{
-    List<User> users = await DemoData.getDemoUsersByRegion(AppState.getInstance().region);
+    List<User> users = await DBManager.getDemoUsersByRegion(AppState.getInstance().region);
     return users;
   }
 }

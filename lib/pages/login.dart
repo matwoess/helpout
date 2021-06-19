@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helpout/misc/demodata.dart';
+import 'package:helpout/misc/dbmanager.dart';
 
 import '../model/appstate.dart';
 
@@ -71,7 +71,7 @@ class _LogInFormState extends State<LogInForm> {
       });
       return;
     }
-    AppState.getInstance().accountData = await DemoData.getMyAccount();
+    AppState.getInstance().accountData = await DBManager.getMyAccount();
     Navigator.popAndPushNamed(context, '/login/welcome');
   }
 

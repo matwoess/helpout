@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:helpout/misc/demodata.dart';
+import 'package:helpout/misc/dbmanager.dart';
 import 'package:helpout/model/appstate.dart';
 import 'package:helpout/model/region.dart';
 import 'package:helpout/util/locator.dart';
@@ -22,8 +22,7 @@ class _BrowsePageState extends State<BrowsePage> {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Text('Welcome to "Help out"!',
-                style: Theme.of(context).textTheme.headline4),
+            child: Text('Welcome to "Help out"!', style: Theme.of(context).textTheme.headline4),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -59,7 +58,7 @@ class _BrowsePageState extends State<BrowsePage> {
         ],
       ),
     );
-    }
+  }
 
   FutureOr onReturn(dynamic value) {
     setState(() {});
@@ -140,70 +139,83 @@ class _RegionCardState extends State<RegionCard> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Region>>(future: regions,
-      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text('Loading data...');
-          } else {
-            return Card(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'In Region:',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(32.0, 8.0, 16.0, 8.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: DropdownButton<Region>(
-                            isExpanded: true,
-                            value: AppState.getInstance().region,
-                            //decoration: InputDecoration(hintText: 'My region'),
-                            onChanged: (Region newValue) {
-                              setState(() {
-                                AppState.getInstance().region = newValue;
-                              });
-                            },
-                            underline: Container(
-                              height: 2,
-                              color: Theme.of(context).accentColor,
-                            ),
-                            items: snapshot.data.map((e) => DropdownMenuItem<Region>(child: Text(e.toString()), value: e,)).toList()
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'In Region:',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            FutureBuilder<List<Region>>(
+              future: regions,
+              builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(32.0, 8.0, 16.0, 8.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: DropdownButton<Region>(
+                          isExpanded: true,
+                          value: AppState.getInstance().region,
+                          //decoration: InputDecoration(hintText: 'My region'),
+                          onChanged: (Region newValue) {
+                            setState(() {
+                              AppState.getInstance().region = newValue;
+                            });
+                          },
+                          underline: Container(
+                            height: 2,
+                            color: Theme.of(context).accentColor,
                           ),
+                          items: snapshot.connectionState == ConnectionState.waiting
+                              ? null
+                              : snapshot.data
+                                  .map((e) => DropdownMenuItem<Region>(
+                                        child: Text(e.toString()),
+                                        value: e,
+                                      ))
+                                  .toList(),
+                          hint: snapshot.connectionState == ConnectionState.waiting
+                              ? Text('Getting available regions')
+                              : Text('Select region'),
                         ),
-                        Padding(
+                      ),
+                      Visibility(
+                        visible: snapshot.connectionState != ConnectionState.waiting,
+                        child: Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: ElevatedButton(
                             onPressed: getWhereabouts,
                             child: Icon(Icons.my_location),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                );
+              },
             ),
-          );
-          }
-          }
-        );
+          ],
+        ),
+      ),
+    );
   }
 
   Future<Region> getWhereabouts() async {
     try {
       var pos = await Locator.getCurrentPosition();
       print('position: ' + pos.toString());
-      Region region =
-      await Locator.getRegionFromPosition(pos, await DemoData.getAvailableRegions());
-      print('region: ' + region.toString());
       AppState.getInstance().currentPosition = pos;
-      AppState.getInstance().region = region;
+      Region region = await Locator.getRegionFromPosition(pos, await getRegions());
+      print('region: ' + region.toString());
+      if (region == Region.unknown) {
+        print('unknown region, do not change current selection.');
+      } else {
+        AppState.getInstance().region = region;
+      }
       return region;
     } catch (ex) {
       print(ex);
@@ -212,8 +224,7 @@ class _RegionCardState extends State<RegionCard> {
   }
 
   static Future<List<Region>> getRegions() async {
-    List<Region> regions = await DemoData.getAvailableRegions(); 
+    List<Region> regions = await DBManager.getAvailableRegions();
     return regions;
   }
 }
-

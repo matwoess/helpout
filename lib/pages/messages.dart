@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helpout/misc/demodata.dart';
+import 'package:helpout/misc/dbmanager.dart';
 import 'package:helpout/model/appstate.dart';
 import 'package:helpout/model/chat.dart';
 import 'package:helpout/model/message.dart';
@@ -27,7 +27,7 @@ class _MessagesState extends State<MessagesPage> {
   }
 
   void sendMessage() async {
-    DemoData.insertMessage(widget.chat.chatId, _accountData.username, _messageController.text);
+    DBManager.insertMessage(widget.chat.chatId, _accountData.username, _messageController.text);
     await setState(() {
       _chatHistory = getHistory(widget.chat);
       _messageController.text = '';
@@ -182,7 +182,7 @@ class _MessagesState extends State<MessagesPage> {
   }
 
   static Future<List<Message>> getHistory(Chat chat) async {
-    List<Message> mgs = await DemoData.getChatHistory(chat);
+    List<Message> mgs = await DBManager.getChatHistory(chat);
     return mgs;
   }
 }

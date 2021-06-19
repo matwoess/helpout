@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:helpout/model/user.dart';
 import 'package:helpout/pages/personcard.dart';
 
-import '../misc/demodata.dart';
+import '../misc/dbmanager.dart';
 import '../model/appstate.dart';
 import 'detailsdialog.dart';
 
@@ -19,7 +19,7 @@ class _RequestHelpState extends State<RequestHelpPage> {
   @override
   void initState() {
     super.initState();
-    Future<List<User>> users = DemoData.getDemoUsersByRegion(AppState.getInstance().region);
+    Future<List<User>> users = DBManager.getDemoUsersByRegion(AppState.getInstance().region);
     users.then((value) => persons = value);
   }
 

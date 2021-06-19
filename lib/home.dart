@@ -6,7 +6,7 @@ import 'package:helpout/pages/browse.dart';
 import 'package:helpout/pages/chats.dart';
 import 'package:helpout/pages/profile.dart';
 
-import 'misc/demodata.dart';
+import 'misc/dbmanager.dart';
 import 'model/appstate.dart';
 
 enum NAV_PAGE {
@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GestureDetector(
                   onTap: () {
                     setState (() {
-                      Future<User> user = DemoData.getMyAccount();
+                      Future<User> user = DBManager.getMyAccount();
                       user.then((user) => AppState.getInstance().accountData = user);
                     });
                   },

@@ -1,4 +1,4 @@
-import 'package:helpout/misc/demodata.dart';
+import 'package:helpout/misc/dbmanager.dart';
 import 'package:helpout/model/appstate.dart';
 import 'package:helpout/model/message.dart';
 
@@ -9,7 +9,7 @@ class Chat {
   bool isRead;
 
   Future<Message> lastMessage() async {
-    List<Message> msgs = await DemoData.getChatHistory(this);
+    List<Message> msgs = await DBManager.getChatHistory(this);
     if (msgs.isEmpty) return Message.now(otherUsername, chatId, 'Write the first Message!');
     else return msgs.last;
   }

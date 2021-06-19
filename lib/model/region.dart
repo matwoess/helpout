@@ -21,6 +21,6 @@ class Region {
         return r;
       }
     }
-    return Region(postcode, city);
+    return unknown;
   }
 }

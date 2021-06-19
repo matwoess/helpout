@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helpout/misc/demodata.dart';
+import 'package:helpout/misc/dbmanager.dart';
 import 'package:helpout/model/appstate.dart';
 import 'package:helpout/model/chat.dart';
 import 'package:helpout/model/message.dart';
@@ -37,7 +37,7 @@ class _ChatsPageState extends State<ChatsPage> {
       return;
     }
    User other;
-    Future<User> user = DemoData.userByUsername(chat.otherUsername);
+    Future<User> user = DBManager.userByUsername(chat.otherUsername);
     user.then((user) => other = user);
     if (other == null) {
       return;
@@ -71,7 +71,7 @@ class _ChatsPageState extends State<ChatsPage> {
 
     
   static Future<List<Chat>> getChats() async {
-    List<Chat> chats = await DemoData.getUserChats('my_username');
+    List<Chat> chats = await DBManager.getUserChats('my_username');
     return chats;
   }
 }
@@ -179,7 +179,7 @@ class _ChatItemState extends State<ChatItem> {
   }
 
   static Future<User> getUser(String username) {
-    Future<User> user = DemoData.userByUsername(username);
+    Future<User> user = DBManager.userByUsername(username);
     return user;
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helpout/misc/demodata.dart';
+import 'package:helpout/misc/dbmanager.dart';
 import 'package:helpout/model/appstate.dart';
 import 'package:helpout/model/user.dart';
 import 'package:intl/intl.dart';
@@ -20,7 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
       if (edit) {
         accountData.name = _nameTextController.text;
         accountData.description = _descriptionTextController.text;
-        DemoData.updateUser(accountData.username, _nameTextController.text, _descriptionTextController.text);
+        DBManager.updateUser(accountData.username, _nameTextController.text, _descriptionTextController.text);
       } else {
         _nameTextController.text = accountData.name;
         _descriptionTextController.text = accountData.description;

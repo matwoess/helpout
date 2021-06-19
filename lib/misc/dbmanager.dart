@@ -8,7 +8,7 @@ import 'package:helpout/util/converter.dart';
 import 'package:helpout/util/scorer.dart';
 import 'package:postgrest/postgrest.dart';
 
-class DemoData {
+class DBManager {
   /*static final _availableRegions = [
     Region('4020', 'Linz'),
     Region('4030', 'Linz'),
@@ -104,7 +104,7 @@ class DemoData {
   ]; */
 
   static Future<User> getMyAccount() async{
-    return DemoData.userByUsername('my_username');
+    return userByUsername('my_username');
   }
 
   static Future<User> userByUsername(String username) async{
@@ -223,7 +223,7 @@ class DemoData {
                'username': username,
                'content': text,
                'timestamp': Converter.convertToTimeStamp(DateTime.now().millisecondsSinceEpoch),
-               'msgid' : await DemoData.getCurrMsgId(chatId)}]
+               'msgid' : await getCurrMsgId(chatId)}]
             ).execute();
   }
 
