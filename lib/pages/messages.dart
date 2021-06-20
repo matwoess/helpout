@@ -101,16 +101,29 @@ class _MessagesState extends State<MessagesPage> {
                             message: index % 2 == 0 ? Message.loadingMyself : Message.loadingOther);
                       });
                 } else {
-                  return ListView.builder(
-                      itemCount: snapshot.data.length + (_sending ? 1 : 0),
-                      padding: EdgeInsets.only(top: 10, bottom: 10),
-                      itemBuilder: (context, index) {
-                        if (index == snapshot.data.length) {
-                          return MessageBubble(myself: _accountData, message: Message.sending);
-                        } else {
-                          return MessageBubble(myself: _accountData, message: snapshot.data[index]);
-                        }
-                      });
+                  if (snapshot.data.length == 0 && !_sending) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Text(
+                          'This is the beginning of your conversation.\nWrite the first Message now!',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    );
+                  } else {
+                    return ListView.builder(
+                        itemCount: snapshot.data.length + (_sending ? 1 : 0),
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                        itemBuilder: (context, index) {
+                          if (index == snapshot.data.length) {
+                            return MessageBubble(myself: _accountData, message: Message.sending);
+                          } else {
+                            return MessageBubble(myself: _accountData, message: snapshot.data[index]);
+                          }
+                        });
+                  }
                 }
               }),
           Align(
