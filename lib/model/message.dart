@@ -1,5 +1,6 @@
 class Message {
-  static final Message loading = Message(-1, '', -1, 'Loading...', 0);
+  static final Message loadingMyself = Message(-1, 'my_username', -1, 'Loading...', 0);
+  static final Message loadingOther = Message(-2, '', -1, 'Loading...', 0);
 
   int msgId;
   String username;
