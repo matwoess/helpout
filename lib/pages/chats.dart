@@ -22,8 +22,7 @@ class _ChatsPageState extends State<ChatsPage> {
   void initState() {
     super.initState();
     _userChats = getChats();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => startChatWithPreDefinedUser());
+    WidgetsBinding.instance.addPostFrameCallback((_) => startChatWithPreDefinedUser());
   }
 
   void startChatWithPreDefinedUser() {
@@ -52,24 +51,31 @@ class _ChatsPageState extends State<ChatsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Chat>>(future: _userChats,
-      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+    return FutureBuilder<List<Chat>>(
+        future: _userChats,
+        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text('Loading data...');
+            return Container(
+              child: ListView.builder(
+                itemBuilder: (context, position) {
+                  return ChatItemCard(Chat.loading, User.loading);
+                },
+                itemCount: 4,
+              ),
+            );
           } else {
-                return Container(
-                  child: ListView.builder(
-                    itemBuilder: (context, position) {
-                      return ChatItem(snapshot.data[position]);
-                    },
-                    itemCount: snapshot.data.length,
-                  ),
-                );
+            return Container(
+              child: ListView.builder(
+                itemBuilder: (context, position) {
+                  return ChatItem(snapshot.data[position]);
+                },
+                itemCount: snapshot.data.length,
+              ),
+            );
           }
-      });
+        });
   }
 
-    
   static Future<List<Chat>> getChats() async {
     List<Chat> chats = await DBManager.getUserChats('my_username');
     return chats;
@@ -87,99 +93,123 @@ class ChatItem extends StatefulWidget {
 
 class _ChatItemState extends State<ChatItem> {
   Future<User> withUser;
-  Future<Message> lastMsg;
 
   @override
   initState() {
     super.initState();
     withUser = getUser(widget.chat.otherUsername);
-    lastMsg = widget.chat.lastMessage();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(future: withUser, 
+    return FutureBuilder(
+      future: withUser,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text('Loading data...');
+          return ChatItemCard(widget.chat, User.loading);
         } else {
           return GestureDetector(
-            onTap: () {
-              widget.chat.isRead = true;
-              setState(() {});
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return MessagesPage(widget.chat, snapshot.data);
-              }));
-            },
-            child:  Container(
-              padding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Row(
-                      children: <Widget>[
-                        CircleAvatar(
-                          child: Image(image: AssetImage(snapshot.data.assetURI)),
-                          maxRadius: 30,
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Expanded(
-                          child: Container(
-                            color: Colors.transparent,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  snapshot.data.name,
-                                  style: Theme.of(context).textTheme.headline6,
-                                ),
-                                SizedBox(
-                                  height: 6,
-                                ),
-                                FutureBuilder(future: lastMsg, 
-                                  builder: (BuildContext context, AsyncSnapshot<Message> snapshotMsg) {
-                                    if (snapshotMsg.connectionState == ConnectionState.waiting) {
-                                      return Text('Loading data...');
-                                    } else {
-                                    return Text(
-                                      snapshotMsg.data != null ? snapshotMsg.data.content : 'Error loading Message!',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: widget.chat.isRead
-                                              ? FontWeight.normal
-                                              : FontWeight.bold)
-                                );}})
-                              ],
-                            ),
-                          )
-                        ) 
-                      ],
-                    ),
-                  ),
-                  FutureBuilder(future: lastMsg, 
-                          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshotMsg) {
-                            if (snapshotMsg.connectionState == ConnectionState.waiting) {
-                               return Text('Loading data...');
-                            } else {
-                               return Text(
-                                 snapshotMsg.data != null ? DateFormat('MMMM d').format(DateTime.fromMillisecondsSinceEpoch(
-                                      snapshotMsg.data.timeStamp)) : 'Invalid Date',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight:
-                                          widget.chat.isRead ? FontWeight.normal : FontWeight.bold),
-                                );
-                            }})
-                ],
-              )));
-              }
-      });
+            onTap: () => enterChat(snapshot.data),
+            child: ChatItemCard(widget.chat, snapshot.data),
+          );
+        }
+      },
+    );
+  }
+
+  void enterChat(User user) {
+    widget.chat.isRead = true;
+    DBManager.markAsRead(widget.chat);
+    setState(() {});
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return MessagesPage(widget.chat, user);
+    }));
   }
 
   static Future<User> getUser(String username) {
     Future<User> user = DBManager.userByUsername(username);
     return user;
+  }
+}
+
+class ChatItemCard extends StatelessWidget {
+  final Chat chat;
+  final User withUser;
+
+  ChatItemCard(this.chat, this.withUser);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Row(
+                children: <Widget>[
+                  CircleAvatar(
+                    child: Image(image: AssetImage(withUser.assetURI)),
+                    maxRadius: 30,
+                  ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Expanded(
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              withUser.name,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .headline6,
+                            ),
+                            SizedBox(
+                              height: 6,
+                            ),
+                            FutureBuilder(
+                                future: chat.lastMessage(),
+                                builder: (BuildContext context, AsyncSnapshot<Message> snapshotMsg) {
+                                  if (snapshotMsg.connectionState == ConnectionState.waiting) {
+                                    return Text('Loading data...');
+                                  } else {
+                                    return Text(
+                                        snapshotMsg.data != null
+                                            ? snapshotMsg.data.content
+                                            : 'Error loading Message!',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight:
+                                            chat.isRead ? FontWeight.normal : FontWeight.bold));
+                                  }
+                                })
+                          ],
+                        ),
+                      ))
+                ],
+              ),
+            ),
+            FutureBuilder(
+                future: chat.lastMessage(),
+                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshotMsg) {
+                  if (snapshotMsg.connectionState == ConnectionState.waiting) {
+                    return Text('Loading data...');
+                  } else {
+                    return Text(
+                      snapshotMsg.data != null
+                          ? DateFormat('MMMM d')
+                          .format(DateTime.fromMillisecondsSinceEpoch(snapshotMsg.data.timeStamp))
+                          : 'Invalid Date',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: chat.isRead ? FontWeight.normal : FontWeight.bold),
+                    );
+                  }
+                })
+          ],
+        ));
   }
 }

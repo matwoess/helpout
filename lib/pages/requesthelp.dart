@@ -34,7 +34,7 @@ class _RequestHelpState extends State<RequestHelpPage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return ListView.builder(
                 itemBuilder: (context, position) {
-                  return UserCard(User.loading(), null);
+                  return UserCard(User.loading, null);
                 },
                 itemCount: 4);
           } else {

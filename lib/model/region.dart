@@ -11,7 +11,12 @@ class Region {
   }
 
   @override
-  bool operator ==(o) => o is Region && o.city == city && o.postcode == postcode;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Region && runtimeType == other.runtimeType && postcode == other.postcode && city == other.city;
+
+  @override
+  int get hashCode => postcode.hashCode ^ city.hashCode;
 
   static Region fromJson(Map<String, dynamic> json, List<Region> regions) {
     String postcode = json['results'][0]['components']['postcode'];

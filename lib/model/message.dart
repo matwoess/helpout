@@ -1,4 +1,6 @@
 class Message {
+  static final Message loading = Message(-1, '', -1, 'Loading...', 0);
+
   int msgId;
   String username;
   int chatId;
@@ -21,5 +23,11 @@ class Message {
     this.timeStamp = DateTime.now().millisecondsSinceEpoch;
   }
 
-  //TODO: extend all classes with equals methods!
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Message && runtimeType == other.runtimeType && msgId == other.msgId && chatId == other.chatId;
+
+  @override
+  int get hashCode => msgId.hashCode ^ chatId.hashCode;
 }

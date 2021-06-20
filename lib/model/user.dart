@@ -12,6 +12,9 @@ extension ParseToString on Gender {
 }
 
 class User {
+  static final User loading = User('', 'Loading...', Gender.UNKNOWN, Region.unknown, 0, 'Loading...',
+      'assets/images/empty.png', DateTime.now().millisecondsSinceEpoch);
+
   final String username;
   String name;
   final Gender gender;
@@ -34,18 +37,9 @@ class User {
     this.since,
   );
 
-
-
-  User.loading()
-      : this('', 'Loading...', Gender.UNKNOWN, Region.unknown, 0, 'Loading...',
-            'assets/images/empty.png', DateTime.now().millisecondsSinceEpoch);
-
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is User &&
-          runtimeType == other.runtimeType &&
-          username == other.username;
+      identical(this, other) || other is User && runtimeType == other.runtimeType && username == other.username;
 
   @override
   int get hashCode => username.hashCode;

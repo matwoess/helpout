@@ -273,4 +273,9 @@ class DBManager {
                                 .eq("username", userId)
                                 .execute();
   }
+
+  static void markAsRead(Chat chat) async {
+    // TODO: implement database command
+    print('TODO: mark chat with id ${chat.chatId} as read');
+  }
 }
