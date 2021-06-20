@@ -19,6 +19,7 @@ class _MessagesState extends State<MessagesPage> {
   Future<List<Message>> _chatHistory;
   User _accountData = AppState.getInstance().accountData;
   final _messageController = TextEditingController();
+  bool _sending = false;
 
   @override
   void initState() {
@@ -27,11 +28,15 @@ class _MessagesState extends State<MessagesPage> {
   }
 
   void sendMessage() async {
-    DBManager.insertMessage(widget.chat.chatId, _accountData.username, _messageController.text);
-    await setState(() {
-      _chatHistory = getHistory(widget.chat);
-      _messageController.text = '';
+    setState(() {
+      _sending = true;
     });
+    Future<Message> newMsg =
+        DBManager.insertMessage(widget.chat.chatId, _accountData.username, _messageController.text);
+    newMsg.then((msg) => _chatHistory.then((ch) => ch.add(msg)).whenComplete(() => setState(() {
+          _messageController.text = '';
+          _sending = false;
+        })));
   }
 
   @override
@@ -97,10 +102,14 @@ class _MessagesState extends State<MessagesPage> {
                       });
                 } else {
                   return ListView.builder(
-                      itemCount: snapshot.data.length,
+                      itemCount: snapshot.data.length + (_sending ? 1 : 0),
                       padding: EdgeInsets.only(top: 10, bottom: 10),
                       itemBuilder: (context, index) {
-                        return MessageBubble(myself: _accountData, message: snapshot.data[index]);
+                        if (index == snapshot.data.length) {
+                          return MessageBubble(myself: _accountData, message: Message.sending);
+                        } else {
+                          return MessageBubble(myself: _accountData, message: snapshot.data[index]);
+                        }
                       });
                 }
               }),
@@ -110,6 +119,13 @@ class _MessagesState extends State<MessagesPage> {
               padding: EdgeInsets.only(left: 10, bottom: 5, top: 5),
               height: 60,
               width: double.infinity,
+              decoration: BoxDecoration(
+                  border: Border(
+                top: BorderSide(
+                  color: Colors.grey,
+                  width: 0.1,
+                ),
+              )),
               child: Row(
                 children: <Widget>[
                   GestureDetector(
@@ -136,8 +152,13 @@ class _MessagesState extends State<MessagesPage> {
                   Expanded(
                     child: TextField(
                       controller: _messageController,
+                      onSubmitted: (text) {
+                        sendMessage();
+                      },
                       decoration: InputDecoration(
                         hintText: "Write message...",
+                        enabled: !_sending,
+                        filled: true,
                         //border: InputBorder.none
                       ),
                     ),

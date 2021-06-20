@@ -16,7 +16,7 @@ class Chat {
     }
     List<Message> msgs = await DBManager.getChatHistory(this);
     if (msgs.isEmpty)
-      return Message.now(otherUsername, chatId, 'Write the first Message!');
+      return Message.now(0, otherUsername, chatId, 'Write the first Message!');
     else
       return msgs.last;
   }

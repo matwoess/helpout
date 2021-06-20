@@ -1,6 +1,7 @@
 class Message {
   static final Message loadingMyself = Message(-1, 'my_username', -1, 'Loading...', 0);
   static final Message loadingOther = Message(-2, '', -1, 'Loading...', 0);
+  static final Message sending = Message(-3, 'my_username', -1, 'Sending...', 0);
 
   int msgId;
   String username;
@@ -16,8 +17,8 @@ class Message {
     this.timeStamp = timestamp;
   }
 
-  Message.now(username, chatId, content) {
-    this.msgId = 0; // TODO: new MSG-ID
+  Message.now(msgId, username, chatId, content) {
+    this.msgId = msgId;
     this.username = username;
     this.chatId = chatId;
     this.content = content;

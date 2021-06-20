@@ -216,15 +216,18 @@ class DBManager {
 
   // inserts
 
-  static void insertMessage(int chatId, String username, String text) async {
+  static Future<Message> insertMessage(int chatId, String username, String text) async {
+    int newId = await getCurrMsgId(chatId);
+    Message newMsg = Message.now(newId, username, chatId, text);
         await AppState.getInstance().connection.from('message')
             .insert(
               [{'chatid': chatId,
                'username': username,
                'content': text,
-               'timestamp': Converter.convertToTimeStamp(DateTime.now().millisecondsSinceEpoch),
-               'msgid' : await getCurrMsgId(chatId)}]
+               'timestamp': Converter.convertToTimeStamp(newMsg.timeStamp),
+               'msgid' : newMsg.msgId}]
             ).execute();
+        return newMsg;
   }
 
   static void updateUser(String username, String name, String desc) async {
