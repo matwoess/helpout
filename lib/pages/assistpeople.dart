@@ -64,7 +64,7 @@ class _AssistPeopleState extends State<AssistPeoplePage> {
     if (!AppState.getInstance().loggedIn)
       Navigator.pushNamed(context, '/prelogin');
     else {
-      print('starting chat with ${user.name}');
+      print('setting ${user.username} as auto-open chat user');
       AppState.getInstance().chatUser = user;
       while (Navigator.canPop(context)) {
         Navigator.of(context).pop();

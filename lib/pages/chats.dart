@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:helpout/misc/dbmanager.dart';
 import 'package:helpout/model/appstate.dart';
@@ -22,31 +24,6 @@ class _ChatsPageState extends State<ChatsPage> {
   void initState() {
     super.initState();
     _userChats = getChats();
-    WidgetsBinding.instance.addPostFrameCallback((_) => startChatWithPreDefinedUser());
-  }
-
-  void startChatWithPreDefinedUser() {
-    User chatUser = AppState.getInstance().chatUser;
-    if (chatUser == null) {
-      return;
-    }
-    Chat chat;
-    _userChats.then((value) => chat = value.where((c) => c.otherUsername == chatUser.username).first);
-    if (chat == null) {
-      return;
-    }
-   User other;
-    Future<User> user = DBManager.userByUsername(chat.otherUsername);
-    user.then((user) => other = user);
-    if (other == null) {
-      return;
-    }
-    AppState.getInstance().chatUser = null;
-    chat.isRead = true;
-    setState(() {});
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return MessagesPage(chat, other);
-    }));
   }
 
   @override
@@ -98,6 +75,16 @@ class _ChatItemState extends State<ChatItem> {
   initState() {
     super.initState();
     withUser = getUser(widget.chat.otherUsername);
+    withUser.then((user) => startChatWithPreDefinedUser(user));
+  }
+
+  void startChatWithPreDefinedUser(User user) {
+    User chatUser = AppState.getInstance().chatUser;
+    if (chatUser != null && user == chatUser) {
+      print('now starting chat with: ' + chatUser.username);
+      AppState.getInstance().chatUser = null;
+      enterChat(user);
+    }
   }
 
   @override
@@ -118,12 +105,18 @@ class _ChatItemState extends State<ChatItem> {
   }
 
   void enterChat(User user) {
-    widget.chat.isRead = true;
-    DBManager.markAsRead(widget.chat);
-    setState(() {});
+    if (!widget.chat.isRead) {
+      widget.chat.isRead = true;
+      DBManager.markAsRead(widget.chat);
+      setState(() {});
+    }
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return MessagesPage(widget.chat, user);
-    }));
+    })).then(onReturn);
+  }
+
+  FutureOr onReturn(dynamic value) {
+    setState(() {});
   }
 
   static Future<User> getUser(String username) {
@@ -156,39 +149,32 @@ class ChatItemCard extends StatelessWidget {
                   ),
                   Expanded(
                       child: Container(
-                        color: Colors.transparent,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              withUser.name,
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .headline6,
-                            ),
-                            SizedBox(
-                              height: 6,
-                            ),
-                            FutureBuilder(
-                                future: chat.lastMessage(),
-                                builder: (BuildContext context, AsyncSnapshot<Message> snapshotMsg) {
-                                  if (snapshotMsg.connectionState == ConnectionState.waiting) {
-                                    return Text('Loading data...');
-                                  } else {
-                                    return Text(
-                                        snapshotMsg.data != null
-                                            ? snapshotMsg.data.content
-                                            : 'Error loading Message!',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight:
-                                            chat.isRead ? FontWeight.normal : FontWeight.bold));
-                                  }
-                                })
-                          ],
+                    color: Colors.transparent,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          withUser.name,
+                          style: Theme.of(context).textTheme.headline6,
                         ),
-                      ))
+                        SizedBox(
+                          height: 6,
+                        ),
+                        FutureBuilder(
+                            future: chat.lastMessage(),
+                            builder: (BuildContext context, AsyncSnapshot<Message> snapshotMsg) {
+                              if (snapshotMsg.connectionState == ConnectionState.waiting) {
+                                return Text('Loading data...');
+                              } else {
+                                return Text(
+                                    snapshotMsg.data != null ? snapshotMsg.data.content : 'Error loading Message!',
+                                    style: TextStyle(
+                                        fontSize: 16, fontWeight: chat.isRead ? FontWeight.normal : FontWeight.bold));
+                              }
+                            })
+                      ],
+                    ),
+                  ))
                 ],
               ),
             ),
@@ -200,12 +186,9 @@ class ChatItemCard extends StatelessWidget {
                   } else {
                     return Text(
                       snapshotMsg.data != null
-                          ? DateFormat('MMMM d')
-                          .format(DateTime.fromMillisecondsSinceEpoch(snapshotMsg.data.timeStamp))
+                          ? DateFormat('MMMM d').format(DateTime.fromMillisecondsSinceEpoch(snapshotMsg.data.timeStamp))
                           : 'Invalid Date',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: chat.isRead ? FontWeight.normal : FontWeight.bold),
+                      style: TextStyle(fontSize: 16, fontWeight: chat.isRead ? FontWeight.normal : FontWeight.bold),
                     );
                   }
                 })
