@@ -199,7 +199,7 @@ class DBManager {
                 message['username'],
                 message['chatid'],
                 Converter.convertToChatText(message['content']),
-                DateTime.now().millisecondsSinceEpoch));
+                Converter.convertToMillisecondsSinceEpoch(message['timestamp'])));
           }
     }
     return messages;

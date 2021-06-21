@@ -21,7 +21,13 @@ class Converter {
 
   static String convertToTimeStamp(int millisecsSinceEpoch){
     var format = new DateFormat('yyyy-MM-dd hh:mm:ss');
-    var date = new DateTime.fromMicrosecondsSinceEpoch(1000 * millisecsSinceEpoch);
+     var date = new DateTime.fromMillisecondsSinceEpoch(millisecsSinceEpoch);
     return format.format(date);
+  }
+
+  static int convertToMillisecondsSinceEpoch(String timestamp){
+    //TODO: convert from timestamp string to milliseconds since epoch
+    print('TODO: toMillisecondsSinceEpoch: ' + timestamp);
+    return DateTime.now().millisecondsSinceEpoch;
   }
 }
