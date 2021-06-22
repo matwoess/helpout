@@ -62,9 +62,10 @@ class _RequestHelpState extends State<RequestHelpPage> {
       );
   }
 
-  void startChat(User user) {
+  void startChat(User user) async {
     Navigator.of(context).pop();
-    print('starting chat with ${user.name}');
+    print('setting ${user.username} as auto-open chat user');
+    await DBManager.createChatIfNeeded(user);
     AppState.getInstance().chatUser = user;
     while(Navigator.canPop(context)) {
       Navigator.of(context).pop();

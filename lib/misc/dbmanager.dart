@@ -291,4 +291,37 @@ class DBManager {
     // TODO: delete all associated messages
     print('TODO: also delete all associated messages for chat with id ${chat.chatId}');
   }
+
+  static createChatIfNeeded(User user) async {
+    print('checking for existing chats with ${user.username}');
+    List<Chat> chatHistory = await DBManager.getUserChats(AppState.getInstance().accountData.username);
+    for (Chat c in chatHistory) {
+      if (c.otherUsername == user.username) {
+        print('existing chat found.');
+        return;
+      }
+    }
+    print('no chat yet with ${user.username} yet. creating..');
+    await DBManager.createChatWithUser(user);
+  }
+
+  static createChatWithUser(User user) async {
+    await AppState.getInstance().connection.from('chat')
+        .insert([{
+          'chatid': await getNextChatId(),
+          'isread': false,
+          'username1': AppState.getInstance().accountData.username,
+          'username2': user.username
+        }]).execute();
+    // TODO: doesn't work yet, update schema
+    print('TODO: doesn\'t work yet, update schema');
+  }
+
+  static Future<int> getNextChatId() async {
+    PostgrestResponse result = await AppState.getInstance().connection.from('chat')
+        .select('chatid')
+        .execute();
+    if (result.toJson()['data'].isEmpty) return 0;
+    return result.toJson()['data'].last['chatid'] + 1;
+  }
 }

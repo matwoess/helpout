@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helpout/model/appstate.dart';
+import 'package:helpout/model/chat.dart';
 import 'package:helpout/model/user.dart';
 import 'package:helpout/pages/detailsdialog.dart';
 import 'package:helpout/pages/usercard.dart';
@@ -60,11 +61,12 @@ class _AssistPeopleState extends State<AssistPeoplePage> {
     );
   }
 
-  void startChat(User user) {
+  void startChat(User user) async {
     if (!AppState.getInstance().loggedIn)
       Navigator.pushNamed(context, '/prelogin');
     else {
       print('setting ${user.username} as auto-open chat user');
+      await DBManager.createChatIfNeeded(user);
       AppState.getInstance().chatUser = user;
       while (Navigator.canPop(context)) {
         Navigator.of(context).pop();
