@@ -18,18 +18,11 @@ class ChatsPage extends StatefulWidget {
 }
 
 class _ChatsPageState extends State<ChatsPage> {
-  Future<List<Chat>> _userChats;
-
-  @override
-  void initState() {
-    super.initState();
-    _userChats = getChats();
-  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Chat>>(
-        future: _userChats,
+        future: getChats(),
         builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
@@ -44,7 +37,7 @@ class _ChatsPageState extends State<ChatsPage> {
             return Container(
               child: ListView.builder(
                 itemBuilder: (context, position) {
-                  return ChatItem(snapshot.data[position]);
+                  return ChatItem(snapshot.data[position], deleteChat);
                 },
                 itemCount: snapshot.data.length,
               ),
@@ -59,9 +52,7 @@ class _ChatsPageState extends State<ChatsPage> {
   }
 
   deleteChat(Chat chat) {
-    print('delte chat');
-    //DBManager.deleteChat(chat);
-    _userChats = getChats();
+    DBManager.deleteChat(chat);
     setState(() {});
   }
 }

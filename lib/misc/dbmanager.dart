@@ -281,4 +281,14 @@ class DBManager {
     // TODO: implement database command
     print('TODO: mark chat with id ${chat.chatId} as read');
   }
+
+  static void deleteChat(Chat chat) async {
+    // TODO: check
+    await AppState.getInstance().connection.from('chat')
+        .delete()
+        .eq("chatid", chat.chatId)
+        .execute();
+    // TODO: delete all associated messages
+    print('TODO: also delete all associated messages for chat with id ${chat.chatId}');
+  }
 }
