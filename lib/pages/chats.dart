@@ -57,12 +57,20 @@ class _ChatsPageState extends State<ChatsPage> {
     List<Chat> chats = await DBManager.getUserChats('my_username');
     return chats;
   }
+
+  deleteChat(Chat chat) {
+    print('delte chat');
+    //DBManager.deleteChat(chat);
+    _userChats = getChats();
+    setState(() {});
+  }
 }
 
 class ChatItem extends StatefulWidget {
   final Chat chat;
+  final Function deleteChatCallback;
 
-  ChatItem(this.chat);
+  ChatItem(this.chat, this.deleteChatCallback);
 
   @override
   _ChatItemState createState() => _ChatItemState();
@@ -70,6 +78,7 @@ class ChatItem extends StatefulWidget {
 
 class _ChatItemState extends State<ChatItem> {
   Future<User> withUser;
+  var _tapPosition;
 
   @override
   initState() {
@@ -97,6 +106,8 @@ class _ChatItemState extends State<ChatItem> {
         } else {
           return GestureDetector(
             onTap: () => enterChat(snapshot.data),
+            onTapDown: storeTapPosition,
+            onLongPress: () => showChatItemMenu(widget.chat),
             child: ChatItemCard(widget.chat, snapshot.data),
           );
         }
@@ -122,6 +133,53 @@ class _ChatItemState extends State<ChatItem> {
   static Future<User> getUser(String username) {
     Future<User> user = DBManager.userByUsername(username);
     return user;
+  }
+
+  storeTapPosition(TapDownDetails details) {
+    _tapPosition = details.globalPosition;
+  }
+
+  showChatItemMenu(Chat chat) {
+    final RenderBox overlay = Overlay.of(context).context.findRenderObject();
+    RelativeRect rect = RelativeRect.fromRect(_tapPosition & const Size(40, 40), Offset.zero & overlay.size);
+    List<PopupMenuItem<Function>> menuItems = [
+      PopupMenuItem(
+        value: markAsRead,
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.mark_chat_read_outlined),
+            SizedBox(width: 5),
+            Text("Mark as read"),
+          ],
+        ),
+      ),
+      PopupMenuItem(
+        value: widget.deleteChatCallback,
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.delete_outline_outlined),
+            SizedBox(width: 5),
+            Text("Delete"),
+          ],
+        ),
+      )
+    ];
+    if (chat.isRead) menuItems.removeAt(0); // don't show "Mark as read" if chat already is
+    showMenu(
+      context: context,
+      position: rect,
+      items: menuItems,
+    ).then<void>((Function toExecute) {
+      if (toExecute == null) return; // no selection
+      setState(() {
+        toExecute(widget.chat);
+      });
+    });
+  }
+
+  markAsRead(Chat chat) {
+    print('mark as read');
+    chat.isRead = true;
   }
 }
 
