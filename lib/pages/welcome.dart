@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:helpout/model/appstate.dart';
 
 class WelcomePage extends StatelessWidget {
   final _text;
@@ -24,11 +23,11 @@ class WelcomePage extends StatelessWidget {
               child: ElevatedButton(
                 child: Text('Go back'),
                 onPressed: () {
-                  if (AppState.getInstance().searchType == SearchType.ASSIST)
-                     Navigator.popUntil(
-                        context, ModalRoute.withName('/detailview'));
-                  else
-                    Navigator.popUntil(context, ModalRoute.withName('/'));
+                  Navigator.popUntil(context, (Route<dynamic> route) {
+                    return !route.willHandlePopInternally &&
+                        route is ModalRoute &&
+                        (route.settings.name == '/detailview' || route.settings.name == '/');
+                  });
                 },
               ),
             ),

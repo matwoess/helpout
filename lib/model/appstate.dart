@@ -10,7 +10,6 @@ enum SearchType { REQUEST, ASSIST }
 class AppState {
   static final AppState _instance = AppState(
     null,
-    SearchType.ASSIST,
     null,
     false,
     null,
@@ -22,14 +21,13 @@ class AppState {
 
   List<Function> _callbacks = <Function>[];
   User _accountData;
-  SearchType _searchType;
   Region _region;
   bool _darkTheme;
   Position _currentPosition;
   User _chatUser;
   PostgrestClient _connection = PostgrestClient("http://localhost:3000");
 
-  AppState(this._accountData, this._searchType, this._region, this._darkTheme, this._chatUser) {
+  AppState(this._accountData, this._region, this._darkTheme, this._chatUser) {
     retrievePreviousUserCredentials().then((user) => {if (user != null) accountData = user});
   }
 
@@ -50,13 +48,6 @@ class AppState {
   }
 
   bool get loggedIn => _accountData != null;
-
-  SearchType get searchType => _searchType;
-
-  set searchType(SearchType searchType) {
-    _searchType = searchType;
-    triggerCallbacks();
-  }
 
   Region get region => _region;
 

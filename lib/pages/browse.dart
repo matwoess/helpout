@@ -14,6 +14,8 @@ class BrowsePage extends StatefulWidget {
 }
 
 class _BrowsePageState extends State<BrowsePage> {
+  SearchType _searchType = SearchType.ASSIST;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -32,7 +34,7 @@ class _BrowsePageState extends State<BrowsePage> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: AssistHelpRadioCard(),
+            child: AssistRequestRadioCard(_searchType, setSearchType),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -43,9 +45,9 @@ class _BrowsePageState extends State<BrowsePage> {
             child: ElevatedButton(
               child: Text('Search'),
               onPressed: () => {
-                if (AppState.getInstance().searchType == SearchType.ASSIST)
+                if (_searchType == SearchType.ASSIST)
                   Navigator.pushNamed(context, '/assist').then(onReturn)
-                else if (AppState.getInstance().searchType == SearchType.REQUEST)
+                else if (_searchType == SearchType.REQUEST)
                   if (AppState.getInstance().loggedIn)
                     Navigator.pushNamed(context, '/request').then(onReturn)
                   else
@@ -60,19 +62,33 @@ class _BrowsePageState extends State<BrowsePage> {
     );
   }
 
+  setSearchType(SearchType st) {
+    _searchType = st;
+  }
+
   FutureOr onReturn(dynamic value) {
     setState(() {});
   }
 }
 
-class AssistHelpRadioCard extends StatefulWidget {
-  AssistHelpRadioCard();
+class AssistRequestRadioCard extends StatefulWidget {
+  final SearchType _initialSearchType;
+  final Function _setSearchTypeCallback;
+  AssistRequestRadioCard(this._initialSearchType, this._setSearchTypeCallback);
 
   @override
-  _AssistHelpRadioCardState createState() => _AssistHelpRadioCardState();
+  _AssistRequestRadioCardState createState() => _AssistRequestRadioCardState();
 }
 
-class _AssistHelpRadioCardState extends State<AssistHelpRadioCard> {
+class _AssistRequestRadioCardState extends State<AssistRequestRadioCard> {
+  SearchType _currentSearchType;
+
+  @override
+  void initState() {
+    _currentSearchType = widget._initialSearchType;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -94,10 +110,11 @@ class _AssistHelpRadioCardState extends State<AssistHelpRadioCard> {
               title: const Text('Request help'),
               leading: Radio(
                 value: SearchType.REQUEST,
-                groupValue: AppState.getInstance().searchType,
+                groupValue: _currentSearchType,
                 onChanged: (SearchType value) {
                   setState(() {
-                    AppState.getInstance().searchType = value;
+                    _currentSearchType = value;
+                    widget._setSearchTypeCallback(value);
                   });
                 },
               ),
@@ -106,10 +123,11 @@ class _AssistHelpRadioCardState extends State<AssistHelpRadioCard> {
               title: const Text('Assist people'),
               leading: Radio(
                 value: SearchType.ASSIST,
-                groupValue: AppState.getInstance().searchType,
+                groupValue: _currentSearchType,
                 onChanged: (SearchType value) {
                   setState(() {
-                    AppState.getInstance().searchType = value;
+                    _currentSearchType = value;
+                    widget._setSearchTypeCallback(value);
                   });
                 },
               ),
