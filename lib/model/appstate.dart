@@ -29,6 +29,7 @@ class AppState {
 
   AppState(this._accountData, this._region, this._darkTheme, this._chatUser) {
     retrievePreviousUserCredentials().then((user) => {if (user != null) accountData = user});
+    restoreTheme().then((dark) => {if (dark != null && dark != _darkTheme) _darkTheme = dark});
   }
 
   User get accountData => _accountData;
@@ -67,7 +68,12 @@ class AppState {
 
   set darkTheme(bool darkTheme) {
     _darkTheme = darkTheme;
+    SharedPreferences.getInstance().then((prefs) => {prefs.setBool('darkTheme', darkTheme)});
     triggerCallbacks();
+  }
+
+  Future<bool> restoreTheme() async {
+    return SharedPreferences.getInstance().then((prefs) => prefs.getBool('darkTheme'));
   }
 
   User get chatUser => _chatUser;
