@@ -18,7 +18,6 @@ class ChatsPage extends StatefulWidget {
 }
 
 class _ChatsPageState extends State<ChatsPage> {
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Chat>>(
@@ -70,6 +69,7 @@ class ChatItem extends StatefulWidget {
 class _ChatItemState extends State<ChatItem> {
   Future<User> withUser;
   var _tapPosition;
+  bool highlight = false;
 
   @override
   initState() {
@@ -99,7 +99,10 @@ class _ChatItemState extends State<ChatItem> {
             onTap: () => enterChat(snapshot.data),
             onTapDown: storeTapPosition,
             onLongPress: () => showChatItemMenu(widget.chat),
-            child: ChatItemCard(widget.chat, snapshot.data),
+            child: Container(
+              color: highlight ? Theme.of(context).backgroundColor : null,
+              child: ChatItemCard(widget.chat, snapshot.data),
+            ),
           );
         }
       },
@@ -131,6 +134,8 @@ class _ChatItemState extends State<ChatItem> {
   }
 
   showChatItemMenu(Chat chat) {
+    highlight = true;
+    setState(() {});
     final RenderBox overlay = Overlay.of(context).context.findRenderObject();
     RelativeRect rect = RelativeRect.fromRect(_tapPosition & const Size(40, 40), Offset.zero & overlay.size);
     List<PopupMenuItem<Function>> menuItems = [
@@ -161,6 +166,8 @@ class _ChatItemState extends State<ChatItem> {
       position: rect,
       items: menuItems,
     ).then<void>((Function toExecute) {
+      highlight = false;
+      setState(() {});
       if (toExecute == null) return; // no selection
       setState(() {
         toExecute(widget.chat);
@@ -169,8 +176,8 @@ class _ChatItemState extends State<ChatItem> {
   }
 
   markAsRead(Chat chat) {
-    print('mark as read');
     chat.isRead = true;
+    DBManager.markAsRead(widget.chat);
   }
 }
 
