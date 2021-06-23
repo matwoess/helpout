@@ -225,18 +225,27 @@ class DBManager {
 
   // inserts
 
-  static Future<Message> insertMessage(int chatId, String username, String text) async {
-    int newId = await getCurrMsgId(chatId);
-    Message newMsg = Message.now(newId, username, chatId, text);
+  static Future<Message> insertMessage(Chat chat, String username, String text) async {
+    int newId = await getCurrMsgId(chat.chatId);
+    var mode;
+    if (AppState.getInstance().accountData.username == chat.username1) mode = "isread2";
+    else mode = "isread1";
+    await AppState.getInstance().connection.from('chat')
+        .update({
+          mode : false
+        })
+        .eq("chatid", chat.chatId)
+        .execute();
+    Message newMsg = Message.now(newId, username, chat.chatId, text);
         await AppState.getInstance().connection.from('message')
             .insert(
-              [{'chatid': chatId,
+              [{'chatid': chat.chatId,
                'username': username,
                'content': text,
                'timestamp': Converter.convertToTimeStamp(newMsg.timeStamp),
                'msgid' : newMsg.msgId}]
             ).execute();
-        return newMsg;
+    return newMsg;
   }
 
   static void updateUser(String username, String name, String desc) async {

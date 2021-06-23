@@ -33,7 +33,7 @@ class _MessagesState extends State<MessagesPage> {
       _sending = true;
     });
     Future<Message> newMsg =
-        DBManager.insertMessage(widget.chat.chatId, _accountData.username, _messageController.text);
+        DBManager.insertMessage(widget.chat, _accountData.username, _messageController.text);
     newMsg.then((msg) => _chatHistory.then((ch) => ch.add(msg)).whenComplete(() => setState(() {
           _messageController.text = '';
           _sending = false;
