@@ -12,10 +12,11 @@ extension ParseToString on Gender {
 }
 
 class User {
-  static final User loading = User('', 'Loading...', Gender.UNKNOWN, Region.unknown, 0, 'Loading...',
+  static final User loading = User('', '', 'Loading...', Gender.UNKNOWN, Region.unknown, 0, 'Loading...',
       'assets/images/empty.png', DateTime.now().millisecondsSinceEpoch);
 
   final String username;
+  final String password;
   String name;
   final Gender gender;
   final Region region;
@@ -28,6 +29,7 @@ class User {
 
   User(
     this.username,
+    this.password,
     this.name,
     this.gender,
     this.region,

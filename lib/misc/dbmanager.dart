@@ -112,8 +112,12 @@ class DBManager {
                   .select(Constants.userTableData)
                   .filter('username', 'eq', username)
                   .execute();
+        if (result.toJson()['data'].length == 0) {
+          return null;
+        }
     var user = result.toJson()['data'][0];
     return User(user['username'],
+      user['password'],
       user['firstname'],
       Converter.convertToGender(user['gender']['name']),
       Region(user['zipcode'].toString(), user['region']['name']),
@@ -131,6 +135,7 @@ class DBManager {
     List<User> users = [];
     for (final user in result.toJson()['data']){
       users.add(User(user['username'],
+      user['password'],
       user['firstname'],
       Converter.convertToGender(user['gender']['name']),
       Region(user['zipcode'].toString(), user['region']['name']),
@@ -153,6 +158,7 @@ class DBManager {
     List<User> users = [];
     for (final user in result.toJson()['data']){
       users.add(User(user['username'],
+      user['password'],
       user['firstname'],
       Converter.convertToGender(user['gender']['name']),
       region,

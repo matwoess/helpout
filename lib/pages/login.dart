@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helpout/misc/dbmanager.dart';
+import 'package:helpout/model/user.dart';
 
 import '../model/appstate.dart';
 
@@ -35,8 +36,7 @@ class LogInForm extends StatefulWidget {
 class _LogInFormState extends State<LogInForm> {
   final _usernameTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
-  bool _passwordDoesNotMatch = false;
-  String _pw = 'pw';
+  bool _passwordOrUserDoesNotMatch = false;
 
   double _formProgress = 0;
 
@@ -47,12 +47,11 @@ class _LogInFormState extends State<LogInForm> {
       _passwordTextController,
     ];
 
+    if (_passwordOrUserDoesNotMatch && _passwordTextController.text != '') {
+      _passwordOrUserDoesNotMatch = false;
+    }
+
     for (var controller in controllers) {
-      if (controller == _passwordTextController &&
-          _passwordDoesNotMatch &&
-          _passwordTextController.text != '') {
-        _passwordDoesNotMatch = false;
-      }
       if (controller.value.text.isNotEmpty) {
         progress += 1 / controllers.length;
       }
@@ -64,14 +63,15 @@ class _LogInFormState extends State<LogInForm> {
   }
 
   void _showWelcomeScreen() async {
-    if (_passwordTextController.text != _pw) {
-      _passwordDoesNotMatch = true;
+    User user = await DBManager.userByUsername(_usernameTextController.text);
+    if (user == null || _passwordTextController.text != user.password) {
+      _passwordOrUserDoesNotMatch = true;
       setState(() {
         _passwordTextController.text = '';
       });
       return;
     }
-    AppState.getInstance().accountData = await DBManager.getMyAccount();
+    AppState.getInstance().accountData = user;
     Navigator.popAndPushNamed(context, '/login/welcome');
   }
 
@@ -99,11 +99,11 @@ class _LogInFormState extends State<LogInForm> {
             ),
           ),
           Visibility(
-            visible: _passwordDoesNotMatch,
+            visible: _passwordOrUserDoesNotMatch,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Password did not match!',
+                'Password or username did not match!',
                 style: TextStyle(color: Colors.red),
               ),
             ),
@@ -112,23 +112,20 @@ class _LogInFormState extends State<LogInForm> {
             padding: const EdgeInsets.all(8.0),
             child: TextButton(
               style: ButtonStyle(
-                foregroundColor:
-                    MaterialStateColor.resolveWith((Set<MaterialState> states) {
-                  return states.contains(MaterialState.disabled)
-                      ? null
-                      : Colors.white;
+                foregroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                  return states.contains(MaterialState.disabled) ? null : Colors.white;
                 }),
-                backgroundColor:
-                    MaterialStateColor.resolveWith((Set<MaterialState> states) {
-                  return states.contains(MaterialState.disabled)
-                      ? null
-                      : Colors.blue;
+                backgroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                  return states.contains(MaterialState.disabled) ? null : Colors.blue;
                 }),
               ),
               onPressed: _formProgress == 1 ? _showWelcomeScreen : null,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('Log in', style: TextStyle(fontSize: 20.0),),
+                child: Text(
+                  'Log in',
+                  style: TextStyle(fontSize: 20.0),
+                ),
               ),
             ),
           ),
@@ -151,16 +148,14 @@ class AnimatedProgressIndicator extends StatefulWidget {
   }
 }
 
-class _AnimatedProgressIndicatorState extends State<AnimatedProgressIndicator>
-    with SingleTickerProviderStateMixin {
+class _AnimatedProgressIndicatorState extends State<AnimatedProgressIndicator> with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<Color> _colorAnimation;
   Animation<double> _curveAnimation;
 
   void initState() {
     super.initState();
-    _controller = AnimationController(
-        duration: Duration(milliseconds: 1200), vsync: this);
+    _controller = AnimationController(duration: Duration(milliseconds: 1200), vsync: this);
 
     var colorTween = TweenSequence([
       TweenSequenceItem(

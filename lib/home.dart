@@ -83,6 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     setState(() {
                       AppState.getInstance().accountData = null;
+                      _selectedIndex = NAV_PAGE.BROWSE;
                     });
                   },
                   child: Text('Log out'),
@@ -98,13 +99,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GestureDetector(
                   onTap: () {
                     setState (() {
-                      Future<User> user = DBManager.getMyAccount();
-                      user.then((user) => AppState.getInstance().accountData = user);
+                      Navigator.pushNamed(context, '/prelogin');
                     });
                   },
                   child: Text(
                     'Log in',
                   ),
+                ),
+              ),
+            ),
+          ),
+          Visibility( // instant log in with `my_username` TODO: remove when not needed anymore
+            visible: !AppState.getInstance().loggedIn,
+            child: Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: Center(
+                child: GestureDetector(
+                  onTap: () {
+                    setState (() {
+                      Future<User> user = DBManager.getMyAccount();
+                      user.then((user) => AppState.getInstance().accountData = user);
+                    });
+                  },
+                  child: Icon(Icons.login_outlined)
                 ),
               ),
             ),

@@ -46,7 +46,7 @@ class _ChatsPageState extends State<ChatsPage> {
   }
 
   static Future<List<Chat>> getChats() async {
-    List<Chat> chats = await DBManager.getUserChats('my_username');
+    List<Chat> chats = await DBManager.getUserChats(AppState.getInstance().accountData.username);
     return chats;
   }
 
