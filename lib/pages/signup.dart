@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:helpout/misc/dbmanager.dart';
+import 'package:helpout/model/region.dart';
+import 'package:helpout/model/user.dart';
 
 import '../model/appstate.dart';
 
@@ -40,6 +42,20 @@ class _SignUpFormState extends State<SignUpForm> {
   final _repeatpwTextController = TextEditingController();
   bool _passwordDoesNotMatch = false;
 
+  // for additional settings
+  var _tapPosition;
+  String _assetURI = 'assets/images/empty.png';
+  int _price = 0;
+  Region _region = null;
+
+  Future<List<Region>> regions;
+
+  @override
+  void initState() {
+    regions = getRegions();
+    super.initState();
+  }
+
   double _formProgress = 0;
 
   void _updateFormProgress() {
@@ -54,8 +70,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
     for (var controller in controllers) {
       if (controller.value.text.isNotEmpty) {
-        if (controller == _passwordTextController ||
-            controller == _repeatpwTextController) {
+        if (controller == _passwordTextController || controller == _repeatpwTextController) {
           if (_passwordTextController.text != _repeatpwTextController.text) {
             _passwordDoesNotMatch = true;
             continue;
@@ -73,7 +88,9 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   void _showWelcomeScreen() async {
-    AppState.getInstance().accountData = await DBManager.getMyAccount();
+    User user = await DBManager.createUser(_firstNameTextController.text, _lastNameTextController.text, _usernameTextController.text,
+        _passwordTextController.text, _region, _assetURI, _price);
+    AppState.getInstance().accountData = user;
     Navigator.popAndPushNamed(context, '/signup/welcome');
   }
 
@@ -132,32 +149,187 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
           ),
           Padding(
+            padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
+            child: Text('Additional user settings:'),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FutureBuilder<List<Region>>(
+              future: regions,
+              builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+                return Row(
+                  children: [
+                    Text('Residence:'),
+                    SizedBox(width: 15),
+                    Expanded(
+                      child: DropdownButton<Region>(
+                        isExpanded: true,
+                        value: _region,
+                        onChanged: (Region newValue) {
+                          setState(() {
+                            _region = newValue;
+                          });
+                        },
+                        underline: Container(
+                          height: 2,
+                          color: Theme.of(context).accentColor,
+                        ),
+                        items: snapshot.connectionState == ConnectionState.waiting
+                            ? null
+                            : snapshot.data
+                                .map((r) => DropdownMenuItem<Region>(
+                                      child: Text(r.toString()),
+                                      value: r,
+                                    ))
+                                .toList(),
+                        hint: snapshot.connectionState == ConnectionState.waiting
+                            ? Text('Getting available regions')
+                            : Text('Select region'),
+                      ),
+                    ),
+                    SizedBox(width: 8.0),
+                  ],
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text('Profile picture:'),
+                Expanded(child: Container()),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(width: 1.0, color: Theme.of(context).accentColor),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        child: CircleAvatar(
+                          child: Image(image: AssetImage(_assetURI)),
+                          maxRadius: 20,
+                        ),
+                        onTap: showImagePicker,
+                        onTapDown: storeTapPosition,
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Text('${_assetURI.split('/').last}'),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 8.0),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text('Price per hour for helping out:'),
+                Expanded(
+                  child: Container(),
+                ),
+                DropdownButton<int>(
+                  value: _price,
+                  onChanged: (int newValue) {
+                    setState(() {
+                      _price = newValue;
+                    });
+                  },
+                  underline: Container(
+                    height: 2,
+                    color: Theme.of(context).accentColor,
+                  ),
+                  items: Iterable<int>.generate(15 + 1).map<DropdownMenuItem<int>>((int value) {
+                    return DropdownMenuItem<int>(
+                      value: value,
+                      child: Text(value.toString() + '€'),
+                    );
+                  }).toList(),
+                ),
+                SizedBox(width: 16.0),
+              ],
+            ),
+          ),
+          Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextButton(
               style: ButtonStyle(
-                foregroundColor:
-                    MaterialStateColor.resolveWith((Set<MaterialState> states) {
-                  return states.contains(MaterialState.disabled)
-                      ? null
-                      : Colors.white;
+                foregroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                  return states.contains(MaterialState.disabled) ? null : Colors.white;
                 }),
-                backgroundColor:
-                    MaterialStateColor.resolveWith((Set<MaterialState> states) {
-                  return states.contains(MaterialState.disabled)
-                      ? null
-                      : Colors.blue;
+                backgroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                  return states.contains(MaterialState.disabled) ? null : Colors.blue;
                 }),
               ),
               onPressed: _formProgress == 1 ? _showWelcomeScreen : null,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('Sign up', style: TextStyle(fontSize: 20.0),),
+                child: Text(
+                  'Sign up',
+                  style: TextStyle(fontSize: 20.0),
+                ),
               ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  storeTapPosition(TapDownDetails details) {
+    _tapPosition = details.globalPosition;
+  }
+
+  void showImagePicker() {
+    final RenderBox overlay = Overlay.of(context).context.findRenderObject();
+    RelativeRect rect = RelativeRect.fromRect(_tapPosition & const Size(40, 40), Offset.zero & overlay.size);
+    //TODO: read from avatars folder
+    List<String> allAvatars = [
+      'assets/avatars/female1.png',
+      'assets/avatars/female2.png',
+      'assets/avatars/female3.png',
+      'assets/avatars/female4.png',
+      'assets/avatars/male1.png',
+      'assets/avatars/male2.png',
+      'assets/avatars/male3.png',
+    ];
+    List<PopupMenuItem<String>> menuItems = allAvatars
+        .map(
+          (avatar) => PopupMenuItem(
+            value: avatar,
+            child: Row(
+              children: <Widget>[
+                CircleAvatar(
+                  child: Image(image: AssetImage(avatar)),
+                  maxRadius: 20,
+                ),
+                SizedBox(width: 5),
+                Text('${avatar.split('/').last}'),
+              ],
+            ),
+          ),
+        )
+        .toList();
+    showMenu(
+      context: context,
+      position: rect,
+      items: menuItems,
+    ).then<void>((String pickedAvatar) {
+      if (pickedAvatar == null) return;
+      _assetURI = pickedAvatar;
+      setState(() {});
+    });
+  }
+
+  static Future<List<Region>> getRegions() async {
+    List<Region> regions = await DBManager.getAvailableRegions();
+    return regions;
   }
 }
 
@@ -174,16 +346,14 @@ class AnimatedProgressIndicator extends StatefulWidget {
   }
 }
 
-class _AnimatedProgressIndicatorState extends State<AnimatedProgressIndicator>
-    with SingleTickerProviderStateMixin {
+class _AnimatedProgressIndicatorState extends State<AnimatedProgressIndicator> with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<Color> _colorAnimation;
   Animation<double> _curveAnimation;
 
   void initState() {
     super.initState();
-    _controller = AnimationController(
-        duration: Duration(milliseconds: 1200), vsync: this);
+    _controller = AnimationController(duration: Duration(milliseconds: 1200), vsync: this);
 
     var colorTween = TweenSequence([
       TweenSequenceItem(

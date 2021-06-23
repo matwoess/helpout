@@ -352,4 +352,11 @@ class DBManager {
     if (result.toJson()['data'].isEmpty) return 0;
     return result.toJson()['data'].first['chatid'] + 1;
   }
+
+  static Future<User> createUser(String firstname, String lastname, String username, String password,
+      Region region, String assetURI, int price) async {
+    // TODO: create user
+    print('TODO: create user');
+    return null; // TODO: return new user
+  }
 }
