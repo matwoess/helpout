@@ -284,9 +284,12 @@ class DBManager {
   }
 
   static void markAsRead(Chat chat) async {
+    var mode;
+    if (AppState.getInstance().accountData.username == chat.username1) mode = "isread1";
+    else mode = "isread2";
     await AppState.getInstance().connection.from('chat')
         .update({
-          "isread" : true
+          mode : true
         })
         .eq("chatid", chat.chatId)
         .execute();

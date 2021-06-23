@@ -5,7 +5,7 @@
 -- Dumped from database version 12.7
 -- Dumped by pg_dump version 12.7
 
--- Started on 2021-06-23 15:01:51
+-- Started on 2021-06-23 19:49:50
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -53,9 +53,10 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.chat (
     chatid integer NOT NULL,
-    isread boolean,
+    isread1 boolean,
     username1 character varying NOT NULL,
-    username2 character varying NOT NULL
+    username2 character varying NOT NULL,
+    isread2 boolean
 );
 
 
@@ -131,15 +132,15 @@ ALTER TABLE public."user" OWNER TO postgres;
 -- Data for Name: chat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (2, true, 'eddom', 'my_username');
-INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (4, true, 'tanja.gruber', 'my_username');
-INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (5, true, 'my_username', 'tbb');
-INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (6, true, 'usr123', 'my_username');
-INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (7, true, 'my_username', 'augernst');
-INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (443, true, 'anna96', 'my_username');
-INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (0, true, 'joe.hinter', 'my_username');
-INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (3, true, 'my_username', 'm.hauer');
-INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (444, true, 'my_username', 'briggite.s');
+INSERT INTO public.chat (chatid, isread1, username1, username2, isread2) VALUES (0, true, 'joe.hinter', 'my_username', true);
+INSERT INTO public.chat (chatid, isread1, username1, username2, isread2) VALUES (2, true, 'eddom', 'my_username', false);
+INSERT INTO public.chat (chatid, isread1, username1, username2, isread2) VALUES (3, true, 'my_username', 'm.hauer', true);
+INSERT INTO public.chat (chatid, isread1, username1, username2, isread2) VALUES (4, true, 'tanja.gruber', 'my_username', true);
+INSERT INTO public.chat (chatid, isread1, username1, username2, isread2) VALUES (5, true, 'my_username', 'tbb', true);
+INSERT INTO public.chat (chatid, isread1, username1, username2, isread2) VALUES (6, true, 'usr123', 'my_username', true);
+INSERT INTO public.chat (chatid, isread1, username1, username2, isread2) VALUES (7, true, 'my_username', 'augernst', true);
+INSERT INTO public.chat (chatid, isread1, username1, username2, isread2) VALUES (444, true, 'my_username', 'briggite.s', true);
+INSERT INTO public.chat (chatid, isread1, username1, username2, isread2) VALUES (443, true, 'anna96', 'my_username', false);
 
 
 --
@@ -295,7 +296,7 @@ ALTER TABLE ONLY public."user"
     ADD CONSTRAINT zip_fk FOREIGN KEY (zipcode) REFERENCES public.city(zipcode) NOT VALID;
 
 
--- Completed on 2021-06-23 15:01:51
+-- Completed on 2021-06-23 19:49:50
 
 --
 -- PostgreSQL database dump complete
