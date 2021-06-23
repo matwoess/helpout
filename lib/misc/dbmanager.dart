@@ -278,8 +278,13 @@ class DBManager {
   }
 
   static void markAsRead(Chat chat) async {
-    // TODO: implement database command
-    print('TODO: mark chat with id ${chat.chatId} as read');
+    await AppState.getInstance().connection.from('chat')
+        .update({
+          "isread" : true
+        })
+        .eq("chatid", chat.chatId)
+        .execute();
+    //print('TODO: mark chat with id ${chat.chatId} as read');
   }
 
   static void deleteChat(Chat chat) async {
@@ -288,8 +293,7 @@ class DBManager {
         .delete()
         .eq("chatid", chat.chatId)
         .execute();
-    // TODO: delete all associated messages
-    print('TODO: also delete all associated messages for chat with id ${chat.chatId}');
+    //print('TODO: also delete all associated messages for chat with id ${chat.chatId}');
   }
 
   static createChatIfNeeded(User user) async {
@@ -306,22 +310,24 @@ class DBManager {
   }
 
   static createChatWithUser(User user) async {
-    await AppState.getInstance().connection.from('chat')
+    var response = await AppState.getInstance().connection.from('chat')
         .insert([{
           'chatid': await getNextChatId(),
           'isread': false,
           'username1': AppState.getInstance().accountData.username,
           'username2': user.username
         }]).execute();
-    // TODO: doesn't work yet, update schema
-    print('TODO: doesn\'t work yet, update schema');
+    print(response.toJson());
+    //print('TODO: doesn\'t work yet, update schema');
   }
 
   static Future<int> getNextChatId() async {
     PostgrestResponse result = await AppState.getInstance().connection.from('chat')
         .select('chatid')
+        .order('chatid')
         .execute();
+    print(result.toJson());
     if (result.toJson()['data'].isEmpty) return 0;
-    return result.toJson()['data'].last['chatid'] + 1;
+    return result.toJson()['data'].first['chatid'] + 1;
   }
 }

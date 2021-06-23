@@ -3,7 +3,6 @@ class Constants {
   static double detailDialogAvatarRadius = 42.0;
   static final String userTableData = 'username, firstname, lastname, gender:gid(name), zipcode, region:zipcode(name),price, description, asset';
 
-
   // Use @<variable> to address parameters to substitute => prepared statement (see: https://pub.dev/packages/postgres, improves resiliance against SQL injection)
   // Select Queries
   //// General

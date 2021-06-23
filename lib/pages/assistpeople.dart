@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:helpout/model/appstate.dart';
-import 'package:helpout/model/chat.dart';
 import 'package:helpout/model/user.dart';
 import 'package:helpout/pages/detailsdialog.dart';
 import 'package:helpout/pages/usercard.dart';

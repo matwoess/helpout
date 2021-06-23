@@ -5,7 +5,7 @@
 -- Dumped from database version 12.7
 -- Dumped by pg_dump version 12.7
 
--- Started on 2021-06-16 13:07:32
+-- Started on 2021-06-23 09:37:29
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -20,7 +20,7 @@ SET row_security = off;
 
 DROP DATABASE helpout;
 --
--- TOC entry 2859 (class 1262 OID 32777)
+-- TOC entry 2856 (class 1262 OID 32777)
 -- Name: helpout; Type: DATABASE; Schema: -; Owner: postgres
 --
 
@@ -60,21 +60,6 @@ CREATE TABLE public.chat (
 
 
 ALTER TABLE public.chat OWNER TO postgres;
-
---
--- TOC entry 207 (class 1259 OID 40969)
--- Name: chat_chatid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-ALTER TABLE public.chat ALTER COLUMN chatid ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.chat_chatid_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
 
 --
 -- TOC entry 203 (class 1259 OID 32791)
@@ -140,24 +125,24 @@ CREATE TABLE public."user" (
 ALTER TABLE public."user" OWNER TO postgres;
 
 --
--- TOC entry 2851 (class 0 OID 32807)
+-- TOC entry 2849 (class 0 OID 32807)
 -- Dependencies: 205
 -- Data for Name: chat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.chat (chatid, isread, username1, username2) OVERRIDING SYSTEM VALUE VALUES (0, false, 'joe.hinter', 'my_username');
-INSERT INTO public.chat (chatid, isread, username1, username2) OVERRIDING SYSTEM VALUE VALUES (1, true, 'my_username', 'briggite.s');
-INSERT INTO public.chat (chatid, isread, username1, username2) OVERRIDING SYSTEM VALUE VALUES (2, true, 'eddom', 'my_username');
-INSERT INTO public.chat (chatid, isread, username1, username2) OVERRIDING SYSTEM VALUE VALUES (3, false, 'my_username', 'm.hauer');
-INSERT INTO public.chat (chatid, isread, username1, username2) OVERRIDING SYSTEM VALUE VALUES (4, true, 'tanja.gruber', 'my_username');
-INSERT INTO public.chat (chatid, isread, username1, username2) OVERRIDING SYSTEM VALUE VALUES (5, true, 'my_username', 'tbb');
-INSERT INTO public.chat (chatid, isread, username1, username2) OVERRIDING SYSTEM VALUE VALUES (6, true, 'usr123', 'my_username');
-INSERT INTO public.chat (chatid, isread, username1, username2) OVERRIDING SYSTEM VALUE VALUES (7, true, 'my_username', 'augernst');
-INSERT INTO public.chat (chatid, isread, username1, username2) OVERRIDING SYSTEM VALUE VALUES (443, true, 'anna96', 'my_username');
+INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (0, false, 'joe.hinter', 'my_username');
+INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (1, true, 'my_username', 'briggite.s');
+INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (2, true, 'eddom', 'my_username');
+INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (3, false, 'my_username', 'm.hauer');
+INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (4, true, 'tanja.gruber', 'my_username');
+INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (5, true, 'my_username', 'tbb');
+INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (6, true, 'usr123', 'my_username');
+INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (7, true, 'my_username', 'augernst');
+INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (443, true, 'anna96', 'my_username');
 
 
 --
--- TOC entry 2849 (class 0 OID 32791)
+-- TOC entry 2847 (class 0 OID 32791)
 -- Dependencies: 203
 -- Data for Name: city; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -171,7 +156,7 @@ INSERT INTO public.city (zipcode, name) VALUES (4600, 'Wels');
 
 
 --
--- TOC entry 2848 (class 0 OID 32786)
+-- TOC entry 2846 (class 0 OID 32786)
 -- Dependencies: 202
 -- Data for Name: gender; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -182,7 +167,7 @@ INSERT INTO public.gender (gid, name) VALUES (3, 'OTHER');
 
 
 --
--- TOC entry 2852 (class 0 OID 32815)
+-- TOC entry 2850 (class 0 OID 32815)
 -- Dependencies: 206
 -- Data for Name: message; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -196,10 +181,13 @@ INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUE
 INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (1, 0, 'my_username', '2021-06-12 12:48:11', 'test');
 INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (1, 1, 'my_username', '2021-06-12 12:48:21', 'hoi');
 INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (1, 2, 'my_username', '2021-06-12 12:48:41', 'Boom!');
+INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (0, 6, 'my_username', '2021-06-16 11:26:16', 'Hi');
+INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (0, 7, 'my_username', '2021-06-16 11:26:18', '');
+INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (0, 8, 'my_username', '2021-06-16 11:26:30', 'Test');
 
 
 --
--- TOC entry 2850 (class 0 OID 32799)
+-- TOC entry 2848 (class 0 OID 32799)
 -- Dependencies: 204
 -- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -217,16 +205,7 @@ INSERT INTO public."user" (username, firstname, lastname, price, asset, descript
 
 
 --
--- TOC entry 2860 (class 0 OID 0)
--- Dependencies: 207
--- Name: chat_chatid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.chat_chatid_seq', 1, false);
-
-
---
--- TOC entry 2714 (class 2606 OID 32814)
+-- TOC entry 2712 (class 2606 OID 32814)
 -- Name: chat chat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -235,7 +214,7 @@ ALTER TABLE ONLY public.chat
 
 
 --
--- TOC entry 2710 (class 2606 OID 32798)
+-- TOC entry 2708 (class 2606 OID 32798)
 -- Name: city city_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -244,7 +223,7 @@ ALTER TABLE ONLY public.city
 
 
 --
--- TOC entry 2708 (class 2606 OID 32790)
+-- TOC entry 2706 (class 2606 OID 32790)
 -- Name: gender gender_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -253,7 +232,7 @@ ALTER TABLE ONLY public.gender
 
 
 --
--- TOC entry 2716 (class 2606 OID 49174)
+-- TOC entry 2714 (class 2606 OID 49174)
 -- Name: message message_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -262,7 +241,7 @@ ALTER TABLE ONLY public.message
 
 
 --
--- TOC entry 2712 (class 2606 OID 32806)
+-- TOC entry 2710 (class 2606 OID 32806)
 -- Name: user user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -271,7 +250,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- TOC entry 2721 (class 2606 OID 32853)
+-- TOC entry 2719 (class 2606 OID 32853)
 -- Name: message chatid_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -280,7 +259,7 @@ ALTER TABLE ONLY public.message
 
 
 --
--- TOC entry 2717 (class 2606 OID 32828)
+-- TOC entry 2715 (class 2606 OID 32828)
 -- Name: user gid_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -289,7 +268,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- TOC entry 2719 (class 2606 OID 32838)
+-- TOC entry 2717 (class 2606 OID 32838)
 -- Name: chat username1_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -298,7 +277,7 @@ ALTER TABLE ONLY public.chat
 
 
 --
--- TOC entry 2720 (class 2606 OID 32843)
+-- TOC entry 2718 (class 2606 OID 32843)
 -- Name: chat username2_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -307,7 +286,7 @@ ALTER TABLE ONLY public.chat
 
 
 --
--- TOC entry 2718 (class 2606 OID 32833)
+-- TOC entry 2716 (class 2606 OID 32833)
 -- Name: user zip_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -315,7 +294,7 @@ ALTER TABLE ONLY public."user"
     ADD CONSTRAINT zip_fk FOREIGN KEY (zipcode) REFERENCES public.city(zipcode) NOT VALID;
 
 
--- Completed on 2021-06-16 13:07:32
+-- Completed on 2021-06-23 09:37:30
 
 --
 -- PostgreSQL database dump complete

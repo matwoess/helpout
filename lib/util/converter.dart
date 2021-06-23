@@ -26,8 +26,7 @@ class Converter {
   }
 
   static int convertToMillisecondsSinceEpoch(String timestamp){
-    //TODO: convert from timestamp string to milliseconds since epoch
-    print('TODO: toMillisecondsSinceEpoch: ' + timestamp);
-    return DateTime.now().millisecondsSinceEpoch;
+    //print('TODO: toMillisecondsSinceEpoch: ' + DateTime.parse(timestamp).millisecondsSinceEpoch.toString());
+    return DateTime.parse(timestamp).millisecondsSinceEpoch;
   }
 }

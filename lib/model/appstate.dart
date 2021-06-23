@@ -8,7 +8,6 @@ enum SearchType { REQUEST, ASSIST }
 class AppState {
   static final AppState _instance = AppState(
     null,
-    //DemoData.getMyAccount(), // (auto-login) TODO: set to null
     SearchType.ASSIST,
     null,
     false,

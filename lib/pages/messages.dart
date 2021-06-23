@@ -28,6 +28,7 @@ class _MessagesState extends State<MessagesPage> {
   }
 
   void sendMessage() async {
+    if (_messageController.text == '') return;
     setState(() {
       _sending = true;
     });
