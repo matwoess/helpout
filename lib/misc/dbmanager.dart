@@ -188,7 +188,10 @@ class DBManager {
                     .execute();
     List<Chat> chats = [];
     for (final chat in result.toJson()['data']){
-      chats.add(Chat(chat['chatid'], chat['username1'], chat['username2'], chat['isread']));
+      var mode;
+      if (username == chat['username1']) mode = 'isread1';
+      else mode = 'isread2';
+      chats.add(Chat(chat['chatid'], chat['username1'], chat['username2'], chat[mode]));
     }
     return chats;
   }
@@ -322,7 +325,8 @@ class DBManager {
     var response = await AppState.getInstance().connection.from('chat')
         .insert([{
           'chatid': await getNextChatId(),
-          'isread': false,
+          'isread1': false,
+          'isread2': false,
           'username1': AppState.getInstance().accountData.username,
           'username2': user.username
         }]).execute();
