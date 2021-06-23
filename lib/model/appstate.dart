@@ -1,7 +1,9 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:helpout/model/user.dart';
+import 'package:helpout/misc/dbmanager.dart';
 import 'package:helpout/model/region.dart';
+import 'package:helpout/model/user.dart';
 import 'package:postgrest/postgrest.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum SearchType { REQUEST, ASSIST }
 
@@ -27,15 +29,24 @@ class AppState {
   User _chatUser;
   PostgrestClient _connection = PostgrestClient("http://localhost:3000");
 
-  AppState(this._accountData, this._searchType, this._region, this._darkTheme,
-      this._chatUser);
-
+  AppState(this._accountData, this._searchType, this._region, this._darkTheme, this._chatUser) {
+    retrievePreviousUserCredentials().then((user) => {if (user != null) accountData = user});
+  }
 
   User get accountData => _accountData;
 
   set accountData(User accountData) {
     _accountData = accountData;
+    SharedPreferences.getInstance().then((prefs) => {
+          if (accountData == null) {prefs.remove('username')} else {prefs.setString('username', accountData.username)}
+        });
     triggerCallbacks();
+  }
+
+  Future<User> retrievePreviousUserCredentials() async {
+    return SharedPreferences.getInstance()
+        .then((prefs) => prefs.getString('username'))
+        .then((username) => username == null ? null : DBManager.userByUsername(username));
   }
 
   bool get loggedIn => _accountData != null;
