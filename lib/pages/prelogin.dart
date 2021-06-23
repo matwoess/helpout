@@ -28,19 +28,37 @@ class PreLoginPage extends StatelessWidget {
                 Padding(padding: EdgeInsets.only(top: 16.0)),
                 Column(
                   children: [
-                    Container(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                          onPressed: () =>
-                              Navigator.pushNamed(context, '/login'),
-                          child: Text('Login')),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () => Navigator.pushNamed(context, '/login'),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Login',
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                    Container(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                          onPressed: () =>
-                              Navigator.pushNamed(context, '/signup'),
-                          child: Text('Sign up')),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () => Navigator.pushNamed(context, '/signup'),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Sign up',
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),

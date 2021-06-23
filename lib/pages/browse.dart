@@ -43,7 +43,13 @@ class _BrowsePageState extends State<BrowsePage> {
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: ElevatedButton(
-              child: Text('Search'),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Search',
+                  style: TextStyle(fontSize: 20.0),
+                ),
+              ),
               onPressed: () => {
                 if (_searchType == SearchType.ASSIST)
                   Navigator.pushNamed(context, '/assist').then(onReturn)
@@ -74,6 +80,7 @@ class _BrowsePageState extends State<BrowsePage> {
 class AssistRequestRadioCard extends StatefulWidget {
   final SearchType _initialSearchType;
   final Function _setSearchTypeCallback;
+
   AssistRequestRadioCard(this._initialSearchType, this._setSearchTypeCallback);
 
   @override
@@ -207,7 +214,10 @@ class _RegionCardState extends State<RegionCard> {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: ElevatedButton(
                             onPressed: getWhereabouts,
-                            child: Icon(Icons.my_location),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(Icons.my_location),
+                            ),
                           ),
                         ),
                       ),

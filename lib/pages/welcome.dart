@@ -17,18 +17,27 @@ class WelcomePage extends StatelessWidget {
           children: [
             Text(_text, style: Theme.of(context).textTheme.headline3),
             Padding(padding: EdgeInsets.only(top: 16.0)),
-            Container(
-              margin: EdgeInsets.only(left: 16.0, right: 16.0),
-              width: double.infinity,
-              child: ElevatedButton(
-                child: Text('Go back'),
-                onPressed: () {
-                  Navigator.popUntil(context, (Route<dynamic> route) {
-                    return !route.willHandlePopInternally &&
-                        route is ModalRoute &&
-                        (route.settings.name == '/detailview' || route.settings.name == '/');
-                  });
-                },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                margin: EdgeInsets.only(left: 16.0, right: 16.0),
+                width: double.infinity,
+                child: ElevatedButton(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Go back',
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.popUntil(context, (Route<dynamic> route) {
+                      return !route.willHandlePopInternally &&
+                          route is ModalRoute &&
+                          (route.settings.name == '/detailview' || route.settings.name == '/');
+                    });
+                  },
+                ),
               ),
             ),
           ],

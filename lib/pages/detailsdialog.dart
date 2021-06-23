@@ -63,8 +63,12 @@ class DetailsDialog extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 child: TextButton(
                     onPressed: () => _chatCallback(_person),
-                    child: Text(
-                      'Start Chat',
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Start Chat',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
                     )),
               ),
             ],

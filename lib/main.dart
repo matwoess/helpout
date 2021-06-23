@@ -35,7 +35,7 @@ class _MainAppState extends State<MainApp> {
           brightness: Brightness.dark,
           primarySwatch: Colors.teal,
           primaryColor: Colors.teal,
-          accentColor: Colors.amberAccent
+          accentColor: Colors.amberAccent,
         );
       case false:
         return ThemeData(

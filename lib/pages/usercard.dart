@@ -17,11 +17,14 @@ class UserCard extends Card {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           ListTile(
-            title: Text('${_user.name}'),
+            title: Text(
+              '${_user.name}',
+              style: Theme.of(context).textTheme.headline6,
+            ),
             leading: Image(image: AssetImage(_user.assetURI)),
             subtitle: Text(
               '${_user.region}',
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.subtitle2,
             ),
           ),
           Container(
@@ -33,6 +36,7 @@ class UserCard extends Card {
                     "${_user.description}",
                     overflow: TextOverflow.ellipsis,
                     maxLines: 10,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
               ],
@@ -43,7 +47,13 @@ class UserCard extends Card {
             children: [
               TextButton(
                 onPressed: () => _detailsCallback(_user),
-                child: const Text('Details'),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Text(
+                    'Details',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                ),
               ),
             ],
           ),

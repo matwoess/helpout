@@ -131,23 +131,29 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
             ),
           ),
-          TextButton(
-            style: ButtonStyle(
-              foregroundColor:
-                  MaterialStateColor.resolveWith((Set<MaterialState> states) {
-                return states.contains(MaterialState.disabled)
-                    ? null
-                    : Colors.white;
-              }),
-              backgroundColor:
-                  MaterialStateColor.resolveWith((Set<MaterialState> states) {
-                return states.contains(MaterialState.disabled)
-                    ? null
-                    : Colors.blue;
-              }),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextButton(
+              style: ButtonStyle(
+                foregroundColor:
+                    MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                  return states.contains(MaterialState.disabled)
+                      ? null
+                      : Colors.white;
+                }),
+                backgroundColor:
+                    MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                  return states.contains(MaterialState.disabled)
+                      ? null
+                      : Colors.blue;
+                }),
+              ),
+              onPressed: _formProgress == 1 ? _showWelcomeScreen : null,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Sign up', style: TextStyle(fontSize: 20.0),),
+              ),
             ),
-            onPressed: _formProgress == 1 ? _showWelcomeScreen : null,
-            child: Text('Sign up'),
           ),
         ],
       ),
