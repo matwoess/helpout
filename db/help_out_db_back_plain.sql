@@ -5,7 +5,7 @@
 -- Dumped from database version 12.7
 -- Dumped by pg_dump version 12.7
 
--- Started on 2021-06-23 09:37:29
+-- Started on 2021-06-23 13:25:19
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -118,7 +118,9 @@ CREATE TABLE public."user" (
     gid integer,
     zipcode integer,
     level integer,
-    score integer
+    score integer,
+    password character varying NOT NULL,
+    requestassist boolean NOT NULL
 );
 
 
@@ -130,15 +132,15 @@ ALTER TABLE public."user" OWNER TO postgres;
 -- Data for Name: chat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (0, false, 'joe.hinter', 'my_username');
-INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (1, true, 'my_username', 'briggite.s');
 INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (2, true, 'eddom', 'my_username');
-INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (3, false, 'my_username', 'm.hauer');
 INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (4, true, 'tanja.gruber', 'my_username');
 INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (5, true, 'my_username', 'tbb');
 INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (6, true, 'usr123', 'my_username');
 INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (7, true, 'my_username', 'augernst');
 INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (443, true, 'anna96', 'my_username');
+INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (0, true, 'joe.hinter', 'my_username');
+INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (3, true, 'my_username', 'm.hauer');
+INSERT INTO public.chat (chatid, isread, username1, username2) VALUES (444, true, 'my_username', 'briggite.s');
 
 
 --
@@ -178,12 +180,12 @@ INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUE
 INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (0, 3, 'joe.hinter', '2021-05-25 10:31:20', 'What seems to be the problem?');
 INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (0, 4, 'my_username', '2021-05-25 14:30:20', 'I need help with <thing>?\nWhen do you have time?');
 INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (0, 5, 'my_username', '2021-06-12 12:30:45', 'test');
-INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (1, 0, 'my_username', '2021-06-12 12:48:11', 'test');
-INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (1, 1, 'my_username', '2021-06-12 12:48:21', 'hoi');
-INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (1, 2, 'my_username', '2021-06-12 12:48:41', 'Boom!');
 INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (0, 6, 'my_username', '2021-06-16 11:26:16', 'Hi');
 INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (0, 7, 'my_username', '2021-06-16 11:26:18', '');
 INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (0, 8, 'my_username', '2021-06-16 11:26:30', 'Test');
+INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (444, 0, 'my_username', '2021-06-23 10:18:10', 'hey ');
+INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (444, 1, 'my_username', '2021-06-23 10:18:17', 'hello?');
+INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUES (444, 2, 'my_username', '2021-06-23 10:18:22', '');
 
 
 --
@@ -192,16 +194,16 @@ INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUE
 -- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score) VALUES ('joe.hinter', 'Johannes', 'Hinterberger', 0, 'assets/avatars/male1.png', 'I am a helpful person.', 1, 4020, 1, 10);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score) VALUES ('briggite.s', 'Brigitte', 'Seitenschläger', 5, 'assets/avatars/female1.png', 'I love animals.', 2, 4040, 1, 20);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score) VALUES ('eddom', 'Eduardo', 'Domingo', 7, 'assets/avatars/male2.png', 'Several years of experience as a pet-sitter.', 1, 4600, 1, 33);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score) VALUES ('m.hauer', 'Manuel', 'Hauer', 15, 'assets/avatars/male3.png', 'I have a lot of free time.', 1, 4600, 1, 44);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score) VALUES ('tanja.gruber', 'Tanja', 'Gruber', 8, 'assets/avatars/female2.png', 'I love animals.', 2, 4221, 1, 44);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score) VALUES ('tbb', 'Thomas', 'Braunberger', 10, 'assets/avatars/male3.png', 'Male, 35 years old, education from FH Hagenberg, like to read, have 3 sisters and 1 brother. More information about me can be found on my website at http://person.me.com', 1, 4050, 1, 66);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score) VALUES ('usr123', 'Ano', 'Nymous', 9, 'assets/images/empty.png', '(no description)', 3, 4221, 1, 12);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score) VALUES ('augernst', 'Augustine', 'Ernst', 13, 'assets/avatars/female3.png', 'I can help out anytime.', 2, 4030, 1, 45);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score) VALUES ('anna96', 'Anna', 'Steiner', 6, 'assets/avatars/female4.png', 'Recommend me to your friends!', 2, 4600, 1, 67);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score) VALUES ('my_username', 'My', 'test', 5, 'assets/avatars/female4.png', 'This is my profile! Here I will tell about myself and give you a good impression.\nFor more information please contact me. Here a test message appears in the response.', 2, 4020, 1, 65);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('tanja.gruber', 'Tanja', 'Gruber', 8, 'assets/avatars/female2.png', 'I love animals.', 2, 4221, 1, 44, '8', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('tbb', 'Thomas', 'Braunberger', 10, 'assets/avatars/male3.png', 'Male, 35 years old, education from FH Hagenberg, like to read, have 3 sisters and 1 brother. More information about me can be found on my website at http://person.me.com', 1, 4050, 1, 66, '9', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('usr123', 'Ano', 'Nymous', 9, 'assets/images/empty.png', '(no description)', 3, 4221, 1, 12, '10', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('anna96', 'Anna', 'Steiner', 6, 'assets/avatars/female4.png', 'Recommend me to your friends!', 2, 4600, 1, 67, '1', true);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('augernst', 'Augustine', 'Ernst', 13, 'assets/avatars/female3.png', 'I can help out anytime.', 2, 4030, 1, 45, '2', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('briggite.s', 'Brigitte', 'Seitenschläger', 5, 'assets/avatars/female1.png', 'I love animals.', 2, 4040, 1, 20, '3', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('eddom', 'Eduardo', 'Domingo', 7, 'assets/avatars/male2.png', 'Several years of experience as a pet-sitter.', 1, 4600, 1, 33, '4', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('joe.hinter', 'Johannes', 'Hinterberger', 0, 'assets/avatars/male1.png', 'I am a helpful person.', 1, 4020, 1, 10, '5', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('m.hauer', 'Manuel', 'Hauer', 15, 'assets/avatars/male3.png', 'I have a lot of free time.', 1, 4600, 1, 44, '6', true);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('my_username', 'My', '', 5, 'assets/avatars/female4.png', 'This is my profile! Here I will tell about myself and give you a good impression.\nFor more information please contact me. Here a test message appears in the response.', 2, 4020, 1, 65, '7', true);
 
 
 --
@@ -294,7 +296,7 @@ ALTER TABLE ONLY public."user"
     ADD CONSTRAINT zip_fk FOREIGN KEY (zipcode) REFERENCES public.city(zipcode) NOT VALID;
 
 
--- Completed on 2021-06-23 09:37:30
+-- Completed on 2021-06-23 13:25:19
 
 --
 -- PostgreSQL database dump complete
