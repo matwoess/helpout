@@ -5,7 +5,7 @@
 -- Dumped from database version 12.7
 -- Dumped by pg_dump version 12.7
 
--- Started on 2021-06-23 13:25:19
+-- Started on 2021-06-23 13:37:40
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -194,16 +194,16 @@ INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUE
 -- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('tanja.gruber', 'Tanja', 'Gruber', 8, 'assets/avatars/female2.png', 'I love animals.', 2, 4221, 1, 44, '8', false);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('tbb', 'Thomas', 'Braunberger', 10, 'assets/avatars/male3.png', 'Male, 35 years old, education from FH Hagenberg, like to read, have 3 sisters and 1 brother. More information about me can be found on my website at http://person.me.com', 1, 4050, 1, 66, '9', false);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('usr123', 'Ano', 'Nymous', 9, 'assets/images/empty.png', '(no description)', 3, 4221, 1, 12, '10', false);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('anna96', 'Anna', 'Steiner', 6, 'assets/avatars/female4.png', 'Recommend me to your friends!', 2, 4600, 1, 67, '1', true);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('augernst', 'Augustine', 'Ernst', 13, 'assets/avatars/female3.png', 'I can help out anytime.', 2, 4030, 1, 45, '2', false);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('briggite.s', 'Brigitte', 'Seitenschläger', 5, 'assets/avatars/female1.png', 'I love animals.', 2, 4040, 1, 20, '3', false);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('eddom', 'Eduardo', 'Domingo', 7, 'assets/avatars/male2.png', 'Several years of experience as a pet-sitter.', 1, 4600, 1, 33, '4', false);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('joe.hinter', 'Johannes', 'Hinterberger', 0, 'assets/avatars/male1.png', 'I am a helpful person.', 1, 4020, 1, 10, '5', false);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('m.hauer', 'Manuel', 'Hauer', 15, 'assets/avatars/male3.png', 'I have a lot of free time.', 1, 4600, 1, 44, '6', true);
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('my_username', 'My', '', 5, 'assets/avatars/female4.png', 'This is my profile! Here I will tell about myself and give you a good impression.\nFor more information please contact me. Here a test message appears in the response.', 2, 4020, 1, 65, '7', true);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('anna96', 'Anna', 'Steiner', 6, 'assets/avatars/female4.png', 'Recommend me to your friends!', 2, 4600, 1, 67, 'pw', true);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('augernst', 'Augustine', 'Ernst', 13, 'assets/avatars/female3.png', 'I can help out anytime.', 2, 4030, 1, 45, 'pw', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('briggite.s', 'Brigitte', 'Seitenschläger', 5, 'assets/avatars/female1.png', 'I love animals.', 2, 4040, 1, 20, 'pw', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('eddom', 'Eduardo', 'Domingo', 7, 'assets/avatars/male2.png', 'Several years of experience as a pet-sitter.', 1, 4600, 1, 33, 'pw', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('joe.hinter', 'Johannes', 'Hinterberger', 0, 'assets/avatars/male1.png', 'I am a helpful person.', 1, 4020, 1, 10, 'pw', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('m.hauer', 'Manuel', 'Hauer', 15, 'assets/avatars/male3.png', 'I have a lot of free time.', 1, 4600, 1, 44, 'pw', true);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('my_username', 'My', '', 5, 'assets/avatars/female4.png', 'This is my profile! Here I will tell about myself and give you a good impression.\nFor more information please contact me. Here a test message appears in the response.', 2, 4020, 1, 65, 'pw', true);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('tanja.gruber', 'Tanja', 'Gruber', 8, 'assets/avatars/female2.png', 'I love animals.', 2, 4221, 1, 44, 'pw', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('tbb', 'Thomas', 'Braunberger', 10, 'assets/avatars/male3.png', 'Male, 35 years old, education from FH Hagenberg, like to read, have 3 sisters and 1 brother. More information about me can be found on my website at http://person.me.com', 1, 4050, 1, 66, 'pw', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, requestassist) VALUES ('usr123', 'Ano', 'Nymous', 9, 'assets/images/empty.png', '(no description)', 3, 4221, 1, 12, 'pw', false);
 
 
 --
@@ -296,7 +296,7 @@ ALTER TABLE ONLY public."user"
     ADD CONSTRAINT zip_fk FOREIGN KEY (zipcode) REFERENCES public.city(zipcode) NOT VALID;
 
 
--- Completed on 2021-06-23 13:25:19
+-- Completed on 2021-06-23 13:37:40
 
 --
 -- PostgreSQL database dump complete
