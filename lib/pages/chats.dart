@@ -125,7 +125,7 @@ class _ChatItemState extends State<ChatItem> {
   }
 
   static Future<User> getUser(String username) {
-    Future<User> user = DBManager.userByUsername(username);
+    Future<User> user = DBManager.getUserByUsername(username);
     return user;
   }
 

@@ -63,7 +63,7 @@ class _LogInFormState extends State<LogInForm> {
   }
 
   void _showWelcomeScreen() async {
-    User user = await DBManager.userByUsername(_usernameTextController.text);
+    User user = await DBManager.getUserByUsername(_usernameTextController.text);
     if (user == null || _passwordTextController.text != user.password) {
       _passwordOrUserDoesNotMatch = true;
       setState(() {

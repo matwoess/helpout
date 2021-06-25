@@ -45,7 +45,7 @@ class AppState {
   Future<User> retrievePreviousUserCredentials() async {
     return SharedPreferences.getInstance()
         .then((prefs) => prefs.getString('username'))
-        .then((username) => username == null ? null : DBManager.userByUsername(username));
+        .then((username) => username == null ? null : DBManager.getUserByUsername(username));
   }
 
   bool get loggedIn => _accountData != null;

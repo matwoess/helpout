@@ -73,7 +73,7 @@ class _RequestHelpState extends State<RequestHelpPage> {
   }
 
   static Future<List<User>> getUsers() async {
-    List<User> users = await DBManager.getDemoUsersByRegion(AppState.getInstance().region);
+    List<User> users = await DBManager.getUsersByRegion(AppState.getInstance().region);
     return users;
   }
 }
