@@ -28,13 +28,12 @@ class DBManager {
     return User(
         user['username'],
         user['password'],
-        user['firstname'],
+        user['firstname'] + ' ' + user['lastname'],
         Converter.convertToGender(user['gender']['name']),
         Region(user['zipcode'].toString(), user['region']['name']),
         user['price'],
         user['description'],
-        user['asset'],
-        DateTime.now().millisecondsSinceEpoch);
+        user['asset']);
   }
 
   static Future<List<User>> getOtherUsers() async {
@@ -49,13 +48,12 @@ class DBManager {
       users.add(User(
           user['username'],
           user['password'],
-          user['firstname'],
+          user['firstname'] + ' ' + user['lastname'],
           Converter.convertToGender(user['gender']['name']),
           Region(user['zipcode'].toString(), user['region']['name']),
           user['price'],
           user['description'],
-          user['asset'],
-          DateTime.now().millisecondsSinceEpoch));
+          user['asset']));
     }
     return users;
   }
@@ -75,13 +73,12 @@ class DBManager {
       users.add(User(
           user['username'],
           user['password'],
-          user['firstname'],
+          user['firstname'] + ' ' + user['lastname'],
           Converter.convertToGender(user['gender']['name']),
           region,
           user['price'],
           user['description'],
-          user['asset'],
-          DateTime.now().millisecondsSinceEpoch));
+          user['asset']));
     }
     return users;
   }
@@ -242,21 +239,49 @@ class DBManager {
         'username2': user.username
       }
     ]).execute();
-    print(response.toJson());
   }
 
   static Future<int> getNextChatId() async {
     PostgrestResponse result =
         await AppState.getInstance().connection.from('chat').select('chatid').order('chatid').execute();
-    print(result.toJson());
     if (result.toJson()['data'].isEmpty) return 0;
     return result.toJson()['data'].first['chatid'] + 1;
   }
 
   static Future<User> createUser(String firstname, String lastname, String username, String password, Region region,
       String assetURI, int price) async {
-    // TODO: create user
-    print('TODO: create user');
-    return null; // TODO: return new user
+    User createdUser = new User(username, password, firstname + ' ' + lastname, Gender.UNKNOWN, region, price, "", assetURI);
+    checkRegion(region);
+    PostgrestResponse result = await AppState.getInstance().connection.from('user')
+                                      .insert(
+                                        {
+                                          "firstname": firstname, 
+                                          "lastname": lastname, 
+                                          "description": "",
+                                          "username" : username,
+                                          "price" : price,
+                                          "asset" : assetURI,
+                                          "zipcode" : int.parse(region.postcode),
+                                          "gid" : 2,
+                                          "level" : 1,
+                                          "score" : 0,
+                                          "password" : password
+                                        })
+                                      .execute();
+    return createdUser;
+  }
+
+  static void checkRegion(Region region) async {
+    PostgrestResponse result = await AppState.getInstance().connection.from('city').select('zipcode').eq('zipcode', int.parse(region.postcode)).execute();
+    if(result.toJson()['data'].isEmpty) {
+      await AppState.getInstance().connection.from('city')
+                                      .insert(
+                                        {
+                                          "zipcode" : int.parse(region.postcode),
+                                          "name" : region.city
+                                        }
+                                      )
+                                      .execute();
+    } 
   }
 }

@@ -13,7 +13,7 @@ extension ParseToString on Gender {
 
 class User {
   static final User loading = User('', '', 'Loading...', Gender.UNKNOWN, Region.unknown, 0, 'Loading...',
-      'assets/images/empty.png', DateTime.now().millisecondsSinceEpoch);
+      'assets/images/empty.png');
 
   final String username;
   final String password;
@@ -23,7 +23,6 @@ class User {
   int price;
   String description;
   final String assetURI;
-  final int since;
 
   int level = 1;
 
@@ -36,7 +35,6 @@ class User {
     this.price,
     this.description,
     this.assetURI,
-    this.since,
   );
 
   @override

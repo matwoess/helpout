@@ -183,7 +183,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   SizedBox(
                                     height: 5.0,
                                   ),
-                                  Text(
+                                  /*Text(
                                     DateFormat('MMMM d, yyyy').format(
                                         DateTime.fromMillisecondsSinceEpoch(
                                             accountData.since)),
@@ -191,7 +191,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       fontSize: 20.0,
                                       color: Theme.of(context).accentColor,
                                     ),
-                                  )
+                                  )*/
                                 ],
                               ),
                             ),
