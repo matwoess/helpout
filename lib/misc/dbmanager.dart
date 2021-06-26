@@ -9,11 +9,6 @@ import 'package:helpout/util/scorer.dart';
 import 'package:postgrest/postgrest.dart';
 
 class DBManager {
-  // TODO: remove
-  static Future<User> getMyAccount() async {
-    return getUserByUsername('my_username');
-  }
-
   static Future<User> getUserByUsername(String username) async {
     PostgrestResponse result = await AppState.getInstance()
         .connection
