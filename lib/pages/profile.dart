@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:helpout/misc/dbmanager.dart';
 import 'package:helpout/model/appstate.dart';
 import 'package:helpout/model/user.dart';
-import 'package:intl/intl.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -55,8 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             width: 250.0,
                             child: TextField(
                               controller: _nameTextController,
-                              decoration:
-                                  InputDecoration(hintText: 'Your name'),
+                              decoration: InputDecoration(hintText: 'Your name'),
                               style: TextStyle(
                                 fontSize: 22.0,
                                 color: Colors.white,
@@ -88,13 +86,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: 10.0,
                     ),
                     Card(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
                       color: Theme.of(context).scaffoldBackgroundColor,
                       elevation: 5.0,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 22.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 22.0),
                         child: Row(
                           children: <Widget>[
                             Expanded(
@@ -146,12 +142,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                           },
                                           underline: Container(
                                             height: 2,
-                                            color:
-                                                Theme.of(context).accentColor,
+                                            color: Theme.of(context).accentColor,
                                           ),
-                                          items: Iterable<int>.generate(15 + 1)
-                                              .map<DropdownMenuItem<int>>(
-                                                  (int value) {
+                                          items: Iterable<int>.generate(15 + 1).map<DropdownMenuItem<int>>((int value) {
                                             return DropdownMenuItem<int>(
                                               value: value,
                                               child: Text(value.toString()),
@@ -162,8 +155,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           accountData.price.toString() + '€',
                                           style: TextStyle(
                                             fontSize: 20.0,
-                                            color:
-                                                Theme.of(context).accentColor,
+                                            color: Theme.of(context).accentColor,
                                           ),
                                         )
                                 ],
@@ -173,7 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: Column(
                                 children: <Widget>[
                                   Text(
-                                    'Registered',
+                                    'Region',
                                     style: TextStyle(
                                       color: Theme.of(context).primaryColor,
                                       fontSize: 22.0,
@@ -183,15 +175,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                   SizedBox(
                                     height: 5.0,
                                   ),
-                                  /*Text(
-                                    DateFormat('MMMM d, yyyy').format(
-                                        DateTime.fromMillisecondsSinceEpoch(
-                                            accountData.since)),
+                                  Text(
+                                    accountData.region.toString(),
                                     style: TextStyle(
                                       fontSize: 20.0,
                                       color: Theme.of(context).accentColor,
                                     ),
-                                  )*/
+                                  ),
                                 ],
                               ),
                             ),
@@ -205,16 +195,14 @@ class _ProfilePageState extends State<ProfilePage> {
             )),
         Container(
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
                   'Description:',
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColor, fontSize: 28.0),
+                  style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 28.0),
                 ),
                 SizedBox(
                   height: 10.0,
@@ -224,14 +212,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                         controller: _descriptionTextController,
-                        decoration:
-                            InputDecoration(hintText: 'Tell us about yourself'),
+                        decoration: InputDecoration(hintText: 'Tell us about yourself'),
                         style: TextStyle(
                           fontSize: 22.0,
                         ),
                       )
                     : Text(
-                        accountData.description,
+                        accountData.description != '' ? accountData.description : '(none)',
                         style: TextStyle(
                           fontSize: 22.0,
                         ),

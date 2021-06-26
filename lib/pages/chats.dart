@@ -33,14 +33,27 @@ class _ChatsPageState extends State<ChatsPage> {
               ),
             );
           } else {
-            return Container(
-              child: ListView.builder(
-                itemBuilder: (context, position) {
-                  return ChatItem(snapshot.data[position], deleteChat);
-                },
-                itemCount: snapshot.data.length,
-              ),
-            );
+            if (snapshot.data.length == 0) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    'You did not start any conversation yet.\nStart one by requesting or offering to help!',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            } else {
+              return Container(
+                child: ListView.builder(
+                  itemBuilder: (context, position) {
+                    return ChatItem(snapshot.data[position], deleteChat);
+                  },
+                  itemCount: snapshot.data.length,
+                ),
+              );
+            }
           }
         });
   }
