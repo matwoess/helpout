@@ -18,7 +18,7 @@ class Region {
   @override
   int get hashCode => postcode.hashCode ^ city.hashCode;
 
-  static Region fromJson(Map<String, dynamic> json, List<Region> regions) {
+  static Region fromJson(Map<String, dynamic> json, List<Region> regions, bool create) {
     String postcode = json['results'][0]['components']['postcode'];
     String city = json['results'][0]['components']['city'];
     for (Region r in regions) {
@@ -26,6 +26,9 @@ class Region {
         return r;
       }
     }
-    return unknown;
+    if (create)
+      return Region(postcode, city);
+    else
+      return unknown;
   }
 }

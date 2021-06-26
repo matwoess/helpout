@@ -23,7 +23,6 @@ class AppState {
   User _accountData;
   Region _region;
   bool _darkTheme;
-  Position _currentPosition;
   User _chatUser;
   PostgrestClient _connection = PostgrestClient("http://localhost:3000");
 
@@ -54,13 +53,6 @@ class AppState {
 
   set region(Region region) {
     _region = region;
-    triggerCallbacks();
-  }
-
-  Position get currentPosition => _currentPosition;
-
-  set currentPosition(Position currentPosition) {
-    _currentPosition = currentPosition;
     triggerCallbacks();
   }
 

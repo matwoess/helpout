@@ -213,7 +213,7 @@ class _RegionCardState extends State<RegionCard> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: ElevatedButton(
-                            onPressed: getWhereabouts,
+                            onPressed: getCurrentRegion,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Icon(Icons.my_location),
@@ -232,22 +232,12 @@ class _RegionCardState extends State<RegionCard> {
     );
   }
 
-  Future<Region> getWhereabouts() async {
-    try {
-      var pos = await Locator.getCurrentPosition();
-      print('position: ' + pos.toString());
-      AppState.getInstance().currentPosition = pos;
-      Region region = await Locator.getRegionFromPosition(pos, await getRegions());
-      print('region: ' + region.toString());
-      if (region == Region.unknown) {
-        print('unknown region, do not change current selection.');
-      } else {
-        AppState.getInstance().region = region;
-      }
-      return region;
-    } catch (ex) {
-      print(ex);
-      return null;
+  void getCurrentRegion() async {
+    Region region = await Locator.getWhereabouts(create: false);
+    if (region == Region.unknown) {
+      print('unknown region, do not change current selection.');
+    } else {
+      AppState.getInstance().region = region;
     }
   }
 

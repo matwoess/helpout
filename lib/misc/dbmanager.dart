@@ -249,39 +249,38 @@ class DBManager {
   }
 
   static Future<User> createUser(String firstname, String lastname, String username, String password, Region region,
-      String assetURI, int price) async {
-    User createdUser = new User(username, password, firstname + ' ' + lastname, Gender.UNKNOWN, region, price, "", assetURI);
+      Gender gender, String assetURI, int price) async {
+    User createdUser = new User(username, password, firstname + ' ' + lastname, gender, region, price, "", assetURI);
     checkRegion(region);
-    PostgrestResponse result = await AppState.getInstance().connection.from('user')
-                                      .insert(
-                                        {
-                                          "firstname": firstname, 
-                                          "lastname": lastname, 
-                                          "description": "",
-                                          "username" : username,
-                                          "price" : price,
-                                          "asset" : assetURI,
-                                          "zipcode" : int.parse(region.postcode),
-                                          "gid" : 2,
-                                          "level" : 1,
-                                          "score" : 0,
-                                          "password" : password
-                                        })
-                                      .execute();
+    PostgrestResponse result = await AppState.getInstance().connection.from('user').insert({
+      "firstname": firstname,
+      "lastname": lastname,
+      "description": "",
+      "username": username,
+      "price": price,
+      "asset": assetURI,
+      "zipcode": int.parse(region.postcode),
+      "gid": 2,
+      "level": 1,
+      "score": 0,
+      "password": password
+    }).execute();
     return createdUser;
   }
 
   static void checkRegion(Region region) async {
-    PostgrestResponse result = await AppState.getInstance().connection.from('city').select('zipcode').eq('zipcode', int.parse(region.postcode)).execute();
-    if(result.toJson()['data'].isEmpty) {
-      await AppState.getInstance().connection.from('city')
-                                      .insert(
-                                        {
-                                          "zipcode" : int.parse(region.postcode),
-                                          "name" : region.city
-                                        }
-                                      )
-                                      .execute();
-    } 
+    PostgrestResponse result = await AppState.getInstance()
+        .connection
+        .from('city')
+        .select('zipcode')
+        .eq('zipcode', int.parse(region.postcode))
+        .execute();
+    if (result.toJson()['data'].isEmpty) {
+      print('creating region: ' + region.toString());
+      await AppState.getInstance()
+          .connection
+          .from('city')
+          .insert({"zipcode": int.parse(region.postcode), "name": region.city}).execute();
+    }
   }
 }

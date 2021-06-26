@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:helpout/misc/dbmanager.dart';
 import 'package:helpout/model/region.dart';
 import 'package:helpout/model/user.dart';
+import 'package:helpout/util/locator.dart';
 
 import '../model/appstate.dart';
 
@@ -47,6 +48,7 @@ class _SignUpFormState extends State<SignUpForm> {
   String _assetURI = 'assets/images/empty.png';
   int _price = 0;
   Region _region = null;
+  Gender _gender = Gender.UNKNOWN;
 
   Future<List<Region>> regions;
 
@@ -88,8 +90,8 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   void _showWelcomeScreen() async {
-    User user = await DBManager.createUser(_firstNameTextController.text, _lastNameTextController.text, _usernameTextController.text,
-        _passwordTextController.text, _region, _assetURI, _price);
+    User user = await DBManager.createUser(_firstNameTextController.text, _lastNameTextController.text,
+        _usernameTextController.text, _passwordTextController.text, _region, _gender, _assetURI, _price);
     AppState.getInstance().accountData = user;
     Navigator.popAndPushNamed(context, '/signup/welcome');
   }
@@ -161,36 +163,78 @@ class _SignUpFormState extends State<SignUpForm> {
                   children: [
                     Text('Residence:'),
                     SizedBox(width: 15),
-                    Expanded(
-                      child: DropdownButton<Region>(
-                        isExpanded: true,
-                        value: _region,
-                        onChanged: (Region newValue) {
-                          setState(() {
-                            _region = newValue;
-                          });
-                        },
-                        underline: Container(
-                          height: 2,
-                          color: Theme.of(context).accentColor,
+                    Expanded(child: Container()),
+                    DropdownButton<Region>(
+                      //isExpanded: true,
+                      value: _region,
+                      onChanged: (Region newValue) {
+                        setState(() {
+                          _region = newValue;
+                        });
+                      },
+                      underline: Container(
+                        height: 2,
+                        color: Theme.of(context).accentColor,
+                      ),
+                      items: snapshot.connectionState == ConnectionState.waiting
+                          ? null
+                          : snapshot.data
+                              .map((r) => DropdownMenuItem<Region>(
+                                    child: Text(r.toString()),
+                                    value: r,
+                                  ))
+                              .toList(),
+                      hint: snapshot.connectionState == ConnectionState.waiting
+                          ? Text('Getting available regions')
+                          : Text('Select region'),
+                    ),
+                    Visibility(
+                      visible: snapshot.connectionState != ConnectionState.waiting,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: ElevatedButton(
+                          onPressed: getOrCreateRegion,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(Icons.my_location),
+                          ),
                         ),
-                        items: snapshot.connectionState == ConnectionState.waiting
-                            ? null
-                            : snapshot.data
-                                .map((r) => DropdownMenuItem<Region>(
-                                      child: Text(r.toString()),
-                                      value: r,
-                                    ))
-                                .toList(),
-                        hint: snapshot.connectionState == ConnectionState.waiting
-                            ? Text('Getting available regions')
-                            : Text('Select region'),
                       ),
                     ),
                     SizedBox(width: 8.0),
                   ],
                 );
               },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text('Gender:'),
+                Expanded(
+                  child: Container(),
+                ),
+                DropdownButton<Gender>(
+                  value: _gender,
+                  onChanged: (Gender newValue) {
+                    setState(() {
+                      _gender = newValue;
+                    });
+                  },
+                  underline: Container(
+                    height: 2,
+                    color: Theme.of(context).accentColor,
+                  ),
+                  items: Gender.values.map<DropdownMenuItem<Gender>>((Gender value) {
+                    return DropdownMenuItem<Gender>(
+                      value: value,
+                      child: Text(value.toShortString()),
+                    );
+                  }).toList(),
+                ),
+                SizedBox(width: 16.0),
+              ],
             ),
           ),
           Padding(
@@ -330,6 +374,15 @@ class _SignUpFormState extends State<SignUpForm> {
   static Future<List<Region>> getRegions() async {
     List<Region> regions = await DBManager.getAvailableRegions();
     return regions;
+  }
+
+  void getOrCreateRegion() async {
+    Region region = await Locator.getWhereabouts(create: true);
+    print('got ' + region.toString());
+    await regions.then((regions) => {if (!regions.contains(region)) regions.add(region)});
+    setState(() {
+      _region = region;
+    });
   }
 }
 
