@@ -12,7 +12,7 @@ class Chat {
 
   Future<Message> lastMessage() async {
     if (this == loading) {
-      return Future.value(Message.loadingMyself);
+      return Future.value(Message.loadingOther);
     }
     List<Message> msgs = await DBManager.getChatHistory(this);
     if (msgs.isEmpty)

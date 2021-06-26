@@ -37,11 +37,13 @@ class DBManager {
   }
 
   static Future<List<User>> getOtherUsers() async {
+    String username = AppState.getInstance().accountData?.username;
+    if (username == null) username = '';
     PostgrestResponse result = await AppState.getInstance()
         .connection
         .from('user')
         .select(Constants.userTableData)
-        .filter('username', 'neq', 'my_username')
+        .filter('username', 'neq', username)
         .execute();
     List<User> users = [];
     for (final user in result.toJson()['data']) {
@@ -113,6 +115,7 @@ class DBManager {
   }
 
   static Future<List<Message>> getChatHistory(Chat chat) async {
+    await Future.delayed(Duration(seconds: 2));
     PostgrestResponse result =
         await AppState.getInstance().connection.from('message').select().filter('chatid', 'eq', chat.chatId).execute();
     List<Message> messages = [];

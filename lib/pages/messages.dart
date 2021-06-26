@@ -99,7 +99,7 @@ class _MessagesState extends State<MessagesPage> {
                       itemBuilder: (context, index) {
                         return MessageBubble(
                             myself: _accountData,
-                            message: index % 2 == 0 ? Message.loadingMyself : Message.loadingOther);
+                            message: index % 2 == 0 ? Message.loadingMyself() : Message.loadingOther);
                       });
                 } else {
                   if (snapshot.data.length == 0 && !_sending) {
@@ -119,7 +119,7 @@ class _MessagesState extends State<MessagesPage> {
                         padding: EdgeInsets.only(top: 10, bottom: 10),
                         itemBuilder: (context, index) {
                           if (index == snapshot.data.length) {
-                            return MessageBubble(myself: _accountData, message: Message.sending);
+                            return MessageBubble(myself: _accountData, message: Message.sending());
                           } else {
                             return MessageBubble(myself: _accountData, message: snapshot.data[index]);
                           }

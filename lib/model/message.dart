@@ -1,7 +1,7 @@
+import 'package:helpout/model/appstate.dart';
+
 class Message {
-  static final Message loadingMyself = Message(-1, 'my_username', -1, 'Loading...', 0);
   static final Message loadingOther = Message(-2, '', -1, 'Loading...', 0);
-  static final Message sending = Message(-3, 'my_username', -1, 'Sending...', 0);
 
   int msgId;
   String username;
@@ -23,6 +23,22 @@ class Message {
     this.chatId = chatId;
     this.content = content;
     this.timeStamp = DateTime.now().millisecondsSinceEpoch;
+  }
+
+  Message.loadingMyself() {
+    this.msgId = -1;
+    this.username = AppState.getInstance().accountData.username;
+    this.chatId = -1;
+    this.content = 'Loading...';
+    this.timeStamp = 0;
+  }
+
+  Message.sending() {
+    this.msgId = -3;
+    this.username = AppState.getInstance().accountData.username;
+    this.chatId = -1;
+    this.content = 'Sending...';
+    this.timeStamp = 0;
   }
 
   @override
