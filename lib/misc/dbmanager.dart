@@ -84,7 +84,8 @@ class DBManager {
   }
 
   static Future<List<Region>> getAvailableRegions() async {
-    PostgrestResponse result = await AppState.getInstance().connection.from('city').select().execute();
+    PostgrestResponse result =
+        await AppState.getInstance().connection.from('city').select().order('zipcode', ascending: true).execute();
     List<Region> regions = [];
     for (final region in result.toJson()['data']) {
       regions.add(Region(region['zipcode'].toString(), region['name']));
@@ -230,7 +231,7 @@ class DBManager {
   }
 
   static createChatWithUser(User user) async {
-    var response = await AppState.getInstance().connection.from('chat').insert([
+    await AppState.getInstance().connection.from('chat').insert([
       {
         'chatid': await getNextChatId(),
         'isread1': false,
@@ -252,7 +253,7 @@ class DBManager {
       Gender gender, String assetURI, int price) async {
     User createdUser = new User(username, password, firstname + ' ' + lastname, gender, region, price, "", assetURI);
     checkRegion(region);
-    PostgrestResponse result = await AppState.getInstance().connection.from('user').insert({
+    await AppState.getInstance().connection.from('user').insert({
       "firstname": firstname,
       "lastname": lastname,
       "description": "",
