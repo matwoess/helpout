@@ -37,8 +37,7 @@ class DBManager {
   }
 
   static Future<List<User>> getOtherUsers() async {
-    String username = AppState.getInstance().accountData?.username;
-    if (username == null) username = '';
+    String username = AppState.getInstance().accountData?.username ?? '';
     PostgrestResponse result = await AppState.getInstance()
         .connection
         .from('user')
@@ -64,11 +63,13 @@ class DBManager {
     if (region == null) {
       return getOtherUsers();
     }
+    String username = AppState.getInstance().accountData?.username ?? '';
     PostgrestResponse result = await AppState.getInstance()
         .connection
         .from('user')
         .select(Constants.userTableData)
         .filter('zipcode', 'eq', region.postcode)
+        .filter('username', 'neq', username)
         .execute();
     List<User> users = [];
     for (final user in result.toJson()['data']) {
