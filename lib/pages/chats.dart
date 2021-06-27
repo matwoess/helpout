@@ -122,10 +122,11 @@ class _ChatItemState extends State<ChatItem> {
     );
   }
 
-  void enterChat(User user) {
+  void enterChat(User user) async {
     if (!widget.chat.isRead) {
       widget.chat.isRead = true;
-      DBManager.markAsRead(widget.chat);
+      await DBManager.markAsRead(widget.chat);
+      AppState.getInstance().unreadCount =  await DBManager.getUnreadCount(AppState.getInstance().accountData.username);
       setState(() {});
     }
     Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -188,9 +189,10 @@ class _ChatItemState extends State<ChatItem> {
     });
   }
 
-  markAsRead(Chat chat) {
+  markAsRead(Chat chat) async {
     chat.isRead = true;
     DBManager.markAsRead(widget.chat);
+    AppState.getInstance().unreadCount = await DBManager.getUnreadCount(AppState.getInstance().accountData.username);
   }
 }
 

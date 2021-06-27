@@ -111,7 +111,6 @@ class DBManager {
   }
 
   static Future<List<Message>> getChatHistory(Chat chat) async {
-    await Future.delayed(Duration(seconds: 2));
     PostgrestResponse result =
         await AppState.getInstance().connection.from('message').select().filter('chatid', 'eq', chat.chatId).execute();
     List<Message> messages = [];
@@ -283,5 +282,25 @@ class DBManager {
           .from('city')
           .insert({"zipcode": int.parse(region.postcode), "name": region.city}).execute();
     }
+  }
+
+  static Future<int> getUnreadCount(String username) async {
+    PostgrestResponse result = await AppState.getInstance()
+        .connection
+        .from('chat')
+        .select()
+        .or('username1.eq.' + username + ',username2.eq.' + username)
+        .execute();
+    var unreadChats = result.toJson()['data'];
+    int count = 0;
+    if (unreadChats == null || unreadChats.isEmpty) return count;
+    for (var data in unreadChats) {
+      if (data['username1'] == username && data['isread1'] == false) {
+        count++;
+      } else if (data['username2'] == username && data['isread2'] == false) {
+        count++;
+      }
+    }
+    return count;
   }
 }

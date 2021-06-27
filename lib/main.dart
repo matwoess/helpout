@@ -7,6 +7,7 @@ import 'package:helpout/pages/prelogin.dart';
 import 'package:helpout/pages/requesthelp.dart';
 import 'package:helpout/pages/signup.dart';
 import 'package:helpout/pages/welcome.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 void main() {
   runApp(MainApp());
@@ -51,21 +52,23 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Help out',
-      theme: theme,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => HomeScreen(),
-        '/request': (context) => RequestHelpPage(),
-        '/assist': (context) => AssistPeoplePage(),
-        '/prelogin': (context) => PreLoginPage(),
-        '/signup': (context) => SignUpPage(),
-        '/login': (context) => LogInPage(),
-        '/signup/welcome': (context) => WelcomePage('Welcome!'),
-        '/login/welcome': (context) => WelcomePage('Login successful!'),
-      },
+    return OverlaySupport(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Help out',
+        theme: theme,
+        initialRoute: '/',
+        routes: {
+          '/': (context) => HomeScreen(),
+          '/request': (context) => RequestHelpPage(),
+          '/assist': (context) => AssistPeoplePage(),
+          '/prelogin': (context) => PreLoginPage(),
+          '/signup': (context) => SignUpPage(),
+          '/login': (context) => LogInPage(),
+          '/signup/welcome': (context) => WelcomePage('Welcome!'),
+          '/login/welcome': (context) => WelcomePage('Login successful!'),
+        },
+      ),
     );
   }
 }

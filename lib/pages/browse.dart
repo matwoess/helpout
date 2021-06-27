@@ -5,6 +5,7 @@ import 'package:helpout/misc/dbmanager.dart';
 import 'package:helpout/model/appstate.dart';
 import 'package:helpout/model/region.dart';
 import 'package:helpout/util/locator.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 class BrowsePage extends StatefulWidget {
   BrowsePage();
@@ -148,6 +149,7 @@ class _AssistRequestRadioCardState extends State<AssistRequestRadioCard> {
 
 class RegionCard extends StatefulWidget {
   RegionCard();
+
   // TODO: reload on inserted region (sign up)
 
   @override
@@ -209,7 +211,6 @@ class _RegionCardState extends State<RegionCard> {
                               : Text('Select region'),
                         ),
                       ),
-                      // TODO: Message for region locator button when finding not used region!
                       Visibility(
                         visible: snapshot.connectionState != ConnectionState.waiting,
                         child: Padding(
@@ -237,7 +238,7 @@ class _RegionCardState extends State<RegionCard> {
   void getCurrentRegion() async {
     Region region = await Locator.getWhereabouts(create: false);
     if (region == Region.unknown) {
-      print('unknown region, do not change current selection.');
+      toast('Currently we do not have a region available for your position yet.');
     } else {
       AppState.getInstance().region = region;
     }

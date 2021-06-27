@@ -12,6 +12,7 @@ class AppState {
     null,
     false,
     null,
+    0,
   );
 
   static AppState getInstance() {
@@ -23,9 +24,10 @@ class AppState {
   Region _region;
   bool _darkTheme;
   User _chatUser;
+  int _unreadCount;
   PostgrestClient _connection = PostgrestClient("http://localhost:3000");
 
-  AppState(this._accountData, this._region, this._darkTheme, this._chatUser) {
+  AppState(this._accountData, this._region, this._darkTheme, this._chatUser, this._unreadCount) {
     retrievePreviousUserCredentials().then((user) => {if (user != null) accountData = user});
     restoreTheme().then((dark) => {if (dark != null && dark != _darkTheme) _darkTheme = dark});
   }
@@ -71,6 +73,13 @@ class AppState {
 
   set chatUser(User chatUser) {
     _chatUser = chatUser;
+    triggerCallbacks();
+  }
+
+  int get unreadCount => _unreadCount;
+
+  set unreadCount(int unread) {
+    _unreadCount = unread;
     triggerCallbacks();
   }
 
