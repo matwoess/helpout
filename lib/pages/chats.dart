@@ -135,7 +135,10 @@ class _ChatItemState extends State<ChatItem> {
   }
 
   FutureOr onReturn(dynamic value) {
-    setState(() {});
+    try {
+      setState(() {});
+    } catch (e) {}
+
   }
 
   static Future<User> getUser(String username) {
@@ -191,7 +194,7 @@ class _ChatItemState extends State<ChatItem> {
 
   markAsRead(Chat chat) async {
     chat.isRead = true;
-    DBManager.markAsRead(widget.chat);
+    await DBManager.markAsRead(widget.chat);
     AppState.getInstance().unreadCount = await DBManager.getUnreadCount(AppState.getInstance().accountData.username);
   }
 }

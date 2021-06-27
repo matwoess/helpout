@@ -27,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void checkForNotifications(Timer _) async {
     AppState appState = AppState.getInstance();
     if (!appState.loggedIn) return;
+    if (appState.chatUser != null) return; // prevents unwanted behavior
     int unread = await DBManager.getUnreadCount(appState.accountData.username);
     if (appState.unreadCount > unread) {
       AppState.getInstance().unreadCount = unread;
