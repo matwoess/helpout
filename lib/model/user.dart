@@ -1,19 +1,37 @@
 import 'package:helpout/model/region.dart';
 
 enum Gender { FEMALE, MALE, UNKNOWN }
+enum UserType { REQUEST, ASSIST }
 
-extension ParseToString on Gender {
+extension ParseToGenderString on Gender {
   String toShortString() {
-    if (this == Gender.UNKNOWN) {
-      return 'Other';
+    switch (this) {
+      case Gender.FEMALE:
+        return 'Female';
+      case Gender.MALE:
+        return 'Male';
+      case Gender.UNKNOWN:
+      default:
+        return 'Other';
     }
-    return this.toString().split('.').last.toLowerCase();
+  }
+}
+
+extension ParseToUserTypeString on UserType {
+  String toShortString() {
+    switch (this) {
+      case UserType.REQUEST:
+        return 'Request help from people';
+      case UserType.ASSIST:
+      default:
+        return 'Assist people in need';
+    }
   }
 }
 
 class User {
   static final User loading = User('', '', 'Loading...', Gender.UNKNOWN, Region.unknown, 0, 'Loading...',
-      'assets/images/empty.png');
+      'assets/images/empty.png', UserType.ASSIST);
 
   final String username;
   final String password;
@@ -23,6 +41,7 @@ class User {
   int price;
   String description;
   final String assetURI;
+  UserType userType;
 
   int level = 1;
 
@@ -35,6 +54,7 @@ class User {
     this.price,
     this.description,
     this.assetURI,
+    this.userType,
   );
 
   @override

@@ -67,13 +67,13 @@ class _RequestHelpState extends State<RequestHelpPage> {
     print('setting ${user.username} as auto-open chat user');
     await DBManager.createChatIfNeeded(user);
     AppState.getInstance().chatUser = user;
-    while(Navigator.canPop(context)) {
+    while (Navigator.canPop(context)) {
       Navigator.of(context).pop();
     }
   }
 
   static Future<List<User>> getUsers() async {
-    List<User> users = await DBManager.getUsersByRegion(AppState.getInstance().region);
+    List<User> users = await DBManager.getUsersByRegion(AppState.getInstance().region, UserType.ASSIST);
     return users;
   }
 }

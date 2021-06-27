@@ -4,8 +4,6 @@ import 'package:helpout/model/user.dart';
 import 'package:postgrest/postgrest.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum SearchType { REQUEST, ASSIST }
-
 class AppState {
   static final AppState _instance = AppState(
     null,

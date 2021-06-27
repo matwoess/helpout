@@ -49,6 +49,7 @@ class _SignUpFormState extends State<SignUpForm> {
   int _price = 0;
   Region _region = null;
   Gender _gender = Gender.UNKNOWN;
+  UserType _userType = UserType.ASSIST;
 
   Future<List<Region>> regions;
 
@@ -91,7 +92,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   void _showWelcomeScreen() async {
     User user = await DBManager.createUser(_firstNameTextController.text, _lastNameTextController.text,
-        _usernameTextController.text, _passwordTextController.text, _region, _gender, _assetURI, _price);
+        _usernameTextController.text, _passwordTextController.text, _region, _gender, _assetURI, _price, _userType);
     AppState.getInstance().accountData = user;
     Navigator.popAndPushNamed(context, '/signup/welcome');
   }
@@ -281,7 +282,39 @@ class _SignUpFormState extends State<SignUpForm> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  Text('Price per hour for helping out:'),
+                  Text('I want to:'),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  DropdownButton<UserType>(
+                    value: _userType,
+                    onChanged: (UserType newValue) {
+                      setState(() {
+                        _userType = newValue;
+                      });
+                    },
+                    underline: Container(
+                      height: 2,
+                      color: Theme.of(context).accentColor,
+                    ),
+                    items: UserType.values.map<DropdownMenuItem<UserType>>((UserType value) {
+                      return DropdownMenuItem<UserType>(
+                        value: value,
+                        child: Text(value.toShortString()),
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(width: 16.0),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  _userType == UserType.ASSIST
+                      ? Text('Price per hour for helping out:')
+                      : Text('Price ready to pay for assistance:'),
                   Expanded(
                     child: Container(),
                   ),
@@ -299,7 +332,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     items: Iterable<int>.generate(15 + 1).map<DropdownMenuItem<int>>((int value) {
                       return DropdownMenuItem<int>(
                         value: value,
-                        child: Text(value.toString() + '€'),
+                        child: value == 0 ? Text('For free') : Text(value.toString() + '€'),
                       );
                     }).toList(),
                   ),

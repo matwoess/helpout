@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:helpout/misc/dbmanager.dart';
 import 'package:helpout/model/appstate.dart';
 import 'package:helpout/model/region.dart';
+import 'package:helpout/model/user.dart';
 import 'package:helpout/util/locator.dart';
 import 'package:overlay_support/overlay_support.dart';
 
@@ -15,7 +16,7 @@ class BrowsePage extends StatefulWidget {
 }
 
 class _BrowsePageState extends State<BrowsePage> {
-  SearchType _searchType = SearchType.ASSIST;
+  UserType _searchType = UserType.ASSIST;
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +53,9 @@ class _BrowsePageState extends State<BrowsePage> {
                 ),
               ),
               onPressed: () => {
-                if (_searchType == SearchType.ASSIST)
+                if (_searchType == UserType.ASSIST)
                   Navigator.pushNamed(context, '/assist').then(onReturn)
-                else if (_searchType == SearchType.REQUEST)
+                else if (_searchType == UserType.REQUEST)
                   if (AppState.getInstance().loggedIn)
                     Navigator.pushNamed(context, '/request').then(onReturn)
                   else
@@ -69,7 +70,7 @@ class _BrowsePageState extends State<BrowsePage> {
     );
   }
 
-  setSearchType(SearchType st) {
+  setSearchType(UserType st) {
     _searchType = st;
   }
 
@@ -79,7 +80,7 @@ class _BrowsePageState extends State<BrowsePage> {
 }
 
 class AssistRequestRadioCard extends StatefulWidget {
-  final SearchType _initialSearchType;
+  final UserType _initialSearchType;
   final Function _setSearchTypeCallback;
 
   AssistRequestRadioCard(this._initialSearchType, this._setSearchTypeCallback);
@@ -89,7 +90,7 @@ class AssistRequestRadioCard extends StatefulWidget {
 }
 
 class _AssistRequestRadioCardState extends State<AssistRequestRadioCard> {
-  SearchType _currentSearchType;
+  UserType _currentSearchType;
 
   @override
   void initState() {
@@ -117,9 +118,9 @@ class _AssistRequestRadioCardState extends State<AssistRequestRadioCard> {
             ListTile(
               title: const Text('Request help'),
               leading: Radio(
-                value: SearchType.REQUEST,
+                value: UserType.REQUEST,
                 groupValue: _currentSearchType,
-                onChanged: (SearchType value) {
+                onChanged: (UserType value) {
                   setState(() {
                     _currentSearchType = value;
                     widget._setSearchTypeCallback(value);
@@ -130,9 +131,9 @@ class _AssistRequestRadioCardState extends State<AssistRequestRadioCard> {
             ListTile(
               title: const Text('Assist people'),
               leading: Radio(
-                value: SearchType.ASSIST,
+                value: UserType.ASSIST,
                 groupValue: _currentSearchType,
-                onChanged: (SearchType value) {
+                onChanged: (UserType value) {
                   setState(() {
                     _currentSearchType = value;
                     widget._setSearchTypeCallback(value);

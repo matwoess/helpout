@@ -30,22 +30,22 @@ class _AssistPeopleState extends State<AssistPeoplePage> {
         title: Text("Assist people in need"),
       ),
       body: FutureBuilder<List<User>>(
-          future: users,
-          builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return ListView.builder(
-                  itemBuilder: (context, position) {
-                    return UserCard(User.loading, null);
-                  },
-                  itemCount: 4);
-            } else {
-              return ListView.builder(
-                  itemBuilder: (context, position) {
-                    return UserCard(snapshot.data[position], showDetails);
-                  },
-                  itemCount: snapshot.data.length);
-            }
-          },
+        future: users,
+        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return ListView.builder(
+                itemBuilder: (context, position) {
+                  return UserCard(User.loading, null);
+                },
+                itemCount: 4);
+          } else {
+            return ListView.builder(
+                itemBuilder: (context, position) {
+                  return UserCard(snapshot.data[position], showDetails);
+                },
+                itemCount: snapshot.data.length);
+          }
+        },
       ),
     );
   }
@@ -75,7 +75,7 @@ class _AssistPeopleState extends State<AssistPeoplePage> {
   }
 
   static Future<List<User>> getUsers() async {
-    List<User> users = await DBManager.getUsersByRegion(AppState.getInstance().region);
+    List<User> users = await DBManager.getUsersByRegion(AppState.getInstance().region, UserType.REQUEST);
     return users;
   }
 }

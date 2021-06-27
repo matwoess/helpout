@@ -21,6 +21,30 @@ class DBManager {
     }
     var user = result.toJson()['data'][0];
     return User(
+      user['username'],
+      user['password'],
+      user['firstname'] + ' ' + user['lastname'],
+      Converter.convertToGender(user['gender']['name']),
+      Region(user['zipcode'].toString(), user['region']['name']),
+      user['price'],
+      user['description'],
+      user['asset'],
+      user['userType'], // TODO: maybe Converter.fromId
+    );
+  }
+
+  static Future<List<User>> getOtherUsers(UserType userType) async {
+    String username = AppState.getInstance().accountData?.username ?? '';
+    PostgrestResponse result = await AppState.getInstance()
+        .connection
+        .from('user')
+        .select(Constants.userTableData)
+        .filter('username', 'neq', username)
+        // TODO: filter by user type
+        .execute();
+    List<User> users = [];
+    for (final user in result.toJson()['data']) {
+      users.add(User(
         user['username'],
         user['password'],
         user['firstname'] + ' ' + user['lastname'],
@@ -28,35 +52,16 @@ class DBManager {
         Region(user['zipcode'].toString(), user['region']['name']),
         user['price'],
         user['description'],
-        user['asset']);
-  }
-
-  static Future<List<User>> getOtherUsers() async {
-    String username = AppState.getInstance().accountData?.username ?? '';
-    PostgrestResponse result = await AppState.getInstance()
-        .connection
-        .from('user')
-        .select(Constants.userTableData)
-        .filter('username', 'neq', username)
-        .execute();
-    List<User> users = [];
-    for (final user in result.toJson()['data']) {
-      users.add(User(
-          user['username'],
-          user['password'],
-          user['firstname'] + ' ' + user['lastname'],
-          Converter.convertToGender(user['gender']['name']),
-          Region(user['zipcode'].toString(), user['region']['name']),
-          user['price'],
-          user['description'],
-          user['asset']));
+        user['asset'],
+        user['userType'], // TODO: maybe Converter.fromId
+      ));
     }
     return users;
   }
 
-  static Future<List<User>> getUsersByRegion(Region region) async {
+  static Future<List<User>> getUsersByRegion(Region region, UserType userType) async {
     if (region == null) {
-      return getOtherUsers();
+      return getOtherUsers(userType);
     }
     String username = AppState.getInstance().accountData?.username ?? '';
     PostgrestResponse result = await AppState.getInstance()
@@ -65,18 +70,21 @@ class DBManager {
         .select(Constants.userTableData)
         .filter('zipcode', 'eq', region.postcode)
         .filter('username', 'neq', username)
+        // TODO: filter by user type
         .execute();
     List<User> users = [];
     for (final user in result.toJson()['data']) {
       users.add(User(
-          user['username'],
-          user['password'],
-          user['firstname'] + ' ' + user['lastname'],
-          Converter.convertToGender(user['gender']['name']),
-          region,
-          user['price'],
-          user['description'],
-          user['asset']));
+        user['username'],
+        user['password'],
+        user['firstname'] + ' ' + user['lastname'],
+        Converter.convertToGender(user['gender']['name']),
+        region,
+        user['price'],
+        user['description'],
+        user['asset'],
+        user['userType'], // TODO: maybe Converter.fromId
+      ));
     }
     return users;
   }
@@ -248,8 +256,9 @@ class DBManager {
   }
 
   static Future<User> createUser(String firstname, String lastname, String username, String password, Region region,
-      Gender gender, String assetURI, int price) async {
-    User createdUser = new User(username, password, firstname + ' ' + lastname, gender, region, price, "", assetURI);
+      Gender gender, String assetURI, int price, UserType userType) async {
+    User createdUser =
+        new User(username, password, firstname + ' ' + lastname, gender, region, price, "", assetURI, userType);
     checkRegion(region);
     PostgrestResponse response = await AppState.getInstance().connection.from('user').insert({
       "firstname": firstname,
@@ -262,7 +271,8 @@ class DBManager {
       "gid": Converter.toId(gender),
       "level": 1,
       "score": 0,
-      "password": password
+      "password": password,
+      //TODO: "usertype": userType (maybe some Converter.toId mapping)
     }).execute();
     print(response.toJson());
     return createdUser;

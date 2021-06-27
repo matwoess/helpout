@@ -103,6 +103,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     SizedBox(
                       height: 10.0,
                     ),
+                    Text(
+                      accountData.userType.toShortString(),
+                      style: TextStyle(fontSize: 16.0, color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
                     Card(
                       margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
                       color: Theme.of(context).scaffoldBackgroundColor,
@@ -165,12 +172,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                           items: Iterable<int>.generate(15 + 1).map<DropdownMenuItem<int>>((int value) {
                                             return DropdownMenuItem<int>(
                                               value: value,
-                                              child: Text(value.toString() + '€'),
+                                              child: Text(value == 0 ? 'For free' : value.toString() + '€'),
                                             );
                                           }).toList(),
                                         )
                                       : Text(
-                                          accountData.price.toString() + '€',
+                                          accountData.price == 0 ? 'For free' : accountData.price.toString() + '€',
                                           style: TextStyle(
                                             fontSize: 20.0,
                                             color: Theme.of(context).accentColor,
