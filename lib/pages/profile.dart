@@ -20,7 +20,8 @@ class _ProfilePageState extends State<ProfilePage> {
       if (edit) {
         accountData.name = _firstnameTextController.text + " " + _lastnameTextController.text;
         accountData.description = _descriptionTextController.text;
-        DBManager.updateUser(accountData.username, accountData.name, _descriptionTextController.text, accountData.price);
+        DBManager.updateUser(
+            accountData.username, accountData.name, _descriptionTextController.text, accountData.price);
       } else {
         _firstnameTextController.text = accountData.name.split(" ")[0];
         _lastnameTextController.text = accountData.name.split(" ").length == 2 ? accountData.name.split(" ")[1] : "";
@@ -38,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Theme.of(context).backgroundColor,
             child: Container(
               width: double.infinity,
-              height: 400.0,
+              height: edit ? 450.0 : 400.0,
               child: Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -54,20 +55,17 @@ class _ProfilePageState extends State<ProfilePage> {
                     edit
                         ? SizedBox(
                             width: 250.0,
-                            child: 
-                            // TODO: insert second text field for first name
-                            /*Row(
-                              
+                            child: Column(
                               children: [
                                 TextField(
-                                    controller: _firstnameTextController,
-                                    decoration: InputDecoration(hintText: 'First name'),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 22.0,
-                                      color: Colors.white,
-                                    ),
-                                  ),*/ 
+                                  controller: _firstnameTextController,
+                                  decoration: InputDecoration(hintText: 'First name'),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 22.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
                                 TextField(
                                   controller: _lastnameTextController,
                                   decoration: InputDecoration(hintText: 'Last name'),
@@ -75,9 +73,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                   style: TextStyle(
                                     fontSize: 22.0,
                                     color: Colors.white,
-                                  )
-                                  //)]
-                                  )
+                                  ),
+                                ),
+                              ],
+                            ),
                           )
                         : Text(
                             accountData.name,
@@ -166,7 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           items: Iterable<int>.generate(15 + 1).map<DropdownMenuItem<int>>((int value) {
                                             return DropdownMenuItem<int>(
                                               value: value,
-                                              child: Text(value.toString()),
+                                              child: Text(value.toString() + '€'),
                                             );
                                           }).toList(),
                                         )
