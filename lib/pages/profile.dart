@@ -11,17 +11,19 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final User accountData = AppState.getInstance().accountData;
   bool edit = false;
-  final _nameTextController = TextEditingController();
+  final _firstnameTextController = TextEditingController();
+  final _lastnameTextController = TextEditingController();
   final _descriptionTextController = TextEditingController();
 
   void toggleEdit() {
     setState(() {
       if (edit) {
-        accountData.name = _nameTextController.text;
+        accountData.name = _firstnameTextController.text + " " + _lastnameTextController.text;
         accountData.description = _descriptionTextController.text;
-        DBManager.updateUser(accountData.username, _nameTextController.text, _descriptionTextController.text);
+        DBManager.updateUser(accountData.username, accountData.name, _descriptionTextController.text, accountData.price);
       } else {
-        _nameTextController.text = accountData.name;
+        _firstnameTextController.text = accountData.name.split(" ")[0];
+        _lastnameTextController.text = accountData.name.split(" ").length == 2 ? accountData.name.split(" ")[1] : "";
         _descriptionTextController.text = accountData.description;
       }
       edit = !edit;
@@ -52,17 +54,34 @@ class _ProfilePageState extends State<ProfilePage> {
                     edit
                         ? SizedBox(
                             width: 250.0,
-                            child: TextField(
-                              controller: _nameTextController,
-                              decoration: InputDecoration(hintText: 'Your name'),
-                              style: TextStyle(
-                                fontSize: 22.0,
-                                color: Colors.white,
-                              ),
-                            ),
+                            child: 
+                            // TODO: insert second text field for first name
+                            /*Row(
+                              
+                              children: [
+                                TextField(
+                                    controller: _firstnameTextController,
+                                    decoration: InputDecoration(hintText: 'First name'),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 22.0,
+                                      color: Colors.white,
+                                    ),
+                                  ),*/ 
+                                TextField(
+                                  controller: _lastnameTextController,
+                                  decoration: InputDecoration(hintText: 'Last name'),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 22.0,
+                                    color: Colors.white,
+                                  )
+                                  //)]
+                                  )
                           )
                         : Text(
                             accountData.name,
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 22.0,
                               color: Colors.white,

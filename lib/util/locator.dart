@@ -33,6 +33,7 @@ class Locator {
   static Future<Region> getRegionFromPosition(Position pos, bool create) async {
     List<Region> regions = await DBManager.getAvailableRegions();
     http.Response response = await makeRequest(pos);
+    print(jsonDecode(response.body)); 
     if (response.statusCode == 200) {
       return Region.fromJson(jsonDecode(response.body), regions, create);
     } else {

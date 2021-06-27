@@ -162,13 +162,13 @@ class DBManager {
     return newMsg;
   }
 
-  static void updateUser(String username, String name, String desc) async {
+  static void updateUser(String username, String name, String desc, int price) async {
     String firstname = name.split(" ")[0];
     String lastname = name.split(" ").length == 2 ? name.split(" ")[1] : "";
     await AppState.getInstance()
         .connection
         .from('user')
-        .update({"firstname": firstname, "lastname": lastname, "description": desc})
+        .update({"firstname": firstname, "lastname": lastname, "description": desc, "price": price})
         .eq("username", username)
         .execute();
   }
@@ -252,7 +252,7 @@ class DBManager {
       Gender gender, String assetURI, int price) async {
     User createdUser = new User(username, password, firstname + ' ' + lastname, gender, region, price, "", assetURI);
     checkRegion(region);
-    await AppState.getInstance().connection.from('user').insert({
+    PostgrestResponse response = await AppState.getInstance().connection.from('user').insert({
       "firstname": firstname,
       "lastname": lastname,
       "description": "",
@@ -260,11 +260,12 @@ class DBManager {
       "price": price,
       "asset": assetURI,
       "zipcode": int.parse(region.postcode),
-      "gid": 2,
+      "gid": Converter.toId(gender),
       "level": 1,
       "score": 0,
       "password": password
     }).execute();
+    print(response.toJson());
     return createdUser;
   }
 

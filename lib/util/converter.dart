@@ -29,4 +29,15 @@ class Converter {
     //print('TODO: toMillisecondsSinceEpoch: ' + DateTime.parse(timestamp).millisecondsSinceEpoch.toString());
     return DateTime.parse(timestamp).millisecondsSinceEpoch;
   }
+
+  static toId(Gender gender) {
+    switch (gender) {
+      case Gender.MALE:
+        return 1;
+      case Gender.FEMALE:
+        return 2;
+      default:
+        return 3;
+    }
+  }
 }

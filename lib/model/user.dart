@@ -5,7 +5,7 @@ enum Gender { FEMALE, MALE, UNKNOWN }
 extension ParseToString on Gender {
   String toShortString() {
     if (this == Gender.UNKNOWN) {
-      return 'unknown gender';
+      return 'Other';
     }
     return this.toString().split('.').last.toLowerCase();
   }

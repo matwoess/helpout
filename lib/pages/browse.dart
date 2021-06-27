@@ -148,6 +148,7 @@ class _AssistRequestRadioCardState extends State<AssistRequestRadioCard> {
 
 class RegionCard extends StatefulWidget {
   RegionCard();
+  // TODO: reload on inserted region (sign up)
 
   @override
   _RegionCardState createState() => _RegionCardState();
@@ -208,6 +209,7 @@ class _RegionCardState extends State<RegionCard> {
                               : Text('Select region'),
                         ),
                       ),
+                      // TODO: Message for region locator button when finding not used region!
                       Visibility(
                         visible: snapshot.connectionState != ConnectionState.waiting,
                         child: Padding(

@@ -130,6 +130,9 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: EdgeInsets.all(8.0),
             child: TextFormField(
               controller: _passwordTextController,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
               decoration: InputDecoration(hintText: 'Password'),
             ),
           ),
@@ -137,6 +140,9 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: EdgeInsets.all(8.0),
             child: TextFormField(
               controller: _repeatpwTextController,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
               decoration: InputDecoration(hintText: 'Repeat password'),
             ),
           ),

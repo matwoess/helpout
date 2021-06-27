@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:helpout/model/user.dart';
 import 'package:helpout/pages/achievement.dart';
 import 'package:helpout/pages/browse.dart';
 import 'package:helpout/pages/chats.dart';
 import 'package:helpout/pages/profile.dart';
 
-import 'misc/dbmanager.dart';
 import 'model/appstate.dart';
 
 enum NAV_PAGE {

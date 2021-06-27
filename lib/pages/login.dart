@@ -95,6 +95,9 @@ class _LogInFormState extends State<LogInForm> {
             padding: EdgeInsets.all(8.0),
             child: TextFormField(
               controller: _passwordTextController,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
               decoration: InputDecoration(hintText: 'Password'),
             ),
           ),

@@ -1,4 +1,3 @@
-import 'package:geolocator/geolocator.dart';
 import 'package:helpout/misc/dbmanager.dart';
 import 'package:helpout/model/region.dart';
 import 'package:helpout/model/user.dart';
