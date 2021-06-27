@@ -55,7 +55,11 @@ class _AchievementPageState extends State<AchievementPage> {
                       Padding(
                         padding: EdgeInsets.all(15.0),
                         child: new LinearPercentIndicator(
-                          width: MediaQuery.of(context).size.width - 100,
+                          width: MediaQuery.of(context).size.width - 110,
+                          trailing: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text("Kindness"),
+                          ),
                           animation: true,
                           animationDuration: 1000,
                           lineHeight: 20.0,
@@ -64,7 +68,6 @@ class _AchievementPageState extends State<AchievementPage> {
                             "70.0%",
                             style: new TextStyle(fontSize: 14.0),
                           ),
-                          trailing: Text("Kindness"),
                           linearStrokeCap: LinearStrokeCap.roundAll,
                           backgroundColor: Colors.grey,
                           progressColor: Colors.pink,
@@ -73,8 +76,11 @@ class _AchievementPageState extends State<AchievementPage> {
                       Padding(
                         padding: EdgeInsets.all(15.0),
                         child: new LinearPercentIndicator(
-                          width: MediaQuery.of(context).size.width - 100,
-                          trailing: Text("Gratitude"),
+                          width: MediaQuery.of(context).size.width - 110,
+                          trailing: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text("Gratitude"),
+                          ),
                           animation: true,
                           lineHeight: 20.0,
                           animationDuration: 1000,
@@ -90,8 +96,11 @@ class _AchievementPageState extends State<AchievementPage> {
                       Padding(
                         padding: EdgeInsets.all(15.0),
                         child: new LinearPercentIndicator(
-                          width: MediaQuery.of(context).size.width - 100,
-                          trailing: Text("Generosity"),
+                          width: MediaQuery.of(context).size.width - 110,
+                          trailing: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text("Generosity"),
+                          ),
                           animation: true,
                           lineHeight: 20.0,
                           animationDuration: 1000,
@@ -107,8 +116,11 @@ class _AchievementPageState extends State<AchievementPage> {
                       Padding(
                         padding: EdgeInsets.all(15.0),
                         child: new LinearPercentIndicator(
-                          width: MediaQuery.of(context).size.width - 100,
-                          trailing: Text("Experience"),
+                          width: MediaQuery.of(context).size.width - 110,
+                          trailing: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text("Experience"),
+                          ),
                           animation: true,
                           lineHeight: 20.0,
                           animationDuration: 1000,
