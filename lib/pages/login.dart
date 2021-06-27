@@ -77,62 +77,64 @@ class _LogInFormState extends State<LogInForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      onChanged: _updateFormProgress,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AnimatedProgressIndicator(value: _formProgress),
-          Text('Log in', style: Theme.of(context).textTheme.headline4),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: _usernameTextController,
-              decoration: InputDecoration(hintText: 'Username'),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: TextFormField(
-              controller: _passwordTextController,
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-              decoration: InputDecoration(hintText: 'Password'),
-            ),
-          ),
-          Visibility(
-            visible: _passwordOrUserDoesNotMatch,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Password or username did not match!',
-                style: TextStyle(color: Colors.red),
+    return SingleChildScrollView(
+      child: Form(
+        onChanged: _updateFormProgress,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AnimatedProgressIndicator(value: _formProgress),
+            Text('Log in', style: Theme.of(context).textTheme.headline4),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: _usernameTextController,
+                decoration: InputDecoration(hintText: 'Username'),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextButton(
-              style: ButtonStyle(
-                foregroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
-                  return states.contains(MaterialState.disabled) ? null : Colors.white;
-                }),
-                backgroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
-                  return states.contains(MaterialState.disabled) ? null : Colors.blue;
-                }),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: _passwordTextController,
+                obscureText: true,
+                enableSuggestions: false,
+                autocorrect: false,
+                decoration: InputDecoration(hintText: 'Password'),
               ),
-              onPressed: _formProgress == 1 ? _showWelcomeScreen : null,
+            ),
+            Visibility(
+              visible: _passwordOrUserDoesNotMatch,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Log in',
-                  style: TextStyle(fontSize: 20.0),
+                  'Password or username did not match!',
+                  style: TextStyle(color: Colors.red),
                 ),
               ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextButton(
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                    return states.contains(MaterialState.disabled) ? null : Colors.white;
+                  }),
+                  backgroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                    return states.contains(MaterialState.disabled) ? null : Colors.blue;
+                  }),
+                ),
+                onPressed: _formProgress == 1 ? _showWelcomeScreen : null,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Log in',
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
