@@ -40,4 +40,13 @@ class Converter {
         return 3;
     }
   }
+
+  static UserType convertToUserType(bool isassist) {
+    if (isassist) return UserType.ASSIST;
+    else return UserType.REQUEST;
+  }
+
+  static bool convertToIsAssist(UserType userType) {
+    return (userType == UserType.ASSIST);
+  }
 }

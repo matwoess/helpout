@@ -29,7 +29,7 @@ class DBManager {
       user['price'],
       user['description'],
       user['asset'],
-      user['userType'], // TODO: maybe Converter.fromId
+      Converter.convertToUserType(user['isassist']),
     );
   }
 
@@ -40,7 +40,7 @@ class DBManager {
         .from('user')
         .select(Constants.userTableData)
         .filter('username', 'neq', username)
-        // TODO: filter by user type
+        .filter('isassist', 'eq', Converter.convertToIsAssist(userType))
         .execute();
     List<User> users = [];
     for (final user in result.toJson()['data']) {
@@ -53,7 +53,7 @@ class DBManager {
         user['price'],
         user['description'],
         user['asset'],
-        user['userType'], // TODO: maybe Converter.fromId
+        Converter.convertToUserType(user['isassist']),
       ));
     }
     return users;
@@ -70,7 +70,7 @@ class DBManager {
         .select(Constants.userTableData)
         .filter('zipcode', 'eq', region.postcode)
         .filter('username', 'neq', username)
-        // TODO: filter by user type
+        .filter('isassist', 'eq', Converter.convertToIsAssist(userType))
         .execute();
     List<User> users = [];
     for (final user in result.toJson()['data']) {
@@ -83,7 +83,7 @@ class DBManager {
         user['price'],
         user['description'],
         user['asset'],
-        user['userType'], // TODO: maybe Converter.fromId
+        Converter.convertToUserType(user['isassist']), 
       ));
     }
     return users;
@@ -272,9 +272,8 @@ class DBManager {
       "level": 1,
       "score": 0,
       "password": password,
-      //TODO: "usertype": userType (maybe some Converter.toId mapping)
+      "isassist": Converter.convertToIsAssist(userType)
     }).execute();
-    print(response.toJson());
     return createdUser;
   }
 

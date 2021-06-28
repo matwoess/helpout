@@ -5,7 +5,7 @@
 -- Dumped from database version 12.7
 -- Dumped by pg_dump version 12.7
 
--- Started on 2021-06-23 19:49:50
+-- Started on 2021-06-28 09:38:36
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -20,14 +20,14 @@ SET row_security = off;
 
 DROP DATABASE helpout;
 --
--- TOC entry 2856 (class 1262 OID 32777)
--- Name: helpout; Type: DATABASE; Schema: -; Owner: postgres
+-- TOC entry 2856 (class 1262 OID 57354)
+-- Name: helpout; Type: DATABASE; Schema: -; Owner: helpout
 --
 
 CREATE DATABASE helpout WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'German_Germany.1252' LC_CTYPE = 'German_Germany.1252';
 
 
-ALTER DATABASE helpout OWNER TO postgres;
+ALTER DATABASE helpout OWNER TO helpout;
 
 \connect helpout
 
@@ -47,7 +47,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 205 (class 1259 OID 32807)
+-- TOC entry 202 (class 1259 OID 57355)
 -- Name: chat; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -63,7 +63,7 @@ CREATE TABLE public.chat (
 ALTER TABLE public.chat OWNER TO postgres;
 
 --
--- TOC entry 203 (class 1259 OID 32791)
+-- TOC entry 203 (class 1259 OID 57361)
 -- Name: city; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -76,7 +76,7 @@ CREATE TABLE public.city (
 ALTER TABLE public.city OWNER TO postgres;
 
 --
--- TOC entry 202 (class 1259 OID 32786)
+-- TOC entry 204 (class 1259 OID 57367)
 -- Name: gender; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -89,7 +89,7 @@ CREATE TABLE public.gender (
 ALTER TABLE public.gender OWNER TO postgres;
 
 --
--- TOC entry 206 (class 1259 OID 32815)
+-- TOC entry 205 (class 1259 OID 57370)
 -- Name: message; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -105,7 +105,7 @@ CREATE TABLE public.message (
 ALTER TABLE public.message OWNER TO postgres;
 
 --
--- TOC entry 204 (class 1259 OID 32799)
+-- TOC entry 206 (class 1259 OID 57376)
 -- Name: user; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -120,15 +120,16 @@ CREATE TABLE public."user" (
     zipcode integer,
     level integer,
     score integer,
-    password character varying NOT NULL
+    password character varying NOT NULL,
+    isassist boolean
 );
 
 
 ALTER TABLE public."user" OWNER TO postgres;
 
 --
--- TOC entry 2849 (class 0 OID 32807)
--- Dependencies: 205
+-- TOC entry 2846 (class 0 OID 57355)
+-- Dependencies: 202
 -- Data for Name: chat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -144,7 +145,7 @@ INSERT INTO public.chat (chatid, isread1, username1, username2, isread2) VALUES 
 
 
 --
--- TOC entry 2847 (class 0 OID 32791)
+-- TOC entry 2847 (class 0 OID 57361)
 -- Dependencies: 203
 -- Data for Name: city; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -155,11 +156,12 @@ INSERT INTO public.city (zipcode, name) VALUES (4040, 'Linz');
 INSERT INTO public.city (zipcode, name) VALUES (4050, 'Traun');
 INSERT INTO public.city (zipcode, name) VALUES (4221, 'Steyregg');
 INSERT INTO public.city (zipcode, name) VALUES (4600, 'Wels');
+INSERT INTO public.city (zipcode, name) VALUES (4060, 'Leonding');
 
 
 --
--- TOC entry 2846 (class 0 OID 32786)
--- Dependencies: 202
+-- TOC entry 2848 (class 0 OID 57367)
+-- Dependencies: 204
 -- Data for Name: gender; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -169,8 +171,8 @@ INSERT INTO public.gender (gid, name) VALUES (3, 'OTHER');
 
 
 --
--- TOC entry 2850 (class 0 OID 32815)
--- Dependencies: 206
+-- TOC entry 2849 (class 0 OID 57370)
+-- Dependencies: 205
 -- Data for Name: message; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -189,25 +191,26 @@ INSERT INTO public.message (chatid, msgid, username, "timestamp", content) VALUE
 
 
 --
--- TOC entry 2848 (class 0 OID 32799)
--- Dependencies: 204
+-- TOC entry 2850 (class 0 OID 57376)
+-- Dependencies: 206
 -- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password) VALUES ('anna96', 'Anna', 'Steiner', 6, 'assets/avatars/female4.png', 'Recommend me to your friends!', 2, 4600, 1, 67, 'pw');
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password) VALUES ('augernst', 'Augustine', 'Ernst', 13, 'assets/avatars/female3.png', 'I can help out anytime.', 2, 4030, 1, 45, 'pw');
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password) VALUES ('briggite.s', 'Brigitte', 'Seitenschläger', 5, 'assets/avatars/female1.png', 'I love animals.', 2, 4040, 1, 20, 'pw');
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password) VALUES ('eddom', 'Eduardo', 'Domingo', 7, 'assets/avatars/male2.png', 'Several years of experience as a pet-sitter.', 1, 4600, 1, 33, 'pw');
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password) VALUES ('joe.hinter', 'Johannes', 'Hinterberger', 0, 'assets/avatars/male1.png', 'I am a helpful person.', 1, 4020, 1, 10, 'pw');
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password) VALUES ('m.hauer', 'Manuel', 'Hauer', 15, 'assets/avatars/male3.png', 'I have a lot of free time.', 1, 4600, 1, 44, 'pw');
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password) VALUES ('my_username', 'My', '', 5, 'assets/avatars/female4.png', 'This is my profile! Here I will tell about myself and give you a good impression.\nFor more information please contact me. Here a test message appears in the response.', 2, 4020, 1, 65, 'pw');
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password) VALUES ('tanja.gruber', 'Tanja', 'Gruber', 8, 'assets/avatars/female2.png', 'I love animals.', 2, 4221, 1, 44, 'pw');
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password) VALUES ('tbb', 'Thomas', 'Braunberger', 10, 'assets/avatars/male3.png', 'Male, 35 years old, education from FH Hagenberg, like to read, have 3 sisters and 1 brother. More information about me can be found on my website at http://person.me.com', 1, 4050, 1, 66, 'pw');
-INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password) VALUES ('usr123', 'Ano', 'Nymous', 9, 'assets/images/empty.png', '(no description)', 3, 4221, 1, 12, 'pw');
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, isassist) VALUES ('anna96', 'Anna', 'Steiner', 6, 'assets/avatars/female4.png', 'Recommend me to your friends!', 2, 4600, 1, 67, 'pw', true);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, isassist) VALUES ('augernst', 'Augustine', 'Ernst', 13, 'assets/avatars/female3.png', 'I can help out anytime.', 2, 4030, 1, 45, 'pw', true);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, isassist) VALUES ('briggite.s', 'Brigitte', 'Seitenschläger', 5, 'assets/avatars/female1.png', 'I love animals.', 2, 4040, 1, 20, 'pw', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, isassist) VALUES ('eddom', 'Eduardo', 'Domingo', 7, 'assets/avatars/male2.png', 'Several years of experience as a pet-sitter.', 1, 4600, 1, 33, 'pw', true);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, isassist) VALUES ('joe.hinter', 'Johannes', 'Hinterberger', 0, 'assets/avatars/male1.png', 'I am a helpful person.', 1, 4020, 1, 10, 'pw', true);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, isassist) VALUES ('m.hauer', 'Manuel', 'Hauer', 15, 'assets/avatars/male3.png', 'I have a lot of free time.', 1, 4600, 1, 44, 'pw', true);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, isassist) VALUES ('my_username', 'My', '', 5, 'assets/avatars/female4.png', 'This is my profile! Here I will tell about myself and give you a good impression.\nFor more information please contact me. Here a test message appears in the response.', 2, 4020, 1, 65, 'pw', true);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, isassist) VALUES ('tanja.gruber', 'Tanja', 'Gruber', 8, 'assets/avatars/female2.png', 'I am looking for someone to help my grandmother with shopping.', 2, 4221, 1, 44, 'pw', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, isassist) VALUES ('tbb', 'Thomas', 'Braunberger', 10, 'assets/avatars/male3.png', 'Male, 35 years old, education from FH Hagenberg, like to read, have 3 sisters and 1 brother. More information about me can be found on my website at http://person.me.com', 1, 4050, 1, 66, 'pw', false);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, isassist) VALUES ('usr123', 'Ano', 'Nymous', 9, 'assets/images/empty.png', '(no description)', 3, 4221, 1, 12, 'pw', true);
+INSERT INTO public."user" (username, firstname, lastname, price, asset, description, gid, zipcode, level, score, password, isassist) VALUES ('nyquist', 'Alexander', 'Gindlhumer', 0, 'assets/avatars/male2.png', '', 1, 4060, 1, 0, 'alex1', true);
 
 
 --
--- TOC entry 2712 (class 2606 OID 32814)
+-- TOC entry 2706 (class 2606 OID 57383)
 -- Name: chat chat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -216,7 +219,7 @@ ALTER TABLE ONLY public.chat
 
 
 --
--- TOC entry 2708 (class 2606 OID 32798)
+-- TOC entry 2708 (class 2606 OID 57385)
 -- Name: city city_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -225,7 +228,7 @@ ALTER TABLE ONLY public.city
 
 
 --
--- TOC entry 2706 (class 2606 OID 32790)
+-- TOC entry 2710 (class 2606 OID 57387)
 -- Name: gender gender_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -234,7 +237,7 @@ ALTER TABLE ONLY public.gender
 
 
 --
--- TOC entry 2714 (class 2606 OID 49174)
+-- TOC entry 2712 (class 2606 OID 57389)
 -- Name: message message_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -243,7 +246,7 @@ ALTER TABLE ONLY public.message
 
 
 --
--- TOC entry 2710 (class 2606 OID 32806)
+-- TOC entry 2714 (class 2606 OID 57391)
 -- Name: user user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -252,7 +255,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- TOC entry 2719 (class 2606 OID 32853)
+-- TOC entry 2717 (class 2606 OID 57392)
 -- Name: message chatid_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -261,7 +264,7 @@ ALTER TABLE ONLY public.message
 
 
 --
--- TOC entry 2715 (class 2606 OID 32828)
+-- TOC entry 2718 (class 2606 OID 57397)
 -- Name: user gid_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -270,7 +273,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- TOC entry 2717 (class 2606 OID 32838)
+-- TOC entry 2715 (class 2606 OID 57402)
 -- Name: chat username1_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -279,7 +282,7 @@ ALTER TABLE ONLY public.chat
 
 
 --
--- TOC entry 2718 (class 2606 OID 32843)
+-- TOC entry 2716 (class 2606 OID 57407)
 -- Name: chat username2_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -288,7 +291,7 @@ ALTER TABLE ONLY public.chat
 
 
 --
--- TOC entry 2716 (class 2606 OID 32833)
+-- TOC entry 2719 (class 2606 OID 57412)
 -- Name: user zip_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -296,7 +299,7 @@ ALTER TABLE ONLY public."user"
     ADD CONSTRAINT zip_fk FOREIGN KEY (zipcode) REFERENCES public.city(zipcode) NOT VALID;
 
 
--- Completed on 2021-06-23 19:49:50
+-- Completed on 2021-06-28 09:38:36
 
 --
 -- PostgreSQL database dump complete

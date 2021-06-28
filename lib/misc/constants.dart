@@ -4,7 +4,7 @@ class Constants {
 
   static final int checkForMessagesDelay = 5; // in seconds
 
-  static final String userTableData = 'username, firstname, lastname, gender:gid(name), zipcode, region:zipcode(name),price, description, asset, password';
+  static final String userTableData = 'username, firstname, lastname, gender:gid(name), zipcode, region:zipcode(name),price, description, asset, password, isassist';
 
   // Use @<variable> to address parameters to substitute => prepared statement (see: https://pub.dev/packages/postgres, improves resiliance against SQL injection)
   // Select Queries
